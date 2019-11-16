@@ -49,7 +49,7 @@ namespace game {
             virtual void Draw(Camera *camera);
 
             // Update the node
-            virtual void Update(void);
+            virtual void Update(float deltaTime);
 			bool CheckCollision(SceneNode *pNode);
 
             // OpenGL variables
@@ -64,7 +64,7 @@ namespace game {
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
-        private:
+        protected:
             std::string name_; // Name of the scene node
             GLuint array_buffer_; // References to geometry: vertex and array buffers
             GLuint element_array_buffer_;
