@@ -2,6 +2,7 @@
 #define SCENE_NODE_H_
 
 #include <string>
+#include <vector>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -19,7 +20,7 @@ namespace game {
 
         public:
             SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture = NULL, const Resource *envmap = NULL);
-
+			SceneNode(const std::string name);
             // Destructor
             ~SceneNode();
             
@@ -49,6 +50,7 @@ namespace game {
 
             // Update the node
             virtual void Update(void);
+			bool CheckCollision(SceneNode *pNode);
 
             // OpenGL variables
             GLenum GetMode(void) const;
@@ -57,6 +59,11 @@ namespace game {
             GLsizei GetSize(void) const;
             GLuint GetMaterial(void) const;
 
+			SceneNode* GetParent();
+			void SetParent(SceneNode* pParent);
+			std::vector<SceneNode*> GetChildren();
+			void AddChild(SceneNode *pChildNode);
+			SceneNode *FindChild(std::string nodeName);
         private:
             std::string name_; // Name of the scene node
             GLuint array_buffer_; // References to geometry: vertex and array buffers
@@ -70,9 +77,12 @@ namespace game {
             glm::quat orientation_; // Orientation of node
             glm::vec3 scale_; // Scale of node
             bool blending_; // Draw with blending or not
-
+			bool m_isVisible;//Is the node visible or not
+			SceneNode *m_pParentNode;
+			std::vector<SceneNode*> m_childNodes;
             // Set matrices that transform the node in a shader program
             void SetupShader(GLuint program, Camera *camera);
+			glm::mat4 GetParentTransform();
 
     }; // class SceneNode
 
