@@ -13,6 +13,7 @@ namespace game {
 SceneGraph::SceneGraph(void){
 
     background_color_ = glm::vec3(0.0, 0.0, 0.0);
+	m_pRootNode = new SceneNode("Root Node");
 }
 
 
@@ -38,7 +39,7 @@ SceneNode *SceneGraph::CreateNode(std::string node_name, Resource *geometry, Res
     SceneNode *scn = new SceneNode(node_name, geometry, material, texture, envmap);
 
     // Add node to the scene
-    node_.push_back(scn);
+	m_pRootNode->AddChild(scn);
 
     return scn;
 }
@@ -46,34 +47,15 @@ SceneNode *SceneGraph::CreateNode(std::string node_name, Resource *geometry, Res
 
 void SceneGraph::AddNode(SceneNode *node){
 
-    node_.push_back(node);
+	m_pRootNode->AddChild(node);
 }
 
 
 SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
-    // Find node with the specified name
-    for (int i = 0; i < node_.size(); i++){
-        if (node_[i]->GetName() == node_name){
-            return node_[i];
-        }
-    }
-    return NULL;
+	return m_pRootNode->FindChild(node_name);
 
 }
-
-
-std::vector<SceneNode *>::const_iterator SceneGraph::begin() const {
-
-    return node_.begin();
-}
-
-
-std::vector<SceneNode *>::const_iterator SceneGraph::end() const {
-
-    return node_.end();
-}
-
 
 void SceneGraph::Draw(Camera *camera){
 
@@ -84,17 +66,13 @@ void SceneGraph::Draw(Camera *camera){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw all scene nodes
-    for (int i = 0; i < node_.size(); i++){
-        node_[i]->Draw(camera);
-    }
+	m_pRootNode->Draw(camera);
 }
 
 
 void SceneGraph::Update(void){
 
-    for (int i = 0; i < node_.size(); i++){
-        node_[i]->Update();
-    }
+	m_pRootNode->Update();
 }
 
 
@@ -166,9 +144,7 @@ void SceneGraph::DrawToTexture(Camera *camera){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw all scene nodes
-    for (int i = 0; i < node_.size(); i++){
-        node_[i]->Draw(camera);
-    }
+	m_pRootNode->Draw(camera);
 
     // Reset frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
