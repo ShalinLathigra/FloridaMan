@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <time.h>
+#include "utilities.h"
 
 #include "scene_node.h"
 
@@ -14,6 +15,7 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
     // Set name of scene node
     name_ = name;
 
+	m_pParentNode = nullptr;
     // Set geometry
     if (geometry->GetType() == PointSet){
         mode_ = GL_POINTS;
@@ -51,8 +53,52 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
     // Other attributes
     scale_ = glm::vec3(1.0, 1.0, 1.0);
     blending_ = false;
+	m_isVisible = true;
 }
 
+SceneNode::SceneNode(const std::string name)
+{
+	name_ = name;
+	m_isVisible = false;
+	m_pParentNode = nullptr;
+}
+
+SceneNode *SceneNode::GetParent()
+{
+	return m_pParentNode;
+}
+
+std::vector<SceneNode*> SceneNode::GetChildren()
+{
+	return m_childNodes;
+}
+
+void SceneNode::SetParent(SceneNode *pParent)
+{
+	m_pParentNode = pParent;
+}
+
+void SceneNode::AddChild(SceneNode *pChildNode)
+{
+	pChildNode->SetParent(this);
+	m_childNodes.push_back(pChildNode);
+}
+
+SceneNode *SceneNode::FindChild(std::string nodeName)
+{
+	if (name_ == nodeName)
+	{
+		return this;
+	}
+	for (size_t i = 0; i < m_childNodes.size(); i++)
+	{
+		SceneNode *node = m_childNodes[i]->FindChild(nodeName);
+		if (node) {
+			return node;
+		}
+	}
+	return nullptr;
+}
 
 SceneNode::~SceneNode(){
 }
@@ -69,6 +115,76 @@ glm::vec3 SceneNode::GetPosition(void) const {
     return position_;
 }
 
+bool SceneNode::CheckCollision(SceneNode *pNode)
+{
+		//Set up the local variables to be used for calculating the collision
+		glm::vec3 c1Pos = position_;
+		glm::vec3 pNodePos = pNode->GetPosition();
+
+		glm::vec3 c1_xAxis, pNode_xAxis, c1_yAxis, pNode_yAxis, c1_zAxis, pNode_zAxis;
+		c1_xAxis = utilities::RotateVecByQuat(glm::vec3(1.0f, 0.0f, 0.0f), GetOrientation());
+		c1_yAxis = utilities::RotateVecByQuat(glm::vec3(0.0f, 1.0f, 0.0f), GetOrientation());
+		c1_zAxis = utilities::RotateVecByQuat(glm::vec3(0.0f, 0.0f, 1.0f), GetOrientation());
+		pNode_xAxis = utilities::RotateVecByQuat(glm::vec3(1.0f, 0.0f, 0.0f), pNode->GetOrientation());
+		pNode_yAxis = utilities::RotateVecByQuat(glm::vec3(0.0f, 1.0f, 0.0f), pNode->GetOrientation());
+		pNode_zAxis = utilities::RotateVecByQuat(glm::vec3(0.0f, 0.0f, 1.0f), pNode->GetOrientation());
+
+		float c1x = scale_.x/ 2.0f;
+		float c1y = scale_.y / 2.0f;
+		float c1z = scale_.z / 2.0f;
+		float pNodex = pNode->GetScale().x / 2.0f;
+		float pNodey = pNode->GetScale().y / 2.0f;
+		float pNodez = pNode->GetScale().z / 2.0f;
+
+		glm::vec3 T = pNodePos - c1Pos;
+		bool collisionDetected = false;
+		//Case 1
+		glm::vec3 L = c1_xAxis;
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 2
+		L = c1_yAxis;
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 3
+		L = c1_zAxis;
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 4
+		L = pNode_xAxis;
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 5
+		L = pNode_yAxis;
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 6
+		L = pNode_zAxis;
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 7
+		L = glm::cross(c1_xAxis, pNode_xAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 8
+		L = glm::cross(c1_xAxis, pNode_yAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 9
+		L = glm::cross(c1_xAxis, pNode_zAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 10
+		L = glm::cross(c1_yAxis, pNode_xAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 11
+		L = glm::cross(c1_yAxis, pNode_yAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 12
+		L = glm::cross(c1_yAxis, pNode_zAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 13
+		L = glm::cross(c1_zAxis, pNode_xAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 14
+		L = glm::cross(c1_zAxis, pNode_yAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//Case 15
+		L = glm::cross(c1_zAxis, pNode_zAxis);
+		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		return !collisionDetected;
+}
 
 glm::quat SceneNode::GetOrientation(void) const {
 
@@ -163,47 +279,73 @@ GLuint SceneNode::GetMaterial(void) const {
 
 void SceneNode::Draw(Camera *camera){
 
-    // Select blending or not
-    if (blending_){
-        // Disable z-buffer
-        glDisable(GL_DEPTH_TEST);
+	if (m_isVisible)
+	{
+		// Select blending or not
+		if (blending_) {
+			// Disable z-buffer
+			glDisable(GL_DEPTH_TEST);
 
-        // Enable blending
-        glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Simpler form
-        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
-    } else {
-        // Enable z-buffer
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LESS);
-    }
+			// Enable blending
+			glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Simpler form
+			glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
+		}
+		else {
+			// Enable z-buffer
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+		}
 
-    // Select proper material (shader program)
-    glUseProgram(material_);
+		// Select proper material (shader program)
+		glUseProgram(material_);
 
-    // Set geometry to draw
-    glBindBuffer(GL_ARRAY_BUFFER, array_buffer_);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_array_buffer_);
+		// Set geometry to draw
+		glBindBuffer(GL_ARRAY_BUFFER, array_buffer_);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_array_buffer_);
 
-    // Set globals for camera
-    camera->SetupShader(material_);
+		// Set globals for camera
+		camera->SetupShader(material_);
 
-    // Set world matrix and other shader input variables
-    SetupShader(material_, camera);
+		// Set world matrix and other shader input variables
+		SetupShader(material_, camera);
 
-    // Draw geometry
-    if (mode_ == GL_POINTS){
-        glDrawArrays(mode_, 0, size_);
-    } else {
-        glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
-    }
+		// Draw geometry
+		if (mode_ == GL_POINTS) {
+			glDrawArrays(mode_, 0, size_);
+		}
+		else {
+			glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
+		}
+	}
+	
+	//Draw all child nodes
+	for (size_t i = 0; i < m_childNodes.size(); i++)
+	{
+		m_childNodes[i]->Draw(camera);
+	}
+
 }
 
+glm::mat4 SceneNode::GetParentTransform()
+{
+	if (m_pParentNode)
+	{
+		glm::mat4 rotation = glm::mat4_cast(m_pParentNode->GetOrientation());
+		glm::mat4 translation = glm::translate(glm::mat4(1.0), m_pParentNode->GetPosition());
+		return m_pParentNode->GetParentTransform() * translation * rotation;// * m_pParentNode->GetParentTransform();
+	}
+	return glm::mat4(1.0);
+}
 
 void SceneNode::Update(void){
 
-    // Do nothing for this generic type of scene node
+	// Do nothing for this generic type of scene node, then update all Child nodes.
+	for (size_t i = 0; i < m_childNodes.size(); i++)
+	{
+		m_childNodes[i]->Update();
+	}
 }
 
 
@@ -230,7 +372,7 @@ void SceneNode::SetupShader(GLuint program, Camera *camera){
     glm::mat4 scaling = glm::scale(glm::mat4(1.0), scale_);
     glm::mat4 rotation = glm::mat4_cast(orientation_);
     glm::mat4 translation = glm::translate(glm::mat4(1.0), position_);
-    glm::mat4 transf = translation * rotation * scaling;
+    glm::mat4 transf = GetParentTransform() * translation * rotation * scaling;
 
     GLint world_mat = glGetUniformLocation(program, "world_mat");
     glUniformMatrix4fv(world_mat, 1, GL_FALSE, glm::value_ptr(transf));

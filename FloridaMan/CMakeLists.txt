@@ -14,6 +14,7 @@ set(HDRS
 	resource_manager.h 
 	scene_graph.h 
 	scene_node.h
+	utilities.h
 )
  
 set(SRCS
@@ -25,6 +26,7 @@ set(SRCS
    resource_manager.cpp 
    scene_graph.cpp 
    scene_node.cpp 
+   utilties.cpp
    material_fp.glsl 
    material_vp.glsl 
    metal_fp.glsl 
