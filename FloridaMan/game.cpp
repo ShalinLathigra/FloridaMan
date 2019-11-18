@@ -142,18 +142,36 @@ void Game::SetupScene(void){
     // Set background color for the scene
     scene_.SetBackgroundColor(viewport_background_color_g);
 
-    // Create an instance of the torus mesh
-    StaticEnemy *torus = (StaticEnemy*)CreateEnemy("TorusInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
-    // Scale the instance
-	torus->Enemy::Init();
-    torus->Scale(glm::vec3(1.5, 1.5, 1.5));
-	torus->Translate(glm::vec3(0.5, 0.5, -10.0));
-	torus->SetTarget(&camera_);
-	torus->SetAngM(glm::angleAxis(glm::pi<float>()/256.0f, glm::vec3(0.0, 1.0, 0.0)));
-	torus->SetChaseRadius(25.0f);
-	torus->SetChaseAngle(0.7f);
-	torus->SetAttackAngle(0.99f);
-
+	// Create an instance of the torus mesh
+	StaticEnemy *torus1 = (StaticEnemy*)CreateEnemy("TorusInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+	// Scale the instance
+	torus1->StaticEnemy::Init();
+	torus1->Scale(glm::vec3(1.5, 1.5, 1.5));
+	torus1->Translate(glm::vec3(1.0, 1.0, -10.0));
+	torus1->SetTarget(&camera_);
+	
+	StaticEnemy *torus2 = (StaticEnemy*)CreateEnemy("TorusInstance2", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+	// Scale the instance
+	torus2->StaticEnemy::Init();
+	torus2->Scale(glm::vec3(1.5, 1.5, 1.5));
+	torus2->Translate(glm::vec3(1.0, -1.0, -10.0));
+	torus2->SetTarget(&camera_);
+	
+	StaticEnemy *torus3 = (StaticEnemy*)CreateEnemy("TorusInstance3", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+	// Scale the instance
+	torus3->StaticEnemy::Init();
+	torus3->Scale(glm::vec3(1.5, 1.5, 1.5));
+	torus3->Translate(glm::vec3(-1.0, 1.0, -10.0));
+	torus3->SetTarget(&camera_);
+	
+	StaticEnemy *torus4 = (StaticEnemy*)CreateEnemy("TorusInstance4", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+	// Scale the instance
+	torus4->StaticEnemy::Init();
+	torus4->Scale(glm::vec3(1.5, 1.5, 1.5));
+	torus4->Translate(glm::vec3(-1.0, -1.0, -10.0));
+	torus4->SetTarget(&camera_);
+	
+	
     // Create skybox
     skybox_ = CreateInstance("CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
     skybox_->Scale(glm::vec3(50.0, 50.0, 50.0));
@@ -173,9 +191,22 @@ void Game::MainLoop(void){
                 //scene_.Update();
 
                 // Animate the sphere
-				StaticEnemy *node = (StaticEnemy*)scene_.GetNode("TorusInstance1");
-				//std::cout << node->GetName() << std::endl;
-				node->StaticEnemy::Update(deltaTime);
+				std::string name = "TorusInstance";
+
+				std::string curr_name;
+				StaticEnemy *node;
+
+				for (int i = 0; i < 4; i++)
+				{
+					curr_name = name + std::to_string(i + 1);
+					node = (StaticEnemy*)scene_.GetNode(curr_name);
+					std::cout << curr_name << "search!" << std::endl;
+					if (node)
+					{
+						std::cout << curr_name << "FOUND!" << std::endl;
+						node->StaticEnemy::Update(deltaTime);
+					}
+				}
                 last_time = current_time;
             }
         }

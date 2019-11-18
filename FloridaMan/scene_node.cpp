@@ -325,7 +325,7 @@ void SceneNode::Draw(Camera *camera){
 	{
 		m_childNodes[i]->Draw(camera);
 	}
-
+	
 }
 
 glm::mat4 SceneNode::GetParentTransform()

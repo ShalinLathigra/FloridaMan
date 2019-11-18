@@ -50,6 +50,14 @@ namespace game
 	{
 		std::cout << "Dieing! " << std::endl;
 	}
+	void Enemy::TakeDamage(float amount)
+	{
+		hp_ -= amount;
+		if (hp_ <= 0.0f)
+		{
+			state_ = State::Die;
+		}
+	}
 
 	//Getters + Setters
 	State Enemy::GetState(void)

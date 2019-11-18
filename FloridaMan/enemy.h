@@ -16,7 +16,7 @@ namespace game
 		Enemy(const std::string name, const Resource *geometry, const Resource *material);
 		~Enemy();
 
-		void Init(void);
+		virtual void Init(void);
 
 		void Update(float deltaTime);
 
@@ -25,6 +25,7 @@ namespace game
 		virtual void Chase(float deltaTime);
 		virtual void Attack(float deltaTime);
 		virtual void Die(float deltaTime);
+		virtual void TakeDamage(float amount);
 
 
 		State GetState(void);
@@ -39,6 +40,7 @@ namespace game
 		Camera* target_;
 		glm::vec3 forward_;
 		glm::vec3 up_;
+		float hp_;
 	};
 
 

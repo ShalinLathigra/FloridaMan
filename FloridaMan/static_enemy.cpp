@@ -11,14 +11,36 @@ namespace game
 	StaticEnemy::~StaticEnemy()
 	{
 	}
+
+	void StaticEnemy::Init(void)
+	{
+		Enemy::Init();
+		angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		chase_radius_ = 25.0f;
+		chase_angle_ = 0.7f;
+		attack_angle_ = 0.99f;
+	}
+
 	void StaticEnemy::Update(float deltaTime)
 	{
 		switch (state_)
 		{
-		case(State::Patrol): std::cout<< "Patrol" << std::endl; StaticEnemy::Patrol(deltaTime); break;
-		case(State::Chase):  std::cout<< "Chase" << std::endl; StaticEnemy::Chase(deltaTime); break;
-		case(State::Attack): std::cout<< "Attack" << std::endl; StaticEnemy::Attack(deltaTime); break;
-		case(State::Die):    std::cout<< "Die" << std::endl; StaticEnemy::Die(deltaTime); break;
+		case(State::Patrol): 
+			//std::cout<< "Patrol" << std::endl; 
+			StaticEnemy::Patrol(deltaTime); 
+			break;
+		case(State::Chase):  
+			//std::cout<< "Chase" << std::endl; 
+			StaticEnemy::Chase(deltaTime); 
+			break;
+		case(State::Attack): 
+			//std::cout<< "Attack" << std::endl; 
+			StaticEnemy::Attack(deltaTime); 
+			break;
+		case(State::Die):    
+			//std::cout<< "Die" << std::endl; 
+			StaticEnemy::Die(deltaTime); 
+			break;
 		}
 	}
 
@@ -97,7 +119,7 @@ namespace game
 	}
 	void StaticEnemy::Die(float deltaTime)
 	{
-
+		//Die
 	}
 
 
