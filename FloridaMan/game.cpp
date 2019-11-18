@@ -143,10 +143,16 @@ void Game::SetupScene(void){
     scene_.SetBackgroundColor(viewport_background_color_g);
 
     // Create an instance of the torus mesh
-    game::SceneNode *torus = CreateInstance("TorusInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+    StaticEnemy *torus = (StaticEnemy*)CreateEnemy("TorusInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
     // Scale the instance
+	torus->Enemy::Init();
     torus->Scale(glm::vec3(1.5, 1.5, 1.5));
-    torus->Translate(glm::vec3(0.5, 0.5, -10.0));
+	torus->Translate(glm::vec3(0.5, 0.5, -10.0));
+	torus->SetTarget(&camera_);
+	torus->SetAngM(glm::angleAxis(glm::pi<float>()/256.0f, glm::vec3(0.0, 1.0, 0.0)));
+	torus->SetChaseRadius(25.0f);
+	torus->SetChaseAngle(0.7f);
+	torus->SetAttackAngle(0.99f);
 
     // Create skybox
     skybox_ = CreateInstance("CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
@@ -162,14 +168,14 @@ void Game::MainLoop(void){
         if (animating_){
             static double last_time = 0;
             double current_time = glfwGetTime();
-            if ((current_time - last_time) > 0.01){
+			float deltaTime = current_time - last_time;
+            if (deltaTime > 0.01){
                 //scene_.Update();
 
                 // Animate the sphere
-                SceneNode *node = scene_.GetNode("TorusInstance1");
-                glm::quat rotation = glm::angleAxis(glm::pi<float>()/180.0f, glm::vec3(0.0, 1.0, 0.0));
-                node->Rotate(rotation);
-
+				StaticEnemy *node = (StaticEnemy*)scene_.GetNode("TorusInstance1");
+				//std::cout << node->GetName() << std::endl;
+				node->StaticEnemy::Update(deltaTime);
                 last_time = current_time;
             }
         }
@@ -308,36 +314,68 @@ void Game::CreateAsteroidField(int num_asteroids){
 }
 
 
-SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name){
+SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
 
-    Resource *geom = resman_.GetResource(object_name);
-    if (!geom){
-        throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\"")));
-    }
+	Resource *geom = resman_.GetResource(object_name);
+	if (!geom) {
+		throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
+	}
 
-    Resource *mat = resman_.GetResource(material_name);
-    if (!mat){
-        throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\"")));
-    }
+	Resource *mat = resman_.GetResource(material_name);
+	if (!mat) {
+		throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+	}
 
-    Resource *tex = NULL;
-    if (texture_name != ""){
-        tex = resman_.GetResource(texture_name);
-        if (!tex){
-            throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\"")));
-        }
-    }
+	Resource *tex = NULL;
+	if (texture_name != "") {
+		tex = resman_.GetResource(texture_name);
+		if (!tex) {
+			throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+		}
+	}
 
-    Resource *envmap = NULL;
-    if (envmap_name != ""){
-        envmap = resman_.GetResource(envmap_name);
-        if (!envmap){
-            throw(GameException(std::string("Could not find resource \"")+envmap_name+std::string("\"")));
-        }
-    }
+	Resource *envmap = NULL;
+	if (envmap_name != "") {
+		envmap = resman_.GetResource(envmap_name);
+		if (!envmap) {
+			throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
+		}
+	}
 
-    SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex, envmap);
-    return scn;
+	SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex, envmap);
+	return scn;
+}
+
+Enemy *Game::CreateEnemy(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
+
+	Resource *geom = resman_.GetResource(object_name);
+	if (!geom) {
+		throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
+	}
+
+	Resource *mat = resman_.GetResource(material_name);
+	if (!mat) {
+		throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+	}
+
+	Resource *tex = NULL;
+	if (texture_name != "") {
+		tex = resman_.GetResource(texture_name);
+		if (!tex) {
+			throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+		}
+	}
+
+	Resource *envmap = NULL;
+	if (envmap_name != "") {
+		envmap = resman_.GetResource(envmap_name);
+		if (!envmap) {
+			throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
+		}
+	}
+
+	Enemy *scn = (Enemy*)scene_.CreateNode(entity_name, geom, mat, tex, envmap);
+	return scn;
 }
 
 } // namespace game

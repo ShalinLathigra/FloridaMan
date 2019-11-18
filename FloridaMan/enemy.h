@@ -1,56 +1,46 @@
+#pragma once
+
 #ifndef ENEMY_H_
 #define ENEMY_H_
 
-#include <string>
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#define GLM_FORCE_RADIANS
-#include <glm/gtc/quaternion.hpp>
-
-#include "resource.h"
 #include "scene_node.h"
+namespace game
+{
+	enum State { Idle, Patrol, Chase, Attack, Die};
 
-namespace game {
-	enum State { Patrol, Chase, Attack, Die };
+	//Enemy Superclass
+	class Enemy :
+		public SceneNode
+	{
+	public:
+		Enemy(const std::string name, const Resource *geometry, const Resource *material);
+		~Enemy();
 
-    // Abstraction of an asteroid
-    class Enemy : public SceneNode {
+		void Init(void);
 
-        public:
-            // Create asteroid from given resources
-			Enemy(const std::string name, const Resource *geometry, const Resource *material);
+		void Update(float deltaTime);
 
-            // Destructor
-            ~Enemy();
-
-
-            // Update geometry configuration
-            void Update(float deltaTime);
-			
-			
-			virtual void Patrol(float deltaTime);// Patrol State : Patrol -> Chase, Die
-			virtual void Chase(float deltaTime);// Chase State : Chase -> Attack
-			virtual void Attack(float deltaTime);// Attack State : Attack -> Chase, Patrol, Die
-			virtual void Die(float deltaTime);// Die State : Die -> Die
+		virtual void Idle(float deltaTime);
+		virtual void Patrol(float deltaTime);
+		virtual void Chase(float deltaTime);
+		virtual void Attack(float deltaTime);
+		virtual void Die(float deltaTime);
 
 
-			//Getters
-			glm::quat GetPatrolAng(void);
+		State GetState(void);
+		Camera* GetTarget(void);
+		glm::vec3 GetForward(void);
+		glm::vec3 GetUp(void);
+		void SetState(State state);
+		void SetTarget(Camera* target);
 
-			//Setters
-			void SetTarget(const glm::vec3 & target);
-			void SetPatrolAng(glm::quat ang);
+	protected:
+		State state_;
+		Camera* target_;
+		glm::vec3 forward_;
+		glm::vec3 up_;
+	};
 
-        private:
-			glm::vec3 & target_;	//Store const reference to target's position.
-			float hp_;	//Current HP
-			State current_state_;	//Current State
 
-			glm::quat patrol_ang_;	//Enemy Patrol Angle
-    }; // class Enemy
-
-} // namespace game
-
-#endif // ENEMY_H_
+}
+#endif // Enemy_H_

@@ -15,6 +15,7 @@ set(HDRS
 	resource_manager.h 
 	scene_graph.h 
 	scene_node.h
+    static_enemy.h
 	utilities.h
 )
  
@@ -28,6 +29,7 @@ set(SRCS
    resource_manager.cpp 
    scene_graph.cpp 
    scene_node.cpp 
+   static_enemy.cpp
    utilties.cpp
    material_fp.glsl 
    material_vp.glsl 
@@ -53,6 +55,7 @@ set(SRCS
    skybox_fp.glsl 
    envmap_vp.glsl 
    envmap_fp.glsl 
+   CMakeLists.txt
 )
 
 # Add path name to configuration file
