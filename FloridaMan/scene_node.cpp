@@ -86,7 +86,8 @@ void SceneNode::AddChild(SceneNode *pChildNode)
 
 SceneNode *SceneNode::FindChild(std::string nodeName)
 {
-	if (name_ == nodeName)
+	//std::cout << name_ << " " << nodeName << std::endl;
+	if (name_.compare(nodeName) == 0)
 	{
 		return this;
 	}
@@ -401,14 +402,14 @@ void SceneNode::SetupShader(GLuint program, Camera *camera){
 
     // Environment map
     if (envmap_){
-        GLint tex = glGetUniformLocation(program, "env_map");
-        glUniform1i(tex, 1); // Assign the first texture to the map
-        glActiveTexture(GL_TEXTURE1); 
-        glBindTexture(GL_TEXTURE_CUBE_MAP, envmap_); // First texture we bind
-        // Define texture interpolation
-        glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        //GLint tex = glGetUniformLocation(program, "env_map");
+        //glUniform1i(tex, 1); // Assign the first texture to the map
+        //glActiveTexture(GL_TEXTURE1); 
+        //glBindTexture(GL_TEXTURE_CUBE_MAP, envmap_); // First texture we bind
+        //// Define texture interpolation
+        //glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+        //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+        //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
     // Timer

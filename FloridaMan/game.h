@@ -12,6 +12,7 @@
 #include "camera.h"
 #include "asteroid.h"
 #include "static_enemy.h"
+#include "ground_enemy.h"
 #include "enemy.h"
 
 namespace game {

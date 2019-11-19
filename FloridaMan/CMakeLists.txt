@@ -10,6 +10,7 @@ set(HDRS
 	enemy.h 
 	camera.h 
 	game.h 
+    ground_enemy.h 
 	model_loader.h 
 	resource.h 
 	resource_manager.h 
@@ -24,6 +25,7 @@ set(SRCS
    camera.cpp 
    enemy.cpp 
    game.cpp 
+   ground_enemy.cpp 
    main.cpp 
    resource.cpp 
    resource_manager.cpp 

@@ -19,31 +19,46 @@ namespace game
 		chase_radius_ = 25.0f;
 		chase_angle_ = 0.7f;
 		attack_angle_ = 0.99f;
+		max_idle_timer_ = 3.0f;
+		idle_timer_ = max_idle_timer_;
 	}
 
 	void StaticEnemy::Update(float deltaTime)
 	{
 		switch (state_)
 		{
+		case(State::Idle):
+			//std::cout<< GetName() << " " << "Idle" << std::endl;
+			StaticEnemy::Idle(deltaTime);
+			break;
 		case(State::Patrol): 
-			//std::cout<< "Patrol" << std::endl; 
+			//std::cout<< GetName() << " " << "Patrol" << std::endl;
 			StaticEnemy::Patrol(deltaTime); 
 			break;
 		case(State::Chase):  
-			//std::cout<< "Chase" << std::endl; 
+			//std::cout<< GetName() << " " << "Chase" << std::endl;
 			StaticEnemy::Chase(deltaTime); 
 			break;
 		case(State::Attack): 
-			//std::cout<< "Attack" << std::endl; 
+			//std::cout<< GetName() << " " << "Attack" << std::endl;
 			StaticEnemy::Attack(deltaTime); 
 			break;
 		case(State::Die):    
-			//std::cout<< "Die" << std::endl; 
+			//std::cout<< GetName() << " " << "Die" << std::endl; 
 			StaticEnemy::Die(deltaTime); 
 			break;
 		}
 	}
 
+	void StaticEnemy::Idle(float deltaTime)
+	{
+		idle_timer_ = glm::max(idle_timer_ - deltaTime, 0.0f);
+		std::cout << idle_timer_ << std::endl;
+		if (idle_timer_ == 0.0f)
+		{
+			state_ = State::Patrol;
+		}
+	}
 	void StaticEnemy::Patrol(float deltaTime)
 	{
 		Rotate(angm_);

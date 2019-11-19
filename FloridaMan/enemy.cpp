@@ -13,9 +13,11 @@ namespace game
 
 	void Enemy::Init(void)
 	{
-		state_ = game::State::Patrol;
+		state_ = game::State::Idle;
 		forward_ = glm::vec3(0.0, 0.0, 1.0);
 		up_ = glm::vec3(0.0, 1.0, 0.0);
+		max_idle_timer_ = 10.0f;
+		idle_timer_ = max_idle_timer_;
 	}
 
 	void Enemy::Update(float deltaTime)

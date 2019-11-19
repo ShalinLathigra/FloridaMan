@@ -13,6 +13,7 @@ namespace game
 		// Update geometry configuration
 		void Init(void);
 		void Update(float deltaTime);
+		void Idle(float deltaTime);
 		void Patrol(float deltaTime);
 		void Chase(float deltaTime);
 		void Attack(float deltaTime);
