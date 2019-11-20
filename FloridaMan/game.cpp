@@ -148,23 +148,23 @@ namespace game {
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
 		// Create an instance of the torus mesh
-		StaticEnemy *torus1 = (StaticEnemy*)CreateInstance(STATIC_E, "StaticInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
-		// Scale the instance
-		torus1->StaticEnemy::Init();
-		torus1->Scale(glm::vec3(1.5, 1.5, 1.5));
-		torus1->Translate(glm::vec3(1.0, 1.0, -10.0));
-		torus1->SetTarget(&camera_);
-		
-		std::cout << torus1->GetName() << std::endl;
-		
-		GroundEnemy *torus2 = (GroundEnemy*)CreateInstance(GROUND_E, "GroundInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
-		// Scale the instance
-		torus2->GroundEnemy::Init();
-		torus2->Scale(glm::vec3(1.5, 1.5, 1.5));
-		torus2->Translate(glm::vec3(1.0, -5.0, -10.0));
-		torus2->SetTarget(&camera_);
-		
-		std::cout << torus2->GetName() << std::endl;
+		//StaticEnemy *torus1 = (StaticEnemy*)CreateInstance(STATIC_E, "StaticInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		//// Scale the instance
+		//torus1->StaticEnemy::Init();
+		//torus1->Scale(glm::vec3(1.5, 1.5, 1.5));
+		//torus1->Translate(glm::vec3(1.0, 1.0, -10.0));
+		//torus1->SetTarget(&camera_);
+		//
+		//std::cout << torus1->GetName() << std::endl;
+		//
+		//GroundEnemy *torus2 = (GroundEnemy*)CreateInstance(GROUND_E, "GroundInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		//// Scale the instance
+		//torus2->GroundEnemy::Init();
+		//torus2->Scale(glm::vec3(1.5, 1.5, 1.5));
+		//torus2->Translate(glm::vec3(1.0, -5.0, -10.0));
+		//torus2->SetTarget(&camera_);
+		//
+		//std::cout << torus2->GetName() << std::endl;
 
 		AirEnemy *torus3 = (AirEnemy*)CreateInstance(AIR_E, "AirInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		// Scale the instance
@@ -195,37 +195,6 @@ namespace game {
 				float deltaTime = current_time - last_time;
 				if (deltaTime > 0.01) {
 					scene_.Update(deltaTime);
-
-					// Animate the sphere
-
-					std::string curr_name;
-
-					//StaticEnemy *static_enemy;
-					//
-					//curr_name = "StaticInstance1";
-					//static_enemy = (StaticEnemy*)scene_.GetNode(curr_name);
-					//if (static_enemy)
-					//{
-					//	static_enemy->StaticEnemy::Update(deltaTime);
-					//}
-					//
-					//GroundEnemy *ground_enemy;
-					//
-					//curr_name = "GroundInstance1";
-					//ground_enemy = (GroundEnemy*)scene_.GetNode(curr_name);
-					//if (ground_enemy)
-					//{
-					//	ground_enemy->GroundEnemy::Update(deltaTime);
-					//}
-
-					//AirEnemy *air_enemy;
-					//
-					//curr_name = "AirInstance1";
-					//air_enemy = (AirEnemy*)scene_.GetNode(curr_name);
-					//if (air_enemy)
-					//{
-					//	air_enemy->AirEnemy::Update(deltaTime);
-					//}
 
 					last_time = current_time;
 				}

@@ -27,10 +27,7 @@ namespace game
 		off_timer_ = 0.0f;
 		max_off_timer_ = 5.0f;
 
-		y_vel_ = 0.0f;
-		max_y_vel_ = 0.0f;
-		y_acc_ = 2.5f;
-
+		y_speed_ = 2.5f;
 	}
 
 	void AirEnemy::Update(float deltaTime)
@@ -38,23 +35,23 @@ namespace game
 		switch (state_)
 		{
 		case(State::Idle):
-			//std::cout<< GetName() << " " << "Idle" << std::endl;
+			std::cout<< GetName() << " " << "Idle" << std::endl;
 			StaticEnemy::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
-			//std::cout<< GetName() << " " << "Patrol" << std::endl;
+			std::cout<< GetName() << " " << "Patrol" << std::endl;
 			AirEnemy::Patrol(deltaTime);
 			break;
 		case(State::Chase):  
-			//std::cout<< GetName() << " " << "Chase" << std::endl;
+			std::cout<< GetName() << " " << "Chase" << std::endl;
 			AirEnemy::Chase(deltaTime);
 			break;
 		case(State::Attack): 
-			//std::cout<< GetName() << " " << "Attack" << std::endl;
+			std::cout<< GetName() << " " << "Attack" << std::endl;
 			AirEnemy::Attack(deltaTime);
 			break;
 		case(State::Die):    
-			//std::cout<< GetName() << " " << "Die" << std::endl; 
+			std::cout<< GetName() << " " << "Die" << std::endl; 
 			StaticEnemy::Die(deltaTime);
 			break;
 		}
@@ -63,30 +60,24 @@ namespace game
 	void AirEnemy::Patrol(float deltaTime)
 	{
 		//X-z movement covered here. I need to re-work ywards movement
-		//GroundEnemy::Patrol(deltaTime);
+		GroundEnemy::Patrol(deltaTime);
 
 		if (position_.y != desired_y_)
 		{
-			std::cout << position_.y << " " << desired_y_ << std::endl;
-			// need to move
-			float dir;
-			if (desired_y_  - position_.y < 0.0f)
+			float y_vel_ = y_speed_ * (desired_y_ - position_.y);
+
+			if (abs(y_vel_) < .025f)
 			{
-				dir = -1.0f;
+				position_.y = desired_y_;
 			}
 			else
 			{
-				dir = 1.0f;
+				position_.y += y_vel_ * deltaTime;
 			}
-
-			y_vel_ = utilities::Clamp(y_vel_ + y_acc_ * dir, -max_y_vel_, max_y_vel_);
-
-			position_.y += y_vel_ * deltaTime;
 		}
 		else
 		{
 			//Logic for changing the desired level
-			//std::cout << off_index_ << " " << off_timer_ << std::endl;
 			off_timer_ = glm::max(off_timer_ - deltaTime, 0.0f);
 			if (off_timer_ == 0.0f)
 			{
@@ -105,15 +96,27 @@ namespace game
 				}
 			}
 		}
+		if (state_ = State::Chase)
+		{
+			chase_quat_ = glm::angleAxis(utilities::RandPercent() * glm::pi<float>() * 2.0f, target_->GetUp());
+		}
 	}
 	void AirEnemy::Chase(float deltaTime)
 	{
-		//X-z movement covered here. I need to re-work ywards movement
 		GroundEnemy::Chase(deltaTime);
+		
+		desired_y_ = target_->GetPosition().y;
+
+		float y_vel_ = desired_y_ - position_.y;
+
+		if (abs(y_vel_) > y_diff_)
+		{
+			position_.y += y_speed_ * y_vel_ * deltaTime;
+		}
 	}
 
 	void AirEnemy::Attack(float deltaTime)
 	{
-		state_ = State::Chase;
+
 	}
 }
