@@ -4,7 +4,7 @@
 namespace game
 {
 
-	StaticEnemy::StaticEnemy(const std::string name, const Resource *geometry, const Resource *material) : Enemy(name, geometry, material) 
+	StaticEnemy::StaticEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : Enemy(name, geometry, material, texture, envmap)
 	{
 
 	}

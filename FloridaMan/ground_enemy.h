@@ -7,7 +7,7 @@ namespace game
 		public StaticEnemy
 	{
 	public:
-		GroundEnemy(const std::string name, const Resource *geometry, const Resource *material);
+		GroundEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
 		~GroundEnemy();
 
 		// Update geometry configuration

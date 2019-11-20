@@ -7,7 +7,7 @@ namespace game
 		public GroundEnemy
 	{
 	public:
-		AirEnemy(const std::string name, const Resource *geometry, const Resource *material);
+		AirEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
 		~AirEnemy();
 
 		// Update geometry configuration
@@ -18,22 +18,19 @@ namespace game
 		void Attack(float deltaTime);
 
 	protected:
-		// Angular momentum of asteroid
-		float chase_radius_;
-		float chase_angle_;
 
-		float attack_radius_;
-		float attack_angle_;
-		int num_attacks_;
-		int max_num_attacks_;
-		float attack_cooldown_;
-		float max_attack_cooldown_;
+		float mid_y_;
+		int y_offset_[3];
+		int off_index_;
+		int off_step_;
+		float desired_y_;
 
-		float acc_;	// Acceleration Rate
-		float dec_; // Deceleration Rate
+		float off_timer_;
+		float max_off_timer_;
 
-		float vel_;	// Rate of position change
-		float max_vel_;	// Rate of position change
+		float y_vel_;
+		float max_y_vel_;
+		float y_acc_;
 
 		//Need to handle acceleration, store velocity
 	};

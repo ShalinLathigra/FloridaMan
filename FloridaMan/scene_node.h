@@ -49,7 +49,7 @@ namespace game {
             virtual void Draw(Camera *camera);
 
             // Update the node
-            virtual void Update(void);
+            virtual void Update(float deltaTime);
 			bool CheckCollision(SceneNode *pNode);
 
             // OpenGL variables

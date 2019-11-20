@@ -13,7 +13,7 @@ namespace game
 		public SceneNode
 	{
 	public:
-		Enemy(const std::string name, const Resource *geometry, const Resource *material);
+		Enemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
 		~Enemy();
 
 		virtual void Init(void);

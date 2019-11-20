@@ -340,12 +340,11 @@ glm::mat4 SceneNode::GetParentTransform()
 	return glm::mat4(1.0);
 }
 
-void SceneNode::Update(void){
-
+void SceneNode::Update(float deltaTime){
 	// Do nothing for this generic type of scene node, then update all Child nodes.
 	for (size_t i = 0; i < m_childNodes.size(); i++)
 	{
-		m_childNodes[i]->Update();
+		m_childNodes[i]->Update(deltaTime);
 	}
 }
 

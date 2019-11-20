@@ -4,7 +4,7 @@
 namespace game
 {
 
-	GroundEnemy::GroundEnemy(const std::string name, const Resource *geometry, const Resource *material) : StaticEnemy(name, geometry, material)
+	GroundEnemy::GroundEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEnemy(name, geometry, material, texture, envmap)
 	{
 
 	}
@@ -43,23 +43,23 @@ namespace game
 		switch (state_)
 		{
 		case(State::Idle):
-			std::cout<< GetName() << " " << "Idle" << std::endl;
+			//std::cout<< GetName() << " " << "Idle" << std::endl;
 			StaticEnemy::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
-			std::cout<< GetName() << " " << "Patrol" << std::endl;
+			//std::cout<< GetName() << " " << "Patrol" << std::endl;
 			GroundEnemy::Patrol(deltaTime);
 			break;
 		case(State::Chase):  
-			std::cout<< GetName() << " " << "Chase" << std::endl;
+			//std::cout<< GetName() << " " << "Chase" << std::endl;
 			GroundEnemy::Chase(deltaTime);
 			break;
 		case(State::Attack): 
-			std::cout<< GetName() << " " << "Attack" << std::endl;
+			//std::cout<< GetName() << " " << "Attack" << std::endl;
 			GroundEnemy::Attack(deltaTime);
 			break;
 		case(State::Die):    
-			std::cout<< GetName() << " " << "Die" << std::endl; 
+			//std::cout<< GetName() << " " << "Die" << std::endl; 
 			StaticEnemy::Die(deltaTime);
 			break;
 		}

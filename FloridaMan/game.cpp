@@ -128,6 +128,10 @@ namespace game {
 		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
 		resman_.LoadResource(Material, "EnvMapMaterial", filename.c_str());
 
+		// Load material to be applied to torus
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/three-term_shiny_blue");
+		resman_.LoadResource(Material, "ShinyMaterial", filename.c_str());
+
 		// Load cube map to be applied to skybox
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/island/island.tga");
 		resman_.LoadResource(CubeMap, "LakeCubeMap", filename.c_str());
@@ -144,37 +148,38 @@ namespace game {
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
 		// Create an instance of the torus mesh
-		StaticEnemy *torus1 = (StaticEnemy*)CreateInstance("StaticInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		StaticEnemy *torus1 = (StaticEnemy*)CreateInstance(STATIC_E, "StaticInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		// Scale the instance
 		torus1->StaticEnemy::Init();
 		torus1->Scale(glm::vec3(1.5, 1.5, 1.5));
 		torus1->Translate(glm::vec3(1.0, 1.0, -10.0));
 		torus1->SetTarget(&camera_);
-
+		
 		std::cout << torus1->GetName() << std::endl;
-
-		GroundEnemy *torus2 = (GroundEnemy*)CreateInstance("GroundInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		
+		GroundEnemy *torus2 = (GroundEnemy*)CreateInstance(GROUND_E, "GroundInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		// Scale the instance
 		torus2->GroundEnemy::Init();
 		torus2->Scale(glm::vec3(1.5, 1.5, 1.5));
 		torus2->Translate(glm::vec3(1.0, -5.0, -10.0));
 		torus2->SetTarget(&camera_);
-
+		
 		std::cout << torus2->GetName() << std::endl;
 
-		AirEnemy *torus3 = (AirEnemy*)CreateInstance("AirInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		AirEnemy *torus3 = (AirEnemy*)CreateInstance(AIR_E, "AirInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		// Scale the instance
-		torus3->GroundEnemy::Init();
+		torus3->AirEnemy::Init();
 		torus3->Scale(glm::vec3(1.5, 1.5, 1.5));
 		torus3->Translate(glm::vec3(1.0, 5.0, -10.0));
 		torus3->SetTarget(&camera_);
-
+		
 		std::cout << torus3->GetName() << std::endl;
 
 
 
+
 		// Create skybox
-		skybox_ = CreateInstance("CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
+		skybox_ = CreateInstance(SCENE_N, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
 		skybox_->Scale(glm::vec3(50.0, 50.0, 50.0));
 	}
 
@@ -189,37 +194,38 @@ namespace game {
 				double current_time = glfwGetTime();
 				float deltaTime = current_time - last_time;
 				if (deltaTime > 0.01) {
-					//scene_.Update();
+					scene_.Update(deltaTime);
 
 					// Animate the sphere
 
 					std::string curr_name;
-					StaticEnemy *static_enemy;
 
-					curr_name = "StaticInstance1";
-					static_enemy = (StaticEnemy*)scene_.GetNode(curr_name);
-					if (static_enemy)
-					{
-						static_enemy->StaticEnemy::Update(deltaTime);
-					}
+					//StaticEnemy *static_enemy;
+					//
+					//curr_name = "StaticInstance1";
+					//static_enemy = (StaticEnemy*)scene_.GetNode(curr_name);
+					//if (static_enemy)
+					//{
+					//	static_enemy->StaticEnemy::Update(deltaTime);
+					//}
+					//
+					//GroundEnemy *ground_enemy;
+					//
+					//curr_name = "GroundInstance1";
+					//ground_enemy = (GroundEnemy*)scene_.GetNode(curr_name);
+					//if (ground_enemy)
+					//{
+					//	ground_enemy->GroundEnemy::Update(deltaTime);
+					//}
 
-					GroundEnemy *ground_enemy;
-
-					curr_name = "GroundInstance1";
-					ground_enemy = (GroundEnemy*)scene_.GetNode(curr_name);
-					if (ground_enemy)
-					{
-						ground_enemy->GroundEnemy::Update(deltaTime);
-					}
-
-					AirEnemy *air_enemy;
-
-					curr_name = "AirInstance1";
-					air_enemy = (AirEnemy*)scene_.GetNode(curr_name);
-					if (air_enemy)
-					{
-						air_enemy->AirEnemy::Update(deltaTime);
-					}
+					//AirEnemy *air_enemy;
+					//
+					//curr_name = "AirInstance1";
+					//air_enemy = (AirEnemy*)scene_.GetNode(curr_name);
+					//if (air_enemy)
+					//{
+					//	air_enemy->AirEnemy::Update(deltaTime);
+					//}
 
 					last_time = current_time;
 				}
@@ -359,7 +365,7 @@ namespace game {
 	}
 
 
-	SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
+	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
 
 		Resource *geom = resman_.GetResource(object_name);
 		if (!geom) {
@@ -386,8 +392,7 @@ namespace game {
 				throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
 			}
 		}
-
-		SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex, envmap);
+		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap);
 		return scn;
 	}
 } // namespace game

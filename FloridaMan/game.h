@@ -16,6 +16,11 @@
 #include "air_enemy.h"
 #include "enemy.h"
 
+#define SCENE_N 0
+#define STATIC_E 1
+#define GROUND_E 2
+#define AIR_E 3
+
 namespace game {
 
     // Exception type for the game
@@ -80,7 +85,7 @@ namespace game {
             void CreateAsteroidField(int num_asteroids = 1500);
 
             // Create an instance of an object stored in the resource manager
-			SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
+			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
 
 
     }; // class Game
