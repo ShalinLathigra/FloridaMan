@@ -28,10 +28,10 @@ namespace game
 		float off_timer_;
 		float max_off_timer_;
 
-		float y_vel_;
-		float max_y_vel_;
-		float y_acc_;
+		float y_diff_;
+		float y_speed_;
 
+		glm::quat chase_quat_;
 		//Need to handle acceleration, store velocity
 	};
 }
