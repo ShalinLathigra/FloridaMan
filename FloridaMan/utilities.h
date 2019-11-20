@@ -39,5 +39,10 @@ namespace utilities
 	{
 		return (((float)(rand() % 100) + 1.0f) / 100.0f);
 	}
+
+	inline float Clamp(float in, float low, float high)
+	{
+		return (in < low) ? low : (in > high) ? high : in;
+	}
 }
 #endif

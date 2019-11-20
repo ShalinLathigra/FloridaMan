@@ -21,8 +21,8 @@ namespace game
 
 	protected:
 		// Angular momentum of asteroid
-		glm::quat angm_;
 		float chase_radius_;
+		float brake_radius_;
 		float chase_angle_;
 		float attack_angle_;
 
@@ -30,6 +30,7 @@ namespace game
 		float dec_; // Deceleration Rate
 
 		float vel_;	// Rate of position change
+		float max_vel_;	// Rate of position change
 
 		//Need to handle acceleration, store velocity
 	};

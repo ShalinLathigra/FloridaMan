@@ -15,7 +15,8 @@ namespace game
 	void StaticEnemy::Init(void)
 	{
 		Enemy::Init();
-		angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_radius_ = 25.0f;
 		chase_angle_ = 0.7f;
 		attack_angle_ = 0.99f;
@@ -61,7 +62,7 @@ namespace game
 	}
 	void StaticEnemy::Patrol(float deltaTime)
 	{
-		Rotate(angm_);
+		Rotate(patrol_angm_);
 
 		glm::vec3 to_target = target_->GetPosition() - position_;
 		float dist_to_target = glm::length(to_target);
@@ -85,8 +86,8 @@ namespace game
 		float dot = glm::dot(glm::normalize(to_target), glm::normalize(GetForward()));
 
 		//How to effectively minimize Value?
-		glm::vec3 forward_step = utilities::RotateVecByQuat(to_target, angm_);
-		glm::vec3 back_step = utilities::RotateVecByQuat(to_target, glm::inverse(angm_));
+		glm::vec3 forward_step = utilities::RotateVecByQuat(to_target, chase_angm_);
+		glm::vec3 back_step = utilities::RotateVecByQuat(to_target, glm::inverse(chase_angm_));
 
 		float forward_dot = glm::dot(glm::normalize(forward_step), glm::normalize(GetForward()));
 		float back_dot = glm::dot(glm::normalize(back_step), glm::normalize(GetForward()));
@@ -95,11 +96,11 @@ namespace game
 		{
 			if (forward_dot < dot)
 			{
-				Rotate(angm_);
+				Rotate(chase_angm_);
 			}
 			else if (back_dot < dot)
 			{
-				Rotate(glm::inverse(angm_));
+				Rotate(glm::inverse(chase_angm_));
 			}
 		}
 		else
@@ -139,9 +140,13 @@ namespace game
 
 
 	// Getters
-	glm::quat StaticEnemy::GetAngM(void) const
+	glm::quat StaticEnemy::GetChaseAngM(void) const
 	{
-		return angm_;
+		return chase_angm_;
+	}
+	glm::quat StaticEnemy::GetPatrolAngM(void) const
+	{
+		return patrol_angm_;
 	}
 	float StaticEnemy::GetChaseRadius(void) const
 	{
@@ -157,9 +162,13 @@ namespace game
 	}
 
 	// Setters
-	void StaticEnemy::SetAngM(glm::quat angm)
+	void StaticEnemy::SetPatrolAngM(glm::quat angm)
 	{
-		angm_ = angm;
+		patrol_angm_ = angm;
+	}
+	void StaticEnemy::SetChaseAngM(glm::quat angm)
+	{
+		chase_angm_ = angm;
 	}
 	void StaticEnemy::SetChaseRadius(float chase_radius)
 	{
