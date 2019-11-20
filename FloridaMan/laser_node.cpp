@@ -4,7 +4,7 @@
 
 namespace game
 {
-	LaserNode::LaserNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material)
+	LaserNode::LaserNode(const std::string name, const Resource *geometry, const Resource *material) : SceneNode(name, geometry, material)
 	{
 		active_ = false;
 		std::cout << "This is the laser on creation immediate: " << active_ << std::endl;
@@ -31,8 +31,7 @@ namespace game
 
 	void LaserNode::Draw(Camera *camera)
 	{
-		std::cout << "im a laser" << std::endl;
-		if (active_ == false) {
+		if (active_ == true) {
 			SceneNode::Draw(camera);
 		}
 		else

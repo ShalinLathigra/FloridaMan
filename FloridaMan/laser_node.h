@@ -21,7 +21,7 @@ namespace game
 		public SceneNode
 	{
 	public:
-		LaserNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
+		LaserNode(const std::string name, const Resource *geometry, const Resource *material);
 		~LaserNode();
 
 		void Draw(Camera *camera) override;
