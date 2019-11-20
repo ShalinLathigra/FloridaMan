@@ -6,6 +6,7 @@ project(${PROJ_NAME})
 
 # Specify project files: header files and source files
 set(HDRS
+	air_enemy.h
 	asteroid.h 
 	enemy.h 
 	camera.h 
@@ -21,6 +22,7 @@ set(HDRS
 )
  
 set(SRCS
+   air_enemy.cpp 
    asteroid.cpp 
    camera.cpp 
    enemy.cpp 

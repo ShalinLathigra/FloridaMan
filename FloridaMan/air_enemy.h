@@ -1,14 +1,14 @@
 #pragma once
-#include "static_enemy.h"
+#include "ground_enemy.h"
 //Basic Ground Enemy Type
 namespace game
 {
-	class GroundEnemy :
-		public StaticEnemy
+	class AirEnemy :
+		public GroundEnemy
 	{
 	public:
-		GroundEnemy(const std::string name, const Resource *geometry, const Resource *material);
-		~GroundEnemy();
+		AirEnemy(const std::string name, const Resource *geometry, const Resource *material);
+		~AirEnemy();
 
 		// Update geometry configuration
 		void Init(void);

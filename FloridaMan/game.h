@@ -13,6 +13,7 @@
 #include "asteroid.h"
 #include "static_enemy.h"
 #include "ground_enemy.h"
+#include "air_enemy.h"
 #include "enemy.h"
 
 namespace game {
@@ -80,7 +81,6 @@ namespace game {
 
             // Create an instance of an object stored in the resource manager
 			SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
-			Enemy *CreateEnemy(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
 
 
     }; // class Game
