@@ -181,6 +181,7 @@ namespace game {
 		LaserNode *playerLaser = (LaserNode*)CreateInstance(LASER_E, "PlayerLaser", "CylinderMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		playerLaser->SetPosition(glm::vec3(0, 0, 0));
 		playerLaser->Scale(glm::vec3(0.5, 1.5, 0.5));
+		playerLaser->setParent(&camera_);
 		std::cout << playerLaser->GetName() << std::endl;
 
 		// Create skybox
@@ -280,7 +281,7 @@ namespace game {
 		}
 
 		//Toggle Laser
-		if (key == GLFW_KEY_P) {
+		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
 			std::string curr_name;
 
 			LaserNode *someLaser;
