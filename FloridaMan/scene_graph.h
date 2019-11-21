@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 
 #include "scene_node.h"
+#include "laser_node.h"
 #include "air_enemy.h"
 #include "resource.h"
 #include "camera.h"
