@@ -39,8 +39,13 @@ namespace game
 		void SetJoint(glm::vec3);
 
 		glm::mat4 CalculateMatrix(glm::mat4 p);
+
+		void setParent(Camera *camera);
 	private:
 		bool active_;
+
+		//Replace this with the player node to transform off of
+		Camera *parent_node_;
 
 		float width_;
 		glm::vec3 forward_;	//initial up

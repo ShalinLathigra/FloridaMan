@@ -25,14 +25,18 @@ namespace game
 	{
 	}
 
+	void LaserNode::setParent(Camera *camera) {
+		parent_node_ = camera;
+	}
+
 	void LaserNode::turnOff(void) {
 		active_ = false;
 	}
 
 	void LaserNode::Draw(Camera *camera)
 	{
-		std::cout << "im a laser" << std::endl;
 		if (active_ == false) {
+
 			SceneNode::Draw(camera);
 		}
 		else
@@ -41,6 +45,9 @@ namespace game
 	void LaserNode::Update(float deltaTime)
 	{
 		AdvanceTimers(deltaTime);
+		glm::mat4 fullTransf = CalculateMatrix(parent_node_->GetCurrentViewMatrix());
+		SetPosition(glm::vec3(-0.5f,-1.0f,0));
+
 	}
 
 	//Advance Cooldowns and Laser Duration
@@ -55,12 +62,12 @@ namespace game
 			cd_timer_ = std::max(0.0f, cd_timer_ - deltaTime);
 		}
 
-		if (duration_timer_ == 0.0f)
-			active_ = false;
+		//if (duration_timer_ == 0.0f)
+			//active_ = false;
 	}
 	void LaserNode::Fire(void)
 	{
-		if (cd_timer_ == 0.0f && active_ == false)
+		if (active_ == false)
 		{
 			duration_timer_ = max_duration_timer_;
 			cd_timer_ = max_cd_timer_;
@@ -68,7 +75,7 @@ namespace game
 
 			GetForward();
 		}
-		else if (cd_timer_ == 0.0f && active_ == true) {
+		else if (active_ == true) {
 			active_ = false;
 		}
 	}
@@ -92,8 +99,18 @@ namespace game
 		joint_ = joint;
 	}
 
+
 	glm::mat4 LaserNode::CalculateMatrix(glm::mat4 p)
 	{
+
+		//glm::mat4 rotation = glm::mat4_cast(m_pParentNode->GetOrientation());
+		//glm::mat4 translation = glm::translate(glm::mat4(1.0), m_pParentNode->GetPosition());
+		//return m_pParentNode->GetParentTransform() * translation * rotation;// * m_pParentNode->GetParentTransform();
+		//return glm::mat4(1.0);
+
+		//glm::mat4 parentTransf = camera->GetCurrentViewMatrix();
+		//this->Rotate
+		std::cout << p.length() << std::endl;
 		glm::mat4 scaling = glm::scale(glm::mat4(1.0), scale_);
 		glm::mat4 rotation = glm::mat4_cast(orientation_);
 		glm::mat4 translation = glm::translate(glm::mat4(1.0), position_);
