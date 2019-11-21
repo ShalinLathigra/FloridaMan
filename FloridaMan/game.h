@@ -20,6 +20,7 @@
 #define STATIC_E 1
 #define GROUND_E 2
 #define AIR_E 3
+#define LASER_E 4
 
 namespace game {
 

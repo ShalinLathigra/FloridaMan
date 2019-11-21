@@ -114,6 +114,9 @@ namespace game {
 		// Create a torus
 		resman_.CreateTorus("TorusMesh");
 
+		//Create Cylinder
+		resman_.CreateCylinder("CylinderMesh");
+
 		// Use sphere to better analyze the environment map
 		//resman_.CreateSphere("TorusMesh");
 
@@ -175,8 +178,10 @@ namespace game {
 		
 		std::cout << torus3->GetName() << std::endl;
 
-
-
+		LaserNode *playerLaser = (LaserNode*)CreateInstance(LASER_E, "PlayerLaser", "CylinderMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		playerLaser->SetPosition(glm::vec3(0, 0, 0));
+		playerLaser->Scale(glm::vec3(0.5, 1.5, 0.5));
+		std::cout << playerLaser->GetName() << std::endl;
 
 		// Create skybox
 		skybox_ = CreateInstance(SCENE_N, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
@@ -272,6 +277,20 @@ namespace game {
 		if (key == GLFW_KEY_K) {
 			game->camera_.Translate(-game->camera_.GetUp()*trans_factor);
 			game->skybox_->Translate(-game->camera_.GetUp()*trans_factor);
+		}
+
+		//Toggle Laser
+		if (key == GLFW_KEY_P) {
+			std::string curr_name;
+
+			LaserNode *someLaser;
+			
+			curr_name = "PlayerLaser";
+			someLaser = (LaserNode*)game->scene_.GetNode(curr_name);
+			if (someLaser)
+			{
+				someLaser->Fire();
+			}
 		}
 	}
 

@@ -44,6 +44,7 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 	case(1): scn = new StaticEnemy(node_name, geometry, material, texture, envmap); break;
 	case(2): scn = new GroundEnemy(node_name, geometry, material, texture, envmap); break;
 	case(3): scn = new AirEnemy(node_name, geometry, material, texture, envmap); break;
+	case(4): scn = new LaserNode(node_name, geometry, material, texture, envmap); break;
 	}
 	std::cout << type << std::endl;
     // Add node to the scene
