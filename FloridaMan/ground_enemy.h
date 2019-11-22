@@ -34,6 +34,8 @@ namespace game
 		float vel_;	// Rate of position change
 		float max_vel_;	// Rate of position change
 
+		float speed_;
+
 		//Need to handle acceleration, store velocity
 	};
 }

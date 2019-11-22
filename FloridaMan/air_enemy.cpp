@@ -19,9 +19,10 @@ namespace game
 		desired_y_ = mid_y_ + y_offset_[off_index_];
 
 		off_timer_ = 0.0f;
-		max_off_timer_ = 5.0f;
+		max_off_timer_ = 2.5f;
 
 		y_speed_ = 0.75f;
+		speed_ = 4.5f;
 	}
 	AirEnemy::~AirEnemy()
 	{

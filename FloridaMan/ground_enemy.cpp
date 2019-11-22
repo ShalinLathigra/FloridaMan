@@ -26,6 +26,8 @@ namespace game
 
 		vel_ = 0.0f;	// Rate of position change
 		max_vel_ = 15.0f;	// Rate of position change
+
+		speed_ = 2.5f;
 	}
 	GroundEnemy::~GroundEnemy()
 	{
@@ -129,6 +131,8 @@ namespace game
 			}
 			Rotate(rot);
 		}
+
+		vel_ = utilities::Clamp(vel_, -speed_, speed_);
 
 		Translate(GetForward() * vel_ * deltaTime);
 	}
