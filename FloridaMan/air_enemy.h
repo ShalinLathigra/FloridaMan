@@ -17,6 +17,9 @@ namespace game
 		void Chase(float deltaTime);
 		void Attack(float deltaTime);
 
+
+		void MaintainY(glm::vec3 target_pos, float deltaTime);
+
 	protected:
 
 		float mid_y_;

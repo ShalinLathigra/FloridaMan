@@ -105,7 +105,19 @@ namespace game
 	{
 		GroundEnemy::Chase(deltaTime);
 		
-		desired_y_ = target_->GetPosition().y;
+		MaintainY(target_->GetPosition(), deltaTime);
+	}
+
+	void AirEnemy::Attack(float deltaTime)
+	{
+		//How to calculate desired position
+		glm::vec3 desired_position_ = target_->GetPosition() + utilities::RotateVecByQuat(target_->GetForward(), chase_quat_);
+
+	}
+
+	void AirEnemy::MaintainY(glm::vec3 target_pos, float deltaTime)
+	{
+		desired_y_ = target_pos.y;
 
 		float y_vel_ = desired_y_ - position_.y;
 
@@ -113,10 +125,5 @@ namespace game
 		{
 			position_.y += y_speed_ * y_vel_ * deltaTime;
 		}
-	}
-
-	void AirEnemy::Attack(float deltaTime)
-	{
-
 	}
 }
