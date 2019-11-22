@@ -20,6 +20,7 @@ set(HDRS
     static_enemy.h
 	utilities.h
 	laser_node.h
+	mine.h
 )
  
 set(SRCS
@@ -33,6 +34,7 @@ set(SRCS
    resource.cpp 
    resource_manager.cpp 
 	laser_node.cpp
+	mine.cpp
    scene_graph.cpp 
    scene_node.cpp 
    static_enemy.cpp

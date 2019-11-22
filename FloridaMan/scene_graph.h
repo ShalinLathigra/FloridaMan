@@ -11,6 +11,7 @@
 #include "laser_node.h"
 #include "air_enemy.h"
 #include "resource.h"
+#include "mine.h"
 #include "camera.h"
 
 // Size of the texture that we will draw
