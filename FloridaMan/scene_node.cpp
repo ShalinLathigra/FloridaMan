@@ -54,6 +54,7 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
     scale_ = glm::vec3(1.0, 1.0, 1.0);
     blending_ = false;
 	m_isVisible = true;
+	to_destroy_ = false;
 }
 
 SceneNode::SceneNode(const std::string name)
@@ -61,11 +62,28 @@ SceneNode::SceneNode(const std::string name)
 	name_ = name;
 	m_isVisible = false;
 	m_pParentNode = nullptr;
+	to_destroy_ = false;
+}
+
+void SceneNode::RemoveChild(int index) {
+
+
+	//RemoveAtIndex(i);
+	std::cout << "I wish to die " << std::endl;
+	m_childNodes.erase(m_childNodes.begin() + index);
+}
+
+void SceneNode::setToDestroy() {
+	to_destroy_ = true;
 }
 
 SceneNode *SceneNode::GetParent()
 {
 	return m_pParentNode;
+}
+
+bool SceneNode::GetDestroy(){
+	return to_destroy_;
 }
 
 std::vector<SceneNode*> SceneNode::GetChildren()

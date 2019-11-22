@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
+#include <vector>
 
 #include "resource.h"
 #include "scene_node.h"
@@ -30,10 +31,11 @@ namespace game
 
 		void Update(float deltaTime);
 
-		virtual void Idle(float deltaTime);
-		virtual void Chase(float deltaTime);
-		virtual void Boom(float deltaTime);
+		void Idle(float deltaTime);
+		void Chase(float deltaTime);
+		void Boom(float deltaTime);
 
+		void checkCollision(Enemy* someEnemy);
 
 		MineState GetState(void);
 		Enemy* GetTarget(void);
@@ -43,9 +45,11 @@ namespace game
 	protected:
 		MineState state_;
 		Enemy* target_;
-		glm::vec3 forward_;
+		glm::vec3 forward_; 
 		glm::vec3 up_;
 		float hp_;
+		bool target_set_;
+		std::vector<SceneNode> enemies;
 
 		float idle_timer_;
 		float max_idle_timer_;
