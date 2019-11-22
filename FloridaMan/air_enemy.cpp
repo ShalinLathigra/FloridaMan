@@ -22,7 +22,7 @@ namespace game
 		max_off_timer_ = 2.5f;
 
 		y_speed_ = 0.75f;
-		speed_ = 4.5f;
+		speed_ = 9.0f;
 	}
 	AirEnemy::~AirEnemy()
 	{

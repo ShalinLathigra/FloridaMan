@@ -27,7 +27,7 @@ namespace game
 		vel_ = 0.0f;	// Rate of position change
 		max_vel_ = 15.0f;	// Rate of position change
 
-		speed_ = 2.5f;
+		speed_ = 6.0f;
 	}
 	GroundEnemy::~GroundEnemy()
 	{
