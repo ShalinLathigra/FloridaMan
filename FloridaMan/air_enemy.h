@@ -18,7 +18,11 @@ namespace game
 		void Attack(float deltaTime);
 
 
+		void SetState();
 		void MaintainY(glm::vec3 target_pos, float deltaTime);
+		void AssessYOffset(float deltaTime);
+
+
 
 	protected:
 
@@ -33,8 +37,7 @@ namespace game
 
 		float y_diff_;
 		float y_speed_;
-
-		glm::quat chase_quat_;
+		
 		//Need to handle acceleration, store velocity
 	};
 }

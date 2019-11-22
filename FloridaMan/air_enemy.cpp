@@ -16,6 +16,10 @@ namespace game
 	{
 		GroundEnemy::Init();
 
+		attack_angle_ = 0.99f;
+		attack_radius_ = 30.0f;
+		chase_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0, 1, 0));
+
 		mid_y_ = 10.f;
 		y_offset_[0] = -5.0f;
 		y_offset_[1] = 0.0f;
@@ -27,7 +31,7 @@ namespace game
 		off_timer_ = 0.0f;
 		max_off_timer_ = 5.0f;
 
-		y_speed_ = 2.5f;
+		y_speed_ = 0.75f;
 	}
 
 	void AirEnemy::Update(float deltaTime)
@@ -62,6 +66,72 @@ namespace game
 		//X-z movement covered here. I need to re-work ywards movement
 		GroundEnemy::Patrol(deltaTime);
 
+		AssessYOffset(deltaTime);
+		MaintainY(target_->GetPosition(), deltaTime);
+
+		SetState();
+	}
+	void AirEnemy::Chase(float deltaTime)
+	{
+		GroundEnemy::Chase(deltaTime);
+
+		AssessYOffset(deltaTime);
+		MaintainY(target_->GetPosition(), deltaTime);
+
+		SetState();
+	}
+
+	void AirEnemy::Attack(float deltaTime)
+	{
+		glm::vec3 right = glm::normalize(glm::cross(GetForward(), GetUp()));
+		Translate(5.0f * right * deltaTime);
+		StaticEnemy::Chase(deltaTime);
+
+		AssessYOffset(deltaTime);
+		MaintainY(target_->GetPosition(), deltaTime);
+		GroundEnemy::Attack(deltaTime);
+		SetState();
+		
+		// should slow down movement gradually
+		// Check angle to player, if dot between dir to player and forward < attack_radius, turn a bit.
+		// translate to the right or left
+	}
+
+	void AirEnemy::SetState()
+	{
+
+		glm::vec3 to_target = target_->GetPosition() - position_;
+		float dist_to_target = glm::length(to_target);
+		if (dist_to_target > chase_radius_)
+		{
+			state_ = State::Patrol;
+		}
+		else if (dist_to_target < attack_radius_)
+		{
+			state_ = State::Attack;
+		}
+		else
+		{
+			state_ = State::Chase;
+		}
+	}
+
+	void AirEnemy::MaintainY(glm::vec3 target_pos, float deltaTime)
+	{
+		desired_y_ = target_pos.y + y_offset_[off_index_];
+
+		float y_vel = desired_y_ - position_.y;
+
+		y_vel = utilities::Clamp(y_vel, -y_speed_, y_speed_);
+
+		if (y_vel * y_vel > y_diff_ * y_diff_)
+		{
+			position_.y += y_speed_ * y_vel * deltaTime;
+		}
+	}
+
+	void AirEnemy::AssessYOffset(float deltaTime)
+	{
 		if (position_.y != desired_y_)
 		{
 			float y_vel_ = y_speed_ * (desired_y_ - position_.y);
@@ -84,8 +154,6 @@ namespace game
 				off_timer_ = max_off_timer_;
 				off_index_ += off_step_;
 
-				desired_y_ = mid_y_ + y_offset_[off_index_];
-
 				if (off_index_ == 0)
 				{
 					off_step_ *= -1;
@@ -95,35 +163,6 @@ namespace game
 					off_step_ *= -1;
 				}
 			}
-		}
-		if (state_ = State::Chase)
-		{
-			chase_quat_ = glm::angleAxis(utilities::RandPercent() * glm::pi<float>() * 2.0f, target_->GetUp());
-		}
-	}
-	void AirEnemy::Chase(float deltaTime)
-	{
-		GroundEnemy::Chase(deltaTime);
-		
-		MaintainY(target_->GetPosition(), deltaTime);
-	}
-
-	void AirEnemy::Attack(float deltaTime)
-	{
-		//How to calculate desired position
-		glm::vec3 desired_position_ = target_->GetPosition() + utilities::RotateVecByQuat(target_->GetForward(), chase_quat_);
-
-	}
-
-	void AirEnemy::MaintainY(glm::vec3 target_pos, float deltaTime)
-	{
-		desired_y_ = target_pos.y;
-
-		float y_vel_ = desired_y_ - position_.y;
-
-		if (abs(y_vel_) > y_diff_)
-		{
-			position_.y += y_speed_ * y_vel_ * deltaTime;
 		}
 	}
 }
