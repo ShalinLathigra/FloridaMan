@@ -14,6 +14,7 @@
 #include "static_enemy.h"
 #include "ground_enemy.h"
 #include "air_enemy.h"
+#include "mine.h"
 #include "enemy.h"
 
 #define SCENE_N 0
@@ -21,6 +22,7 @@
 #define GROUND_E 2
 #define AIR_E 3
 #define LASER_E 4
+#define MINE_E 5
 
 namespace game {
 

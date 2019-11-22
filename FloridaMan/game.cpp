@@ -293,6 +293,16 @@ namespace game {
 				someLaser->Fire();
 			}
 		}
+
+		//Spawn Mine placeholder function
+		if (key == GLFW_KEY_1 && action == GLFW_RELEASE) {
+			Mine *someMine = (Mine*)(game->CreateInstance(MINE_E, "AirInstance1", "CubeMesh", "ShinyMaterial", "", "LakeCubeMap"));
+			// Scale the instance
+			someMine->Mine::Init();
+			someMine->Scale(glm::vec3(1.5, 1.5, 1.5));
+			someMine->SetPosition(game->camera_.GetPosition());
+			//someMine->SetTarget(&camera_);
+		}
 	}
 
 
