@@ -115,7 +115,7 @@ namespace game {
 		resman_.CreateTorus("TorusMesh");
 
 		// Use sphere to better analyze the environment map
-		//resman_.CreateSphere("TorusMesh");
+		resman_.CreateSphere("SphereMesh");
 
 		// Can also check reflections on a cube
 		//std::string cube_filename = std::string(MATERIAL_DIRECTORY) + std::string("/dense_cube.obj");
@@ -147,10 +147,12 @@ namespace game {
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
+		CreateEnemy(Entity::StaticEnemy, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
+		CreateEnemy(Entity::GroundEnemy, glm::vec3(1.0, -5.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
+		CreateEnemy(Entity::AirEnemy, glm::vec3(1.0, 5.0, -10.0), glm::vec3(1.5, 0.5, 1.5));
 		// Create an instance of the torus mesh
 		//StaticEnemy *torus1 = (StaticEnemy*)CreateInstance(STATIC_E, "StaticInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		//// Scale the instance
-		//torus1->StaticEnemy::Init();
 		//torus1->Scale(glm::vec3(1.5, 1.5, 1.5));
 		//torus1->Translate(glm::vec3(1.0, 1.0, -10.0));
 		//torus1->SetTarget(&camera_);
@@ -159,21 +161,19 @@ namespace game {
 		//
 		//GroundEnemy *torus2 = (GroundEnemy*)CreateInstance(GROUND_E, "GroundInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		//// Scale the instance
-		//torus2->GroundEnemy::Init();
 		//torus2->Scale(glm::vec3(1.5, 1.5, 1.5));
 		//torus2->Translate(glm::vec3(1.0, -5.0, -10.0));
 		//torus2->SetTarget(&camera_);
 		//
 		//std::cout << torus2->GetName() << std::endl;
 
-		AirEnemy *torus3 = (AirEnemy*)CreateInstance(AIR_E, "AirInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
-		// Scale the instance
-		torus3->AirEnemy::Init();
-		torus3->Scale(glm::vec3(1.5, 1.5, 1.5));
-		torus3->Translate(glm::vec3(1.0, 5.0, -10.0));
-		torus3->SetTarget(&camera_);
-		
-		std::cout << torus3->GetName() << std::endl;
+		//AirEnemy *torus3 = (AirEnemy*)CreateInstance(AIR_E, "AirInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		//// Scale the instance
+		//torus3->Scale(glm::vec3(1.5, 1.5, 1.5));
+		//torus3->Translate(glm::vec3(1.0, 5.0, -10.0));
+		//torus3->SetTarget(&camera_);
+		//
+		//std::cout << torus3->GetName() << std::endl;
 
 
 
@@ -363,5 +363,41 @@ namespace game {
 		}
 		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap);
 		return scn;
+	}
+
+	void Game::CreateEnemy(int type, glm::vec3 pos, glm::vec3 scale)
+	{
+
+		std::string entity_name, object_name, material_name, texture_name, envmap_name;
+
+		switch (type)
+		{
+		case(StaticEnemy):
+			entity_name = std::string("StaticEnemy") + std::to_string(count_);
+			object_name = std::string("CubeMesh");
+			material_name = std::string("EnvMapMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("LakeCubeMap");
+			break;
+		case(GroundEnemy):
+			entity_name = std::string("GroundEnemy") + std::to_string(count_);
+			object_name = std::string("TorusMesh");
+			material_name = std::string("EnvMapMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("LakeCubeMap");
+			break;
+		case(AirEnemy):
+			entity_name = std::string("AirEnemy") + std::to_string(count_);
+			object_name = std::string("SphereMesh");
+			material_name = std::string("ShinyMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("");
+			break;
+		}
+
+		Enemy *scn = (Enemy*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
+		scn->SetPosition(pos);
+		scn->SetScale(scale);
+		scn->SetTarget(&camera_);
 	}
 } // namespace game

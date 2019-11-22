@@ -40,10 +40,10 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 	
 	switch (type)
 	{
-	case(0): scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
-	case(1): scn = new StaticEnemy(node_name, geometry, material, texture, envmap); break;
-	case(2): scn = new GroundEnemy(node_name, geometry, material, texture, envmap); break;
-	case(3): scn = new AirEnemy(node_name, geometry, material, texture, envmap); break;
+	case(0): scn = new StaticEnemy(node_name, geometry, material, texture, envmap); break;
+	case(1): scn = new GroundEnemy(node_name, geometry, material, texture, envmap); break;
+	case(2): scn = new AirEnemy(node_name, geometry, material, texture, envmap); break;
+	default: scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
 	}
 	std::cout << type << std::endl;
     // Add node to the scene

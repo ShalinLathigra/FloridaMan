@@ -7,14 +7,6 @@ namespace game
 	StaticEnemy::StaticEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : Enemy(name, geometry, material, texture, envmap)
 	{
 
-	}
-	StaticEnemy::~StaticEnemy()
-	{
-	}
-
-	void StaticEnemy::Init(void)
-	{
-		Enemy::Init();
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_radius_ = 25.0f;
@@ -23,6 +15,10 @@ namespace game
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;
 	}
+	StaticEnemy::~StaticEnemy()
+	{
+	}
+
 
 	void StaticEnemy::Update(float deltaTime)
 	{
@@ -30,23 +26,23 @@ namespace game
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			StaticEnemy::Idle(deltaTime);
+			//StaticEnemy::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
-			StaticEnemy::Patrol(deltaTime); 
+			//StaticEnemy::Patrol(deltaTime); 
 			break;
 		case(State::Chase):  
 			//std::cout<< GetName() << " " << "Chase" << std::endl;
-			StaticEnemy::Chase(deltaTime); 
+			//StaticEnemy::Chase(deltaTime); 
 			break;
 		case(State::Attack): 
 			//std::cout<< GetName() << " " << "Attack" << std::endl;
-			StaticEnemy::Attack(deltaTime); 
+			//StaticEnemy::Attack(deltaTime); 
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			StaticEnemy::Die(deltaTime); 
+			//StaticEnemy::Die(deltaTime); 
 			break;
 		}
 	}

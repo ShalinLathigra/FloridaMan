@@ -6,16 +6,6 @@ namespace game
 
 	AirEnemy::AirEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : GroundEnemy(name, geometry, material, texture, envmap)
 	{
-
-	}
-	AirEnemy::~AirEnemy()
-	{
-	}
-
-	void AirEnemy::Init(void)
-	{
-		GroundEnemy::Init();
-
 		attack_angle_ = 0.99f;
 		attack_radius_ = 30.0f;
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0, 1, 0));
@@ -33,29 +23,32 @@ namespace game
 
 		y_speed_ = 0.75f;
 	}
+	AirEnemy::~AirEnemy()
+	{
+	}
 
 	void AirEnemy::Update(float deltaTime)
 	{
 		switch (state_)
 		{
 		case(State::Idle):
-			std::cout<< GetName() << " " << "Idle" << std::endl;
+			//std::cout<< GetName() << " " << "Idle" << std::endl;
 			StaticEnemy::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
-			std::cout<< GetName() << " " << "Patrol" << std::endl;
+			//std::cout<< GetName() << " " << "Patrol" << std::endl;
 			AirEnemy::Patrol(deltaTime);
 			break;
 		case(State::Chase):  
-			std::cout<< GetName() << " " << "Chase" << std::endl;
+			//std::cout<< GetName() << " " << "Chase" << std::endl;
 			AirEnemy::Chase(deltaTime);
 			break;
 		case(State::Attack): 
-			std::cout<< GetName() << " " << "Attack" << std::endl;
+			//std::cout<< GetName() << " " << "Attack" << std::endl;
 			AirEnemy::Attack(deltaTime);
 			break;
 		case(State::Die):    
-			std::cout<< GetName() << " " << "Die" << std::endl; 
+			//std::cout<< GetName() << " " << "Die" << std::endl; 
 			StaticEnemy::Die(deltaTime);
 			break;
 		}

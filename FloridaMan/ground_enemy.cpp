@@ -6,15 +6,6 @@ namespace game
 
 	GroundEnemy::GroundEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEnemy(name, geometry, material, texture, envmap)
 	{
-
-	}
-	GroundEnemy::~GroundEnemy()
-	{
-	}
-
-	void GroundEnemy::Init(void)
-	{
-		StaticEnemy::Init();
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
 		max_idle_timer_ = 3.0f;
@@ -29,14 +20,17 @@ namespace game
 		num_attacks_ = max_num_attacks_;
 		max_attack_cooldown_ = 3.0f;
 		attack_cooldown_ = max_attack_cooldown_ / 2.0f;
-		
+
 		acc_ = 2.5f;	// Acceleration Rate
 		dec_ = 4.5f; // Deceleration Rate
 
 		vel_ = 0.0f;	// Rate of position change
 		max_vel_ = 15.0f;	// Rate of position change
-
 	}
+	GroundEnemy::~GroundEnemy()
+	{
+	}
+
 
 	void GroundEnemy::Update(float deltaTime)
 	{
@@ -154,7 +148,7 @@ namespace game
 			{
 				// Attack Here
 				// Need some method to specify target of attack, and to Instantiate enemy missiles.
-				std::cout << "Attack! " << num_attacks_ << std::endl;
+				//std::cout << "Attack! " << num_attacks_ << std::endl;
 				num_attacks_--;
 				if (num_attacks_ > 0)
 				{

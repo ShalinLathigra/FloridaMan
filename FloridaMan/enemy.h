@@ -15,9 +15,7 @@ namespace game
 	public:
 		Enemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
 		~Enemy();
-
-		virtual void Init(void);
-
+		
 		void Update(float deltaTime);
 
 		virtual void Idle(float deltaTime);

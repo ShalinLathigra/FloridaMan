@@ -11,7 +11,6 @@ namespace game
 		~StaticEnemy();
 
 		// Update geometry configuration
-		void Init(void);
 		void Update(float deltaTime);
 		void Idle(float deltaTime);
 		void Patrol(float deltaTime);

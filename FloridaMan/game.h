@@ -6,6 +6,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <map>
 
 #include "scene_graph.h"
 #include "resource_manager.h"
@@ -22,6 +23,8 @@
 #define AIR_E 3
 
 namespace game {
+
+	enum Entity { StaticEnemy, GroundEnemy, AirEnemy };
 
     // Exception type for the game
     class GameException: public std::exception
@@ -69,6 +72,8 @@ namespace game {
             // Flag to turn animation on/off
             bool animating_;
 
+			int count_;
+
             // Methods to initialize the game
             void InitWindow(void);
             void InitView(void);
@@ -86,7 +91,7 @@ namespace game {
 
             // Create an instance of an object stored in the resource manager
 			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
-
+			void CreateEnemy(int type, glm::vec3 pos, glm::vec3 scale);
 
     }; // class Game
 

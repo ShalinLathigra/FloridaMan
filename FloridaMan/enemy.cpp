@@ -3,15 +3,7 @@
 #include "utilities.h"
 namespace game
 {
-	Enemy::Enemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap) {
-	}
-
-
-	Enemy::~Enemy()
-	{
-	}
-
-	void Enemy::Init(void)
+	Enemy::Enemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap)
 	{
 		state_ = game::State::Idle;
 		forward_ = glm::vec3(0.0, 0.0, 1.0);
@@ -19,6 +11,12 @@ namespace game
 		max_idle_timer_ = 10.0f;
 		idle_timer_ = max_idle_timer_;
 	}
+
+
+	Enemy::~Enemy()
+	{
+	}
+
 
 	void Enemy::Update(float deltaTime)
 	{
