@@ -14,6 +14,7 @@ namespace game
 	void Mine::Init(void)
 	{
 		state_ = MineState::MineIdle;
+		target_set_ = false;
 	}
 
 	void Mine::Update(float deltaTime)
@@ -28,15 +29,34 @@ namespace game
 
 	void Mine::Idle(float deltaTime)
 	{
-		std::cout << "Idling! " << std::endl;
+		//std::cout << "No Target" << std::endl;
 	}
 	void Mine::Chase(float deltaTime)
 	{
-		std::cout << "Patrolling! " << std::endl;
+		//std::cout << "Target found: " << target_->GetName() << std::endl;
+		glm::vec3 towardsTarget = glm::normalize(target_->GetPosition() - this->GetPosition());
+		this->position_ += towardsTarget*4.0f*deltaTime;
+
+		if (glm::length(target_->GetPosition() - this->GetPosition()) <= 1.5f)
+			state_ = MineState::Boom;
+
+		
 	}
 	void Mine::Boom(float deltaTime)
 	{
-		std::cout << "Chasing! " << std::endl;
+		std::cout << "REEEEEEE" << std::endl;
+		//Apply some health damage to enemy here
+		//Blow up effects here
+
+		//SetScale(glm::vec3(0));
+		this->setToDestroy();
+
+	}
+
+	void Mine::checkCollision(Enemy* someEnemy) {
+		if (glm::length(this->position_ - someEnemy->GetPosition()) <= 1.0f) {
+			SetTarget(someEnemy);
+		}
 	}
 
 	//Getters + Setters
@@ -55,5 +75,7 @@ namespace game
 	void Mine::SetTarget(Enemy* target)
 	{
 		target_ = target;
+		target_set_ = true;
+		state_ = MineChase;
 	}
 }

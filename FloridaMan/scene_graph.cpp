@@ -5,6 +5,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 #include "scene_graph.h"
 
@@ -60,6 +61,26 @@ void SceneGraph::AddNode(SceneNode *node){
 	m_pRootNode->AddChild(node);
 }
 
+void SceneGraph::RemoveNodes() {
+	//std::cout << " " << m_pRootNode->GetChildren().size() << std::endl;
+	for (int i = 0; i < m_pRootNode->GetChildren().size(); i++) {
+		if (m_pRootNode->GetChildren()[i]->GetDestroy() == true) {
+
+			m_pRootNode->RemoveChild(i);
+			i--;
+		}
+	}
+}
+
+void SceneGraph::RemoveAtIndex(int i) {
+
+	std::vector<SceneNode*> vecNodes = m_pRootNode->GetChildren();
+
+	//RemoveAtIndex(i);
+	std::cout << "I wish to die " << std::endl;
+	vecNodes.erase(vecNodes.begin() + i);
+}
+
 
 SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
@@ -81,7 +102,8 @@ void SceneGraph::Draw(Camera *camera){
 
 
 void SceneGraph::Update(float deltaTime){
-	
+
+	//std::cout << " " << m_pRootNode->GetChildren().size() << std::endl;
 	m_pRootNode->Update(deltaTime);
 }
 

@@ -51,6 +51,8 @@ namespace game {
             // Update the node
             virtual void Update(float deltaTime);
 			bool CheckCollision(SceneNode *pNode);
+			void setToDestroy();
+			bool GetDestroy();
 
             // OpenGL variables
             GLenum GetMode(void) const;
@@ -63,6 +65,7 @@ namespace game {
 			void SetParent(SceneNode* pParent);
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
+			void RemoveChild(int index);
 			SceneNode *FindChild(std::string nodeName);
         protected:
             std::string name_; // Name of the scene node
@@ -78,6 +81,7 @@ namespace game {
             glm::vec3 scale_; // Scale of node
             bool blending_; // Draw with blending or not
 			bool m_isVisible;//Is the node visible or not
+			bool to_destroy_; //Determines if this node should be wiped
 			SceneNode *m_pParentNode;
 			std::vector<SceneNode*> m_childNodes;
             // Set matrices that transform the node in a shader program

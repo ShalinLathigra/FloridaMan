@@ -53,7 +53,8 @@ namespace game {
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name
             SceneNode *GetNode(std::string node_name) const;
-            
+			void RemoveNodes();
+			void RemoveAtIndex(int i);
 
             // Draw the entire scene
             void Draw(Camera *camera);

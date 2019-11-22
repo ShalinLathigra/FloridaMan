@@ -206,6 +206,8 @@ namespace game {
 				}
 			}
 
+			//Parse through any nodes that need to be removed
+			scene_.RemoveNodes();
 			// Draw the scene
 			scene_.Draw(&camera_);
 
@@ -296,12 +298,20 @@ namespace game {
 
 		//Spawn Mine placeholder function
 		if (key == GLFW_KEY_1 && action == GLFW_RELEASE) {
-			Mine *someMine = (Mine*)(game->CreateInstance(MINE_E, "AirInstance1", "CubeMesh", "ShinyMaterial", "", "LakeCubeMap"));
+			Mine *someMine = (Mine*)(game->CreateInstance(MINE_E, "MineInstance1", "CubeMesh", "ShinyMaterial", "", "LakeCubeMap"));
 			// Scale the instance
 			someMine->Mine::Init();
 			someMine->Scale(glm::vec3(1.5, 1.5, 1.5));
 			someMine->SetPosition(game->camera_.GetPosition());
 			//someMine->SetTarget(&camera_);
+		}
+		if (key == GLFW_KEY_2 && action == GLFW_RELEASE) {
+			std::string curr_name = "MineInstance1";
+			Mine *someMine;
+			someMine = (Mine*)game->scene_.GetNode(curr_name);
+			curr_name = "AirInstance1";
+			AirEnemy *someAir = (AirEnemy*)game->scene_.GetNode(curr_name);
+			someMine->SetTarget(someAir);
 		}
 	}
 
