@@ -282,9 +282,6 @@ namespace game {
 		//	Entity *someAir = (Entity*)game->scene_.GetNode(curr_name);
 		//	someMine->SetTarget(someAir);
 		//}
-
-
-
 	}
 
 
@@ -414,13 +411,12 @@ namespace game {
 			isEnemy = false;
 			break;
 		}
-
-
 		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
 		scn->SetPosition(pos);
 		scn->SetScale(scale);
 
 		if (isEnemy) {
+
 			((Entity*)scn)->SetTarget(&camera_);
 			((Entity*)scn)->SetGame(this);
 		}
