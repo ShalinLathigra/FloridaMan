@@ -35,7 +35,7 @@ namespace game
 
 	void LaserNode::Draw(Camera *camera)
 	{
-		if (active_ == false) {
+		if (active_ == true) {
 
 			SceneNode::Draw(camera);
 		}
