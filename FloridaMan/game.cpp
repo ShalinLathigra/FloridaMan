@@ -100,7 +100,7 @@ void Game::InitView(void){
 void Game::InitEventHandlers(void){
 
     // Set event callbacks
-    glfwSetKeyCallback(window_, KeyCallback);
+    //glfwSetKeyCallback(window_, KeyCallback);
     glfwSetFramebufferSizeCallback(window_, ResizeCallback);
 
     // Set pointer to game object, so that callbacks can access it
@@ -163,6 +163,8 @@ void Game::MainLoop(void){
             static double last_time = 0;
             double current_time = glfwGetTime();
             if ((current_time - last_time) > 0.01){
+				//Fetch the key states at the same rate that we update the rotations of each nodesa
+				GetKeyStates(window_);
                 //scene_.Update();
 
                 // Animate the sphere
@@ -186,64 +188,65 @@ void Game::MainLoop(void){
 }
 
 
-void Game::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods){
+void Game::GetKeyStates(GLFWwindow* window){
 
     // Get user data with a pointer to the game class
     void* ptr = glfwGetWindowUserPointer(window);
     Game *game = (Game *) ptr;
 
     // Quit game if 'q' is pressed
-    if (key == GLFW_KEY_Q && action == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
 
     // Stop animation if space bar is pressed
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS){
-        game->animating_ = (game->animating_ == true) ? false : true;
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
+       // game->animating_ = (game->animating_ == true) ? false : true;
     }
 
     // View control
     float rot_factor(glm::pi<float>() / 180);
     float trans_factor = 1.0;
-    if (key == GLFW_KEY_UP){
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
         game->camera_.Pitch(rot_factor);
     }
-    if (key == GLFW_KEY_DOWN){
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
         game->camera_.Pitch(-rot_factor);
     }
-    if (key == GLFW_KEY_LEFT){
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
         game->camera_.Yaw(rot_factor);
     }
-    if (key == GLFW_KEY_RIGHT){
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
         game->camera_.Yaw(-rot_factor);
     }
-    if (key == GLFW_KEY_S){
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
         game->camera_.Roll(-rot_factor);
     }
-    if (key == GLFW_KEY_X){
+    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS){
         game->camera_.Roll(rot_factor);
     }
-    if (key == GLFW_KEY_A){
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
         game->camera_.Translate(game->camera_.GetForward()*trans_factor);
         game->skybox_->Translate(game->camera_.GetForward()*trans_factor);
     }
-    if (key == GLFW_KEY_Z){
+    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
         game->camera_.Translate(-game->camera_.GetForward()*trans_factor);
         game->skybox_->Translate(-game->camera_.GetForward()*trans_factor);
     }
-    if (key == GLFW_KEY_J){
+    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS){
         game->camera_.Translate(-game->camera_.GetSide()*trans_factor);
         game->skybox_->Translate(-game->camera_.GetSide()*trans_factor);
     }
-    if (key == GLFW_KEY_L){
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS){
         game->camera_.Translate(game->camera_.GetSide()*trans_factor);
         game->skybox_->Translate(game->camera_.GetSide()*trans_factor);
     }
-    if (key == GLFW_KEY_I){
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
         game->camera_.Translate(game->camera_.GetUp()*trans_factor);
         game->skybox_->Translate(game->camera_.GetUp()*trans_factor);
     }
-    if (key == GLFW_KEY_K){
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS){
         game->camera_.Translate(-game->camera_.GetUp()*trans_factor);
         game->skybox_->Translate(-game->camera_.GetUp()*trans_factor);
     }
