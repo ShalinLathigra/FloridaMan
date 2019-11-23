@@ -11,7 +11,15 @@ set(HDRS
 	entity.h 
 	camera.h 
 	game.h 
+<<<<<<< HEAD
     ground_entity.h 
+=======
+    ground_enemy.h 
+	mine.h
+<<<<<<< HEAD
+>>>>>>> Added mine files to CMAKE text file
+=======
+>>>>>>> 6a6e68a03c41a5519d04e3327683820177df8f0d
 	model_loader.h 
 	resource.h 
 	resource_manager.h 
@@ -29,6 +37,7 @@ set(SRCS
    game.cpp 
    ground_entity.cpp 
    main.cpp 
+	mine.cpp
    resource.cpp 
    resource_manager.cpp 
    scene_graph.cpp 

@@ -12,17 +12,13 @@
 #include "resource_manager.h"
 #include "camera.h"
 #include "asteroid.h"
-
+#include "mine.h"
 #include "air_entity.h"
 
-#define SCENE_N 0
-#define STATIC_E 1
-#define GROUND_E 2
-#define AIR_E 3
 
 namespace game {
 
-	enum EntityType { Static, Ground, Air, Default=-1 };
+	enum EntityType { Static, Ground, Air, MineInstance, Default=-1 };
 
     // Exception type for the game
     class GameException: public std::exception
