@@ -9,6 +9,7 @@
 
 #include "scene_node.h"
 #include "air_enemy.h"
+#include "mine.h"
 #include "resource.h"
 #include "camera.h"
 

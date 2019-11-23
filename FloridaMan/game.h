@@ -16,15 +16,17 @@
 #include "ground_enemy.h"
 #include "air_enemy.h"
 #include "enemy.h"
+#include "mine.h"
 
 #define SCENE_N 0
 #define STATIC_E 1
 #define GROUND_E 2
 #define AIR_E 3
+#define MINE_E 4
 
 namespace game {
 
-	enum Entity { StaticEnemy, GroundEnemy, AirEnemy };
+	enum Entity { StaticEnemy, GroundEnemy, AirEnemy, MineInstance };
 
     // Exception type for the game
     class GameException: public std::exception
