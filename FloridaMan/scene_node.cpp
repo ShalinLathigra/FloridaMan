@@ -58,6 +58,7 @@ namespace game {
 		scale_ = glm::vec3(1.0, 1.0, 1.0);
 		blending_ = false;
 		m_isVisible = true;
+		skybox_ = false;
 	}
 
 	SceneNode::SceneNode(const std::string name)
@@ -134,7 +135,7 @@ namespace game {
 		pNode_yAxis = utilities::RotateVecByQuat(glm::vec3(0.0f, 1.0f, 0.0f), pNode->GetOrientation());
 		pNode_zAxis = utilities::RotateVecByQuat(glm::vec3(0.0f, 0.0f, 1.0f), pNode->GetOrientation());
 
-		float c1x = scale_.x/ 2.0f;
+		float c1x = scale_.x / 2.0f;
 		float c1y = scale_.y / 2.0f;
 		float c1z = scale_.z / 2.0f;
 		float pNodex = pNode->GetScale().x / 2.0f;
@@ -250,6 +251,10 @@ namespace game {
 	void SceneNode::SetBlending(bool blending) {
 
 		blending_ = blending;
+	}
+	void SceneNode::SetSkybox(bool skybox)
+	{
+		skybox_ = skybox;
 	}
 
 
@@ -377,6 +382,9 @@ namespace game {
 		glm::mat4 scaling = glm::scale(glm::mat4(1.0), scale_);
 		glm::mat4 rotation = glm::mat4_cast(orientation_);
 		glm::mat4 translation = glm::translate(glm::mat4(1.0), position_);
+		if (skybox_)
+			translation = glm::translate(glm::mat4(1.0), glm::vec3(position_.x, position_.y * 0.5f, position_.z));
+
 		glm::mat4 transf = GetParentTransform() * translation * rotation * scaling;
 
 		GLint world_mat = glGetUniformLocation(program, "world_mat");

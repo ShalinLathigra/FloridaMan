@@ -32,8 +32,6 @@ namespace game {
 
 		// Don't do work in the constructor, leave it for the Init() function
 	}
-
-
 	void Game::Init(void) {
 
 		// Run all initialization steps
@@ -77,7 +75,6 @@ namespace game {
 		}
 	}
 
-
 	void Game::InitView(void) {
 
 		// Set up z-buffer
@@ -96,7 +93,6 @@ namespace game {
 		camera_.SetProjection(camera_fov_g, camera_near_clip_distance_g, camera_far_clip_distance_g, width, height);
 	}
 
-
 	void Game::InitEventHandlers(void) {
 
 		// Set event callbacks
@@ -105,7 +101,6 @@ namespace game {
 		// Set pointer to game object, so that callbacks can access it
 		glfwSetWindowUserPointer(window_, (void *)this);
 	}
-
 
 	void Game::SetupResources(void) {
 
@@ -166,6 +161,8 @@ namespace game {
 		// Create skybox
 		skybox_ = CreateInstance(EntityType::Default, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
 		skybox_->Scale(glm::vec3(1001.0f));
+		skybox_->SetPosition(glm::vec3(0, 50, 0));
+		skybox_->SetSkybox(true);
 	}
 
 	/*
@@ -174,6 +171,7 @@ namespace game {
 			Animated to run!
 			disappear in a ring -explosion dealio
 	*/
+
 	void Game::MainLoop(void) {
 
 		// Loop while the user did not close the window
@@ -273,6 +271,10 @@ namespace game {
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 			game->camera_.Translate(-game->camera_.GetUp()*trans_factor);
 			game->skybox_->Translate(-game->camera_.GetUp()*trans_factor);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+			//game->CreateEntity(EntityType::MineInstance, game->camera_.GetPosition(), glm::vec3(1.5));
 		}
 	}
 
