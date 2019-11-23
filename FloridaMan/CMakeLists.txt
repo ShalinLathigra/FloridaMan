@@ -6,34 +6,34 @@ project(${PROJ_NAME})
 
 # Specify project files: header files and source files
 set(HDRS
-	air_enemy.h
+	air_entity.h
 	asteroid.h 
-	enemy.h 
+	entity.h 
 	camera.h 
 	game.h 
-    ground_enemy.h 
+    ground_entity.h 
 	model_loader.h 
 	resource.h 
 	resource_manager.h 
 	scene_graph.h 
 	scene_node.h
-    static_enemy.h
+    static_entity.h
 	utilities.h
 )
  
 set(SRCS
-   air_enemy.cpp 
+   air_entity.cpp 
    asteroid.cpp 
    camera.cpp 
-   enemy.cpp 
+   entity.cpp 
    game.cpp 
-   ground_enemy.cpp 
+   ground_entity.cpp 
    main.cpp 
    resource.cpp 
    resource_manager.cpp 
    scene_graph.cpp 
    scene_node.cpp 
-   static_enemy.cpp
+   static_entity.cpp
    utilties.cpp
    material_fp.glsl 
    material_vp.glsl 

@@ -1,14 +1,17 @@
-#pragma once
-#include "enemy.h"
-//Basic Static Enemy Type
+#ifndef STATIC_Entity_H_
+#define STATIC_Entity_H_
+
+#include "entity.h"
+
+//Basic Static Entity Type
 namespace game
 {
-	class StaticEnemy :
-		public Enemy
+	class StaticEntity :
+		public Entity
 	{
 	public:
-		StaticEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
-		~StaticEnemy();
+		StaticEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
+		~StaticEntity();
 
 		// Update geometry configuration
 		void Update(float deltaTime);
@@ -39,3 +42,5 @@ namespace game
 		float attack_angle_;
 	};
 }
+
+#endif // STATIC_Entity_H_

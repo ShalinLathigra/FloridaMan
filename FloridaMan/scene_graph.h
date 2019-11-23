@@ -7,8 +7,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "scene_node.h"
-#include "air_enemy.h"
+#include "air_entity.h"
+
 #include "resource.h"
 #include "camera.h"
 
@@ -17,7 +17,7 @@
 #define FRAME_BUFFER_HEIGHT 768
 
 namespace game {
-
+	
     // Class that manages all the objects in a scene
     class SceneGraph {
 

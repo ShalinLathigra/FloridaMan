@@ -1,10 +1,10 @@
-#include "air_enemy.h"
+#include "air_entity.h"
 #include "utilities.h"
 #include <iostream>
 namespace game
 {
 
-	AirEnemy::AirEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : GroundEnemy(name, geometry, material, texture, envmap)
+	AirEntity::AirEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : GroundEntity(name, geometry, material, texture, envmap)
 	{
 		attack_angle_ = 0.99f;
 		attack_radius_ = 30.0f;
@@ -24,50 +24,50 @@ namespace game
 		y_speed_ = 0.75f;
 		speed_ = 9.0f;
 	}
-	AirEnemy::~AirEnemy()
+	AirEntity::~AirEntity()
 	{
 	}
 
-	void AirEnemy::Update(float deltaTime)
+	void AirEntity::Update(float deltaTime)
 	{
 		switch (state_)
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			StaticEnemy::Idle(deltaTime);
+			StaticEntity::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
-			AirEnemy::Patrol(deltaTime);
+			AirEntity::Patrol(deltaTime);
 			break;
 		case(State::Chase):  
 			//std::cout<< GetName() << " " << "Chase" << std::endl;
-			AirEnemy::Chase(deltaTime);
+			AirEntity::Chase(deltaTime);
 			break;
 		case(State::Attack): 
 			//std::cout<< GetName() << " " << "Attack" << std::endl;
-			AirEnemy::Attack(deltaTime);
+			AirEntity::Attack(deltaTime);
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			StaticEnemy::Die(deltaTime);
+			StaticEntity::Die(deltaTime);
 			break;
 		}
 	}
 		
-	void AirEnemy::Patrol(float deltaTime)
+	void AirEntity::Patrol(float deltaTime)
 	{
 		//X-z movement covered here. I need to re-work ywards movement
-		GroundEnemy::Patrol(deltaTime);
+		GroundEntity::Patrol(deltaTime);
 
 		AssessYOffset(deltaTime);
 		MaintainY(target_->GetPosition(), deltaTime);
 
 		SetState();
 	}
-	void AirEnemy::Chase(float deltaTime)
+	void AirEntity::Chase(float deltaTime)
 	{
-		GroundEnemy::Chase(deltaTime);
+		GroundEntity::Chase(deltaTime);
 
 		AssessYOffset(deltaTime);
 		MaintainY(target_->GetPosition(), deltaTime);
@@ -75,15 +75,15 @@ namespace game
 		SetState();
 	}
 
-	void AirEnemy::Attack(float deltaTime)
+	void AirEntity::Attack(float deltaTime)
 	{
 		glm::vec3 right = glm::normalize(glm::cross(GetForward(), GetUp()));
 		Translate(5.0f * right * deltaTime);
-		StaticEnemy::Chase(deltaTime);
+		StaticEntity::Chase(deltaTime);
 
 		AssessYOffset(deltaTime);
 		MaintainY(target_->GetPosition(), deltaTime);
-		GroundEnemy::Attack(deltaTime);
+		GroundEntity::Attack(deltaTime);
 		SetState();
 		
 		// should slow down movement gradually
@@ -91,7 +91,7 @@ namespace game
 		// translate to the right or left
 	}
 
-	void AirEnemy::SetState()
+	void AirEntity::SetState()
 	{
 
 		glm::vec3 to_target = target_->GetPosition() - position_;
@@ -110,7 +110,7 @@ namespace game
 		}
 	}
 
-	void AirEnemy::MaintainY(glm::vec3 target_pos, float deltaTime)
+	void AirEntity::MaintainY(glm::vec3 target_pos, float deltaTime)
 	{
 		desired_y_ = target_pos.y + y_offset_[off_index_];
 
@@ -124,7 +124,7 @@ namespace game
 		}
 	}
 
-	void AirEnemy::AssessYOffset(float deltaTime)
+	void AirEntity::AssessYOffset(float deltaTime)
 	{
 		if (position_.y != desired_y_)
 		{

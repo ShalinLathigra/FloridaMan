@@ -1,14 +1,17 @@
-#pragma once
-#include "ground_enemy.h"
-//Basic Ground Enemy Type
+#ifndef AIR_Entity_H_
+#define AIR_Entity_H_
+
+#include "ground_entity.h"
+
+//Basic Ground Entity Type
 namespace game
 {
-	class AirEnemy :
-		public GroundEnemy
+	class AirEntity :
+		public GroundEntity
 	{
 	public:
-		AirEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
-		~AirEnemy();
+		AirEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
+		~AirEntity();
 
 		// Update geometry configuration
 		void Update(float deltaTime);
@@ -40,3 +43,4 @@ namespace game
 		//Need to handle acceleration, store velocity
 	};
 }
+#endif // AIR_Entity_H_

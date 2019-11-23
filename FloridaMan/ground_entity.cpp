@@ -1,10 +1,10 @@
-#include "ground_enemy.h"
+#include "ground_entity.h"
 #include "utilities.h"
 #include <iostream>
 namespace game
 {
 
-	GroundEnemy::GroundEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEnemy(name, geometry, material, texture, envmap)
+	GroundEntity::GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEntity(name, geometry, material, texture, envmap)
 	{
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
@@ -29,39 +29,39 @@ namespace game
 
 		speed_ = 6.0f;
 	}
-	GroundEnemy::~GroundEnemy()
+	GroundEntity::~GroundEntity()
 	{
 	}
 
 
-	void GroundEnemy::Update(float deltaTime)
+	void GroundEntity::Update(float deltaTime)
 	{
 		switch (state_)
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			StaticEnemy::Idle(deltaTime);
+			StaticEntity::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
-			GroundEnemy::Patrol(deltaTime);
+			GroundEntity::Patrol(deltaTime);
 			break;
 		case(State::Chase):  
 			//std::cout<< GetName() << " " << "Chase" << std::endl;
-			GroundEnemy::Chase(deltaTime);
+			GroundEntity::Chase(deltaTime);
 			break;
 		case(State::Attack): 
 			//std::cout<< GetName() << " " << "Attack" << std::endl;
-			GroundEnemy::Attack(deltaTime);
+			GroundEntity::Attack(deltaTime);
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			StaticEnemy::Die(deltaTime);
+			StaticEntity::Die(deltaTime);
 			break;
 		}
 	}
 	
-	void GroundEnemy::Patrol(float deltaTime)
+	void GroundEntity::Patrol(float deltaTime)
 	{
 		Rotate(patrol_angm_);
 
@@ -85,7 +85,7 @@ namespace game
 		}
 
 	}
-	void GroundEnemy::Chase(float deltaTime)
+	void GroundEntity::Chase(float deltaTime)
 	{
 		
 		glm::vec3 to_target = target_->GetPosition() - position_;
@@ -137,7 +137,7 @@ namespace game
 		Translate(GetForward() * vel_ * deltaTime);
 	}
 
-	void GroundEnemy::Attack(float deltaTime)
+	void GroundEntity::Attack(float deltaTime)
 	{
 		glm::vec3 to_target = target_->GetPosition() - position_;
 		float dist_to_target = glm::length(to_target);
@@ -151,7 +151,7 @@ namespace game
 			if (attack_cooldown_ == 0.0f)
 			{
 				// Attack Here
-				// Need some method to specify target of attack, and to Instantiate enemy missiles.
+				// Need some method to specify target of attack, and to Instantiate Entity missiles.
 				//std::cout << "Attack! " << num_attacks_ << std::endl;
 				num_attacks_--;
 				if (num_attacks_ > 0)

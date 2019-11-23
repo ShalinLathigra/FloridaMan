@@ -1,10 +1,10 @@
-#include "static_enemy.h"
+#include "static_entity.h"
 #include "utilities.h"
 #include <iostream>
 namespace game
 {
 
-	StaticEnemy::StaticEnemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : Enemy(name, geometry, material, texture, envmap)
+	StaticEntity::StaticEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : Entity(name, geometry, material, texture, envmap)
 	{
 
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
@@ -15,39 +15,39 @@ namespace game
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;
 	}
-	StaticEnemy::~StaticEnemy()
+	StaticEntity::~StaticEntity()
 	{
 	}
 
 
-	void StaticEnemy::Update(float deltaTime)
+	void StaticEntity::Update(float deltaTime)
 	{
 		switch (state_)
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			//StaticEnemy::Idle(deltaTime);
+			//StaticEntity::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
-			//StaticEnemy::Patrol(deltaTime); 
+			//StaticEntity::Patrol(deltaTime); 
 			break;
 		case(State::Chase):  
 			//std::cout<< GetName() << " " << "Chase" << std::endl;
-			//StaticEnemy::Chase(deltaTime); 
+			//StaticEntity::Chase(deltaTime); 
 			break;
 		case(State::Attack): 
 			//std::cout<< GetName() << " " << "Attack" << std::endl;
-			//StaticEnemy::Attack(deltaTime); 
+			//StaticEntity::Attack(deltaTime); 
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			//StaticEnemy::Die(deltaTime); 
+			//StaticEntity::Die(deltaTime); 
 			break;
 		}
 	}
 
-	void StaticEnemy::Idle(float deltaTime)
+	void StaticEntity::Idle(float deltaTime)
 	{
 		idle_timer_ = glm::max(idle_timer_ - deltaTime, 0.0f);
 		std::cout << idle_timer_ << std::endl;
@@ -56,7 +56,7 @@ namespace game
 			state_ = State::Patrol;
 		}
 	}
-	void StaticEnemy::Patrol(float deltaTime)
+	void StaticEntity::Patrol(float deltaTime)
 	{
 		Rotate(patrol_angm_);
 
@@ -73,7 +73,7 @@ namespace game
 		}
 
 	}
-	void StaticEnemy::Chase(float deltaTime)
+	void StaticEntity::Chase(float deltaTime)
 	{
 		//Need to rotate such that the dot product increases.
 		
@@ -110,7 +110,7 @@ namespace game
 		}
 	}
 
-	void StaticEnemy::Attack(float deltaTime)
+	void StaticEntity::Attack(float deltaTime)
 	{
 		glm::vec3 to_target = target_->GetPosition() - position_;
 		float dist_to_target = glm::length(to_target);
@@ -129,52 +129,52 @@ namespace game
 		}
 
 	}
-	void StaticEnemy::Die(float deltaTime)
+	void StaticEntity::Die(float deltaTime)
 	{
 		//Die
 	}
 
 
 	// Getters
-	glm::quat StaticEnemy::GetChaseAngM(void) const
+	glm::quat StaticEntity::GetChaseAngM(void) const
 	{
 		return chase_angm_;
 	}
-	glm::quat StaticEnemy::GetPatrolAngM(void) const
+	glm::quat StaticEntity::GetPatrolAngM(void) const
 	{
 		return patrol_angm_;
 	}
-	float StaticEnemy::GetChaseRadius(void) const
+	float StaticEntity::GetChaseRadius(void) const
 	{
 		return chase_radius_;
 	}
-	float StaticEnemy::GetChaseAngle(void) const
+	float StaticEntity::GetChaseAngle(void) const
 	{
 		return chase_angle_;
 	}
-	float StaticEnemy::GetAttackAngle(void) const
+	float StaticEntity::GetAttackAngle(void) const
 	{
 		return attack_angle_;
 	}
 
 	// Setters
-	void StaticEnemy::SetPatrolAngM(glm::quat angm)
+	void StaticEntity::SetPatrolAngM(glm::quat angm)
 	{
 		patrol_angm_ = angm;
 	}
-	void StaticEnemy::SetChaseAngM(glm::quat angm)
+	void StaticEntity::SetChaseAngM(glm::quat angm)
 	{
 		chase_angm_ = angm;
 	}
-	void StaticEnemy::SetChaseRadius(float chase_radius)
+	void StaticEntity::SetChaseRadius(float chase_radius)
 	{
 		chase_radius_ = chase_radius;
 	}
-	void StaticEnemy::SetChaseAngle(float chase_angle)
+	void StaticEntity::SetChaseAngle(float chase_angle)
 	{
 		chase_angle_ = chase_angle;
 	}
-	void StaticEnemy::SetAttackAngle(float attack_angle)
+	void StaticEntity::SetAttackAngle(float attack_angle)
 	{
 		attack_angle_ = attack_angle;
 	}

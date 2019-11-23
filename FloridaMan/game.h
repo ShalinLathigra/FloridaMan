@@ -12,10 +12,8 @@
 #include "resource_manager.h"
 #include "camera.h"
 #include "asteroid.h"
-#include "static_enemy.h"
-#include "ground_enemy.h"
-#include "air_enemy.h"
-#include "enemy.h"
+
+#include "air_entity.h"
 
 #define SCENE_N 0
 #define STATIC_E 1
@@ -24,7 +22,7 @@
 
 namespace game {
 
-	enum Entity { StaticEnemy, GroundEnemy, AirEnemy };
+	enum EntityType { Static, Ground, Air, Default=-1 };
 
     // Exception type for the game
     class GameException: public std::exception
@@ -91,7 +89,7 @@ namespace game {
 
             // Create an instance of an object stored in the resource manager
 			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
-			void CreateEnemy(int type, glm::vec3 pos, glm::vec3 scale);
+			void CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
     }; // class Game
 

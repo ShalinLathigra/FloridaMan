@@ -111,18 +111,20 @@ namespace game {
 
 	void Game::SetupResources(void) {
 
+		// Can also check reflections on a cube
+		//std::string cube_filename = std::string(MATERIAL_DIRECTORY) + std::string("/dense_cube.obj");
+		//resman_.LoadResource(Mesh, "TorusMesh", cube_filename.c_str());
+
 		// Create a torus
 		resman_.CreateTorus("TorusMesh");
 
 		// Use sphere to better analyze the environment map
 		resman_.CreateSphere("SphereMesh");
 
-		// Can also check reflections on a cube
-		//std::string cube_filename = std::string(MATERIAL_DIRECTORY) + std::string("/dense_cube.obj");
-		//resman_.LoadResource(Mesh, "TorusMesh", cube_filename.c_str());
-
 		// Create a cube for the skybox
 		resman_.CreateCube("CubeMesh");
+
+		resman_.CreateWall("PlaneMesh");
 
 		// Load material to be applied to torus
 		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
@@ -131,10 +133,23 @@ namespace game {
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/three-term_shiny_blue");
 		resman_.LoadResource(Material, "ShinyMaterial", filename.c_str());
+		// Load material to be applied to torus
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/textured_material");
+		resman_.LoadResource(Material, "TexturedMaterial", filename.c_str());
 
 		// Load cube map to be applied to skybox
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/island/island.tga");
+		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/arrakisday/arrakisday.tga");
+		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/hw_sahara/hw_sahara.tga");
+		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/hw_sandstorm/hw_sandstorm.tga");
+		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_gritty/mp_gritty.tga");
+		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_sist/mp_sist.tga");
+		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_sorbin/mp_sorbin.tga");
 		resman_.LoadResource(CubeMap, "LakeCubeMap", filename.c_str());
+
+		// Load cube map to be applied to skybox
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/ground.png");
+		resman_.LoadResource(Texture, "GroundTexture", filename.c_str());
 
 		// Load material to be applied to skybox
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/skybox");
@@ -147,40 +162,18 @@ namespace game {
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
-		CreateEnemy(Entity::StaticEnemy, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
-		CreateEnemy(Entity::GroundEnemy, glm::vec3(1.0, -5.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
-		CreateEnemy(Entity::AirEnemy, glm::vec3(1.0, 5.0, -10.0), glm::vec3(1.5, 0.5, 1.5));
-		// Create an instance of the torus mesh
-		//StaticEnemy *torus1 = (StaticEnemy*)CreateInstance(STATIC_E, "StaticInstance1", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
-		//// Scale the instance
-		//torus1->Scale(glm::vec3(1.5, 1.5, 1.5));
-		//torus1->Translate(glm::vec3(1.0, 1.0, -10.0));
-		//torus1->SetTarget(&camera_);
-		//
-		//std::cout << torus1->GetName() << std::endl;
-		//
-		//GroundEnemy *torus2 = (GroundEnemy*)CreateInstance(GROUND_E, "GroundInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
-		//// Scale the instance
-		//torus2->Scale(glm::vec3(1.5, 1.5, 1.5));
-		//torus2->Translate(glm::vec3(1.0, -5.0, -10.0));
-		//torus2->SetTarget(&camera_);
-		//
-		//std::cout << torus2->GetName() << std::endl;
+		CreateEntity(EntityType::Static, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
+		CreateEntity(EntityType::Ground, glm::vec3(1.0, -5.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
+		CreateEntity(EntityType::Air, glm::vec3(1.0, 5.0, -10.0), glm::vec3(1.5, 0.5, 1.5));
 
-		//AirEnemy *torus3 = (AirEnemy*)CreateInstance(AIR_E, "AirInstance1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
-		//// Scale the instance
-		//torus3->Scale(glm::vec3(1.5, 1.5, 1.5));
-		//torus3->Translate(glm::vec3(1.0, 5.0, -10.0));
-		//torus3->SetTarget(&camera_);
-		//
-		//std::cout << torus3->GetName() << std::endl;
-
-
-
+		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
+		wall->SetPosition(glm::vec3(0.0f, -10.0f, -10.0f));
+		wall->SetScale(glm::vec3(1000.0f));
+		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 
 		// Create skybox
-		skybox_ = CreateInstance(SCENE_N, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
-		skybox_->Scale(glm::vec3(50.0, 50.0, 50.0));
+		skybox_ = CreateInstance(EntityType::Default, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
+		skybox_->Scale(glm::vec3(1001.0f));
 	}
 
 
@@ -365,29 +358,29 @@ namespace game {
 		return scn;
 	}
 
-	void Game::CreateEnemy(int type, glm::vec3 pos, glm::vec3 scale)
+	void Game::CreateEntity(int type, glm::vec3 pos, glm::vec3 scale)
 	{
 
 		std::string entity_name, object_name, material_name, texture_name, envmap_name;
 
 		switch (type)
 		{
-		case(StaticEnemy):
-			entity_name = std::string("StaticEnemy") + std::to_string(count_);
+		case(Static):
+			entity_name = std::string("StaticEntity") + std::to_string(count_);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("EnvMapMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("LakeCubeMap");
 			break;
-		case(GroundEnemy):
-			entity_name = std::string("GroundEnemy") + std::to_string(count_);
+		case(Ground):
+			entity_name = std::string("GroundEntity") + std::to_string(count_);
 			object_name = std::string("TorusMesh");
 			material_name = std::string("EnvMapMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("LakeCubeMap");
 			break;
-		case(AirEnemy):
-			entity_name = std::string("AirEnemy") + std::to_string(count_);
+		case(Air):
+			entity_name = std::string("AirEntity") + std::to_string(count_);
 			object_name = std::string("SphereMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
@@ -395,9 +388,10 @@ namespace game {
 			break;
 		}
 
-		Enemy *scn = (Enemy*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
+		Entity *scn = (Entity*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
 		scn->SetPosition(pos);
 		scn->SetScale(scale);
 		scn->SetTarget(&camera_);
+		scn->SetGame(this);
 	}
 } // namespace game

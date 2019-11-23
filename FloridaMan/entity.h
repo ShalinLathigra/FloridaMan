@@ -1,20 +1,21 @@
-#pragma once
-
-#ifndef ENEMY_H_
-#define ENEMY_H_
+#ifndef Entity_H_
+#define Entity_H_
 
 #include "scene_node.h"
+
 namespace game
 {
 	enum State { Idle, Patrol, Chase, Attack, Die};
 
-	//Enemy Superclass
-	class Enemy :
+	class Game;
+
+	//Entity Superclass
+	class Entity :
 		public SceneNode
 	{
 	public:
-		Enemy(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
-		~Enemy();
+		Entity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
+		~Entity();
 		
 		void Update(float deltaTime);
 
@@ -32,10 +33,12 @@ namespace game
 		glm::vec3 GetUp(void);
 		void SetState(State state);
 		void SetTarget(Camera* target);
+		void SetGame(Game* g);
 
 	protected:
 		State state_;
 		Camera* target_;
+		Game* game_;
 		glm::vec3 forward_;
 		glm::vec3 up_;
 		float hp_;
@@ -43,7 +46,5 @@ namespace game
 		float idle_timer_;
 		float max_idle_timer_;
 	};
-
-
 }
-#endif // Enemy_H_
+#endif // Entity_H_
