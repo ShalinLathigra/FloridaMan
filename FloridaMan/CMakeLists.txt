@@ -14,6 +14,7 @@ set(HDRS
 	ground_entity.h 
 	mine.h
 	model_loader.h 
+	player.h
 	resource.h 
 	resource_manager.h 
 	scene_graph.h 
@@ -32,7 +33,8 @@ set(SRCS
 	entity.cpp 
 	game.cpp 
 	ground_entity.cpp 
-	main.cpp 
+	main.cpp
+	player.cpp 
 	mine.cpp
 	resource.cpp 
 	resource_manager.cpp 

@@ -203,6 +203,19 @@ namespace game {
 		//Case 15
 		L = glm::cross(c1_zAxis, pNode_zAxis);
 		collisionDetected = collisionDetected || (glm::abs(glm::dot(T, L)) > glm::abs(glm::dot(c1x * c1_xAxis, L)) + glm::abs(glm::dot(c1y * c1_yAxis, L)) + glm::abs(glm::dot(c1z * c1_zAxis, L)) + glm::abs(glm::dot(pNodex * pNode_xAxis, L)) + glm::abs(glm::dot(pNodey*pNode_yAxis, L)) + glm::abs(glm::dot(pNodez * pNode_zAxis, L)));
+		//If Collision detected is ever true, it means that there is a separating axis.
+
+		//If there is a separating axis, we want to search the child nodes, otherwise there has been a collision and we dont need to check child nodes, unless we need to know which node specifically was hit
+		if (collisionDetected)
+		{
+			for (size_t i = 0; i < m_childNodes.size(); i++)
+			{
+				if (m_childNodes[i]->CheckCollision(pNode))
+				{
+					return true;
+				}
+			}
+		}
 		return !collisionDetected;
 
 	}

@@ -6,12 +6,11 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-
 namespace game {
-
+	class Player;
+	class ResourceManager;
     // Abstraction of a camera
     class Camera {
-
         public:
             Camera(void);
             ~Camera();
@@ -27,6 +26,7 @@ namespace game {
             // Perform global transformations of camera
             void Translate(glm::vec3 trans);
             void Rotate(glm::quat rot);
+			Player *GetPlayer();
 
             // Get relative attributes of camera
             glm::vec3 GetForward(void) const;
@@ -50,8 +50,10 @@ namespace game {
  
             // Return view matrix
             glm::mat4 GetCurrentViewMatrix(void);
-
+			void TogglePOV();
+			void InitPlayer(ResourceManager *resMan);
         private:
+			bool m_isFirstPerson;
             glm::vec3 position_; // Position of camera
             glm::quat orientation_; // Orientation of camera
             glm::vec3 forward_; // Initial forward vector
@@ -59,6 +61,7 @@ namespace game {
             glm::mat4 view_matrix_; // View matrix
             glm::mat4 projection_matrix_; // Projection matrix
 
+			Player *m_pPlayer;
             // Create view matrix from current camera parameters
             void SetupViewMatrix(void);
 
