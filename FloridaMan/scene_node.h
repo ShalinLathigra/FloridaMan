@@ -38,6 +38,7 @@ namespace game {
             void SetOrientation(glm::quat orientation);
             void SetScale(glm::vec3 scale);
             void SetBlending(bool blending);
+			void SetSkybox(bool skybox);
             
             // Perform transformations on node
             void Translate(glm::vec3 trans);
@@ -49,7 +50,7 @@ namespace game {
             virtual void Draw(Camera *camera);
 
             // Update the node
-            virtual void Update(void);
+            virtual void Update(float deltaTime);
 			bool CheckCollision(SceneNode *pNode);
 
             // OpenGL variables
@@ -64,7 +65,7 @@ namespace game {
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
-        private:
+        protected:
             std::string name_; // Name of the scene node
             GLuint array_buffer_; // References to geometry: vertex and array buffers
             GLuint element_array_buffer_;
@@ -76,6 +77,7 @@ namespace game {
             glm::vec3 position_; // Position of node
             glm::quat orientation_; // Orientation of node
             glm::vec3 scale_; // Scale of node
+			bool skybox_; //Is skybox or not
             bool blending_; // Draw with blending or not
 			bool m_isVisible;//Is the node visible or not
 			SceneNode *m_pParentNode;

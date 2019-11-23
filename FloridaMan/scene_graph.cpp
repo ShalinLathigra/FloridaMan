@@ -33,11 +33,20 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 }
  
 
-SceneNode *SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap){
+SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap){
 
     // Create scene node with the specified resources
-    SceneNode *scn = new SceneNode(node_name, geometry, material, texture, envmap);
-
+	SceneNode *scn;
+	
+	switch (type)
+	{
+	case(0): scn = new StaticEntity(node_name, geometry, material, texture, envmap); break;
+	case(1): scn = new GroundEntity(node_name, geometry, material, texture, envmap); break;
+	case(2): scn = new AirEntity(node_name, geometry, material, texture, envmap); break;
+	case(3): scn = new Mine(node_name, geometry, material, texture, envmap); break;
+	default: scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
+	}
+	std::cout << type << std::endl;
     // Add node to the scene
 	m_pRootNode->AddChild(scn);
 
@@ -70,9 +79,9 @@ void SceneGraph::Draw(Camera *camera){
 }
 
 
-void SceneGraph::Update(void){
-
-	m_pRootNode->Update();
+void SceneGraph::Update(float deltaTime){
+	
+	m_pRootNode->Update(deltaTime);
 }
 
 

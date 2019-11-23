@@ -6,8 +6,8 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
-#include "scene_node.h"
+#include "air_entity.h"
+#include "mine.h"
 #include "resource.h"
 #include "camera.h"
 
@@ -16,7 +16,6 @@
 #define FRAME_BUFFER_HEIGHT 768
 
 namespace game {
-
     // Class that manages all the objects in a scene
     class SceneGraph {
 
@@ -45,7 +44,7 @@ namespace game {
             glm::vec3 GetBackgroundColor(void) const;
             
             // Create a scene node from the specified resources
-            SceneNode *CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
+            SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
             // Add an already-created node to the root of the tree
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name
@@ -56,7 +55,7 @@ namespace game {
             void Draw(Camera *camera);
 
             // Update entire scene
-            void Update(void);
+            void Update(float deltaTime);
 
             // Drawing from/to a texture
             // Setup the texture

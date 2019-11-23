@@ -6,51 +6,62 @@ project(${PROJ_NAME})
 
 # Specify project files: header files and source files
 set(HDRS
+	air_entity.h
 	asteroid.h 
+	entity.h 
 	camera.h 
 	game.h 
+	ground_entity.h 
+	mine.h
 	model_loader.h 
 	resource.h 
 	resource_manager.h 
 	scene_graph.h 
 	scene_node.h
+	static_entity.h
 	utilities.h
 )
  
 set(SRCS
-   asteroid.cpp 
-   camera.cpp 
-   game.cpp 
-   main.cpp 
-   resource.cpp 
-   resource_manager.cpp 
-   scene_graph.cpp 
-   scene_node.cpp 
-   utilties.cpp
-   material_fp.glsl 
-   material_vp.glsl 
-   metal_fp.glsl 
-   metal_vp.glsl 
-   plastic_fp.glsl 
-   plastic_vp.glsl 
-   textured_material_fp.glsl 
-   textured_material_vp.glsl 
-   three-term_shiny_blue_fp.glsl 
-   three-term_shiny_blue_vp.glsl 
-   normal_map_vp.glsl 
-   normal_map_fp.glsl 
-   screen_space_vp.glsl 
-   screen_space_fp.glsl 
-   particle_vp.glsl 
-   particle_fp.glsl 
-   particle_gp.glsl 
-   fire_vp.glsl 
-   fire_gp.glsl 
-   fire_fp.glsl 
-   skybox_vp.glsl 
-   skybox_fp.glsl 
-   envmap_vp.glsl 
-   envmap_fp.glsl 
+	air_entity.cpp 
+	asteroid.cpp 
+	camera.cpp 
+	entity.cpp 
+	game.cpp 
+	ground_entity.cpp 
+	main.cpp 
+	mine.cpp
+	resource.cpp 
+	resource_manager.cpp 
+	scene_graph.cpp 
+	scene_node.cpp 
+	static_entity.cpp
+	utilties.cpp
+	material_fp.glsl 
+	material_vp.glsl 
+	metal_fp.glsl 
+	metal_vp.glsl 
+	plastic_fp.glsl 
+	plastic_vp.glsl 
+	textured_material_fp.glsl 
+	textured_material_vp.glsl 
+	three-term_shiny_blue_fp.glsl 
+	three-term_shiny_blue_vp.glsl 
+	normal_map_vp.glsl 
+	normal_map_fp.glsl 
+	screen_space_vp.glsl 
+	screen_space_fp.glsl 
+	particle_vp.glsl 
+	particle_fp.glsl 
+	particle_gp.glsl 
+	fire_vp.glsl 
+	fire_gp.glsl 
+	fire_fp.glsl 
+	skybox_vp.glsl 
+	skybox_fp.glsl 
+	envmap_vp.glsl 
+	envmap_fp.glsl 
+	CMakeLists.txt
 )
 
 # Add path name to configuration file
