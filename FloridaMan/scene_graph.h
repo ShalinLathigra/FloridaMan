@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 
 #include "air_entity.h"
-
+#include "mine.h"
 #include "resource.h"
 #include "camera.h"
 

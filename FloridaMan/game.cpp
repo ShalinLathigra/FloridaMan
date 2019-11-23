@@ -266,6 +266,25 @@ namespace game {
 			game->camera_.Translate(-game->camera_.GetUp()*trans_factor);
 			game->skybox_->Translate(-game->camera_.GetUp()*trans_factor);
 		}
+
+
+		//Spawn Mine placeholder function
+		if (key == GLFW_KEY_1 && action == GLFW_RELEASE) {
+			game->CreateEntity(EntityType::MineInstance, game->camera_.GetPosition(), glm::vec3(1.5, 1.5, 1.5));
+			//someMine->Mine::Init();
+			//someMine->SetTarget(&camera_);
+		}
+		//if (key == GLFW_KEY_2 && action == GLFW_RELEASE) {
+		//	std::string curr_name = "MineInstance1";
+		//	Mine *someMine;
+		//	someMine = (Mine*)game->scene_.GetNode(curr_name);
+		//	curr_name = "AirEnemy6";
+		//	Entity *someAir = (Entity*)game->scene_.GetNode(curr_name);
+		//	someMine->SetTarget(someAir);
+		//}
+
+
+
 	}
 
 
@@ -362,7 +381,7 @@ namespace game {
 	{
 
 		std::string entity_name, object_name, material_name, texture_name, envmap_name;
-
+		bool isEnemy = true;
 		switch (type)
 		{
 		case(Static):
@@ -386,12 +405,25 @@ namespace game {
 			texture_name = std::string("");
 			envmap_name = std::string("");
 			break;
+		case(MineInstance):
+			entity_name = std::string("MineInstance") + std::to_string(count_);
+			object_name = std::string("SphereMesh");
+			material_name = std::string("ShinyMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("");
+			isEnemy = false;
+			break;
 		}
 
-		Entity *scn = (Entity*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
+
+		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
 		scn->SetPosition(pos);
 		scn->SetScale(scale);
-		scn->SetTarget(&camera_);
-		scn->SetGame(this);
+
+		if (isEnemy) {
+			((Entity*)scn)->SetTarget(&camera_);
+			((Entity*)scn)->SetGame(this);
+		}
 	}
+
 } // namespace game
