@@ -1045,6 +1045,7 @@ void ResourceManager::LoadCubeMap(const std::string name, const char *filename){
     std::string fn_zp = base+"_rt."+ext;
     std::string fn_zn = base+"_lf."+ext;
 
+	std::cout << fn_xp << std::endl;
     // Load cube map from file
     GLuint texture = SOIL_load_OGL_cubemap(fn_xp.c_str(), fn_xn.c_str(), fn_yp.c_str(), fn_yn.c_str(), fn_zp.c_str(), fn_zn.c_str(), SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
     if (!texture){

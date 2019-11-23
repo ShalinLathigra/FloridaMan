@@ -26,23 +26,23 @@ namespace game
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			//StaticEntity::Idle(deltaTime);
+			StaticEntity::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
-			//StaticEntity::Patrol(deltaTime); 
+			StaticEntity::Patrol(deltaTime); 
 			break;
 		case(State::Chase):  
 			//std::cout<< GetName() << " " << "Chase" << std::endl;
-			//StaticEntity::Chase(deltaTime); 
+			StaticEntity::Chase(deltaTime); 
 			break;
 		case(State::Attack): 
 			//std::cout<< GetName() << " " << "Attack" << std::endl;
-			//StaticEntity::Attack(deltaTime); 
+			StaticEntity::Attack(deltaTime); 
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			//StaticEntity::Die(deltaTime); 
+			StaticEntity::Die(deltaTime); 
 			break;
 		}
 	}

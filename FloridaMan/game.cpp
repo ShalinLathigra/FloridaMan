@@ -138,13 +138,7 @@ namespace game {
 		resman_.LoadResource(Material, "TexturedMaterial", filename.c_str());
 
 		// Load cube map to be applied to skybox
-		filename = std::string(MATERIAL_DIRECTORY) + std::string("/island/island.tga");
-		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/arrakisday/arrakisday.tga");
-		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/hw_sahara/hw_sahara.tga");
-		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/hw_sandstorm/hw_sandstorm.tga");
-		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_gritty/mp_gritty.tga");
-		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_sist/mp_sist.tga");
-		//filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_sorbin/mp_sorbin.tga");
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_sist/sist.tga");
 		resman_.LoadResource(CubeMap, "LakeCubeMap", filename.c_str());
 
 		// Load cube map to be applied to skybox
@@ -163,11 +157,11 @@ namespace game {
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
 		CreateEntity(EntityType::Static, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
-		CreateEntity(EntityType::Ground, glm::vec3(1.0, -5.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
+		CreateEntity(EntityType::Ground, glm::vec3(1.0, 0.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
 		CreateEntity(EntityType::Air, glm::vec3(1.0, 5.0, -10.0), glm::vec3(1.5, 0.5, 1.5));
 
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
-		wall->SetPosition(glm::vec3(0.0f, -10.0f, -10.0f));
+		wall->SetPosition(glm::vec3(0.0f, -0.7f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 
