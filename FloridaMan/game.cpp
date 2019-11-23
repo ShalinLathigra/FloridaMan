@@ -168,7 +168,12 @@ namespace game {
 		skybox_->Scale(glm::vec3(1001.0f));
 	}
 
-
+	/*
+	Destructible Buildings
+		Alien particle effects
+			Animated to run!
+			disappear in a ring -explosion dealio
+	*/
 	void Game::MainLoop(void) {
 
 		// Loop while the user did not close the window
