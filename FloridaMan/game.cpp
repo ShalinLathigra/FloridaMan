@@ -205,8 +205,8 @@ void Game::GetKeyStates(GLFWwindow* window){
     }
 
     // View control
-    float rot_factor(glm::pi<float>() / 180);
-    float trans_factor = 1.0;
+    float rot_factor(glm::pi<float>() / 360);
+    float trans_factor = 0.5;
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
         game->camera_.Pitch(rot_factor);
@@ -220,25 +220,25 @@ void Game::GetKeyStates(GLFWwindow* window){
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
         game->camera_.Yaw(-rot_factor);
     }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS){
         game->camera_.Roll(-rot_factor);
     }
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS){
         game->camera_.Roll(rot_factor);
     }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
         game->camera_.Translate(game->camera_.GetForward()*trans_factor);
         game->skybox_->Translate(game->camera_.GetForward()*trans_factor);
     }
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
         game->camera_.Translate(-game->camera_.GetForward()*trans_factor);
         game->skybox_->Translate(-game->camera_.GetForward()*trans_factor);
     }
-    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
         game->camera_.Translate(-game->camera_.GetSide()*trans_factor);
         game->skybox_->Translate(-game->camera_.GetSide()*trans_factor);
     }
-    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
         game->camera_.Translate(game->camera_.GetSide()*trans_factor);
         game->skybox_->Translate(game->camera_.GetSide()*trans_factor);
     }
