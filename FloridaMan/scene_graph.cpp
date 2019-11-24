@@ -33,22 +33,37 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 }
  
 
-SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap){
+SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap, bool add){
 
     // Create scene node with the specified resources
 	SceneNode *scn;
+	SceneNode *child;
 	
 	switch (type)
 	{
-	case(0): scn = new StaticEntity(node_name, geometry, material, texture, envmap); break;
-	case(1): scn = new GroundEntity(node_name, geometry, material, texture, envmap); break;
-	case(2): scn = new AirEntity(node_name, geometry, material, texture, envmap); break;
-	case(3): scn = new Mine(node_name, geometry, material, texture, envmap); break;
-	default: scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
+	case(EntityType::Static):
+		scn = new StaticEntity(node_name, geometry, material, texture, envmap); 
+		//This thing needs a child node
+		break;
+	case(EntityType::Ground):
+		scn = new GroundEntity(node_name, geometry, material, texture, envmap); 
+		break;
+	case(EntityType::Air):
+		scn = new AirEntity(node_name, geometry, material, texture, envmap); 
+		break;
+	case(EntityType::MineInstance):
+		scn = new Mine(node_name, geometry, material, texture, envmap); 
+		break;
+	case(EntityType::Destructible):
+		//break;
+	default:
+		scn = new SceneNode(node_name, geometry, material, texture, envmap);
+		break;
 	}
-	std::cout << type << std::endl;
+	//std::cout << type << std::endl;
     // Add node to the scene
-	m_pRootNode->AddChild(scn);
+	if (add)
+		m_pRootNode->AddChild(scn);
 
     return scn;
 }

@@ -12,6 +12,10 @@
 #include <stdexcept>
 
 // This namespace contains a number of useful functions for a variety of different purposes, including creating 3D models, and random number generation.
+namespace game
+{
+	enum EntityType { Static, Ground, Air, MineInstance, Destructible, Default = -1 };
+}
 namespace utilities
 {
 	inline glm::vec3 RotateVecByQuat(glm::vec3 vec, glm::quat q) {

@@ -112,7 +112,7 @@ namespace game
 
 	void AirEntity::MaintainY(glm::vec3 target_pos, float deltaTime)
 	{
-		desired_y_ = target_pos.y + y_offset_[off_index_];
+		desired_y_ = glm::max ( target_pos.y + y_offset_[off_index_], 60.0f);
 
 		float y_vel = desired_y_ - position_.y;
 

@@ -14,11 +14,11 @@
 #include "asteroid.h"
 #include "mine.h"
 #include "air_entity.h"
+#include "utilities.h"
 
 
 namespace game {
 
-	enum EntityType { Static, Ground, Air, MineInstance, Default=-1 };
 
     // Exception type for the game
     class GameException: public std::exception
@@ -86,7 +86,8 @@ namespace game {
             void CreateAsteroidField(int num_asteroids = 1500);
 
             // Create an instance of an object stored in the resource manager
-			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
+			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""), bool add=true);
+			SceneNode *Game::CreateDestructibleDefault(void);
 			void CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
     }; // class Game
