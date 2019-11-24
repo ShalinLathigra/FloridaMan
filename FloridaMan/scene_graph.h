@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include "air_entity.h"
 #include "mine.h"
+#include "bomb.h"
 #include "resource.h"
 #include "camera.h"
 
@@ -56,6 +57,9 @@ namespace game {
 
             // Update entire scene
             void Update(float deltaTime);
+
+			//Check for nodes to be removed from hierarchy
+			void RemoveNodes();
 
             // Drawing from/to a texture
             // Setup the texture

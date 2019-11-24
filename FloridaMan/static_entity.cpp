@@ -50,7 +50,7 @@ namespace game
 	void StaticEntity::Idle(float deltaTime)
 	{
 		idle_timer_ = glm::max(idle_timer_ - deltaTime, 0.0f);
-		std::cout << idle_timer_ << std::endl;
+		//std::cout << idle_timer_ << std::endl;
 		if (idle_timer_ == 0.0f)
 		{
 			state_ = State::Patrol;

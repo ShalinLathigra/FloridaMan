@@ -20,9 +20,11 @@ set(HDRS
 	scene_node.h
 	static_entity.h
 	utilities.h
+	bomb.h
 )
  
 set(SRCS
+	bomb.cpp
 	air_entity.cpp 
 	asteroid.cpp 
 	camera.cpp 

@@ -41,6 +41,7 @@ namespace game {
 
 		// Set variables
 		animating_ = true;
+		count_ = 0;
 	}
 
 
@@ -73,6 +74,10 @@ namespace game {
 		if (err != GLEW_OK) {
 			throw(GameException(std::string("Could not initialize the GLEW library: ") + std::string((const char *)glewGetErrorString(err))));
 		}
+	}
+
+	SceneGraph* Game::GetGraph() {
+		return &scene_;
 	}
 
 	void Game::InitView(void) {
@@ -149,7 +154,7 @@ namespace game {
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
-		CreateEntity(EntityType::Static, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
+		//CreateEntity(EntityType::Static, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
 		CreateEntity(EntityType::Ground, glm::vec3(1.0, 0.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
 		CreateEntity(EntityType::Air, glm::vec3(1.0, 5.0, -10.0), glm::vec3(1.5, 0.5, 1.5));
 
@@ -188,6 +193,9 @@ namespace game {
 					last_time = current_time;
 				}
 			}
+
+			//Check for any nodes/entities to be removed
+			scene_.RemoveNodes();
 
 			// Draw the scene
 			scene_.Draw(&camera_);
@@ -274,7 +282,11 @@ namespace game {
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-			//game->CreateEntity(EntityType::MineInstance, game->camera_.GetPosition(), glm::vec3(1.5));
+			game->CreateEntity(EntityType::MineInstance, game->camera_.GetPosition(), glm::vec3(1.5));
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+			game->CreateEntity(EntityType::Bomb, game->camera_.GetPosition(), glm::vec3(1.0));
 		}
 	}
 
@@ -393,15 +405,23 @@ namespace game {
 			envmap_name = std::string("");
 			isEnemy = false;
 			break;
+		case(Bomb):
+			entity_name = std::string("Bomb") + std::to_string(count_);
+			object_name = std::string("CubeMesh");
+			material_name = std::string("ShinyMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("");
+			isEnemy = false;
+			break;
 		}
 
 		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
 		scn->SetPosition(pos);
 		scn->SetScale(scale);
+		((Entity*)scn)->SetGame(this);
 
 		if (isEnemy) {
 			((Entity*)scn)->SetTarget(&camera_);
-			((Entity*)scn)->SetGame(this);
 		}
 	}
 

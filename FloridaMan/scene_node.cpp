@@ -61,6 +61,10 @@ namespace game {
 		skybox_ = false;
 	}
 
+	void SceneNode::SetGame(Game *game) {
+		game_ = game;
+	}
+
 	SceneNode::SceneNode(const std::string name)
 	{
 		name_ = name;
@@ -104,6 +108,16 @@ namespace game {
 			}
 		}
 		return nullptr;
+	}
+
+	bool SceneNode::checkIfDestroy() {
+		return set_toDestroy;
+	}
+
+	void SceneNode::RemoveChildAt(int index) {
+		if (m_childNodes[index]->m_childNodes.empty()) {
+			m_childNodes.erase(m_childNodes.begin() + index);
+		}
 	}
 
 	SceneNode::~SceneNode() {

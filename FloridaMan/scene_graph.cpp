@@ -44,9 +44,10 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 	case(1): scn = new GroundEntity(node_name, geometry, material, texture, envmap); break;
 	case(2): scn = new AirEntity(node_name, geometry, material, texture, envmap); break;
 	case(3): scn = new Mine(node_name, geometry, material, texture, envmap); break;
+	case(4): scn = new Bomb(node_name, geometry, material, texture, envmap); break;
 	default: scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
 	}
-	std::cout << type << std::endl;
+	//std::cout << type << std::endl;
     // Add node to the scene
 	m_pRootNode->AddChild(scn);
 
@@ -64,6 +65,16 @@ SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
 	return m_pRootNode->FindChild(node_name);
 
+}
+
+void SceneGraph::RemoveNodes() {
+
+	for (int i = 0; i < m_pRootNode->GetChildren().size(); i++){
+		if (m_pRootNode->GetChildren()[i]->checkIfDestroy() == true) {
+			m_pRootNode->RemoveChildAt(i);
+			i--;
+		}
+	}
 }
 
 void SceneGraph::Draw(Camera *camera){
