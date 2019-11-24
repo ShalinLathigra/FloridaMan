@@ -15,6 +15,8 @@
 
 namespace game {
 
+	class Game;
+
     // Class that manages one object in a scene 
     class SceneNode {
 
@@ -60,13 +62,18 @@ namespace game {
             GLsizei GetSize(void) const;
             GLuint GetMaterial(void) const;
 
+			bool checkIfDestroy();
 			SceneNode* GetParent();
 			void SetParent(SceneNode* pParent);
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
+			void RemoveChildAt(int index);
+			virtual void SetGame(Game* g);
+
         protected:
             std::string name_; // Name of the scene node
+			Game* game_; //pointer to game instance because we don't have a game manager :(
             GLuint array_buffer_; // References to geometry: vertex and array buffers
             GLuint element_array_buffer_;
             GLenum mode_; // Type of geometry
@@ -80,6 +87,7 @@ namespace game {
 			bool skybox_; //Is skybox or not
             bool blending_; // Draw with blending or not
 			bool m_isVisible;//Is the node visible or not
+			bool set_toDestroy = false; //Check if this node needs to be removed
 			SceneNode *m_pParentNode;
 			std::vector<SceneNode*> m_childNodes;
             // Set matrices that transform the node in a shader program
