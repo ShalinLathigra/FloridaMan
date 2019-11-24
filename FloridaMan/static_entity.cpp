@@ -11,7 +11,6 @@ namespace game
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_radius_ = 150.0f;
 		chase_angle_ = 0.7f;
-
 		attack_angle_ = 0.975f;
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;

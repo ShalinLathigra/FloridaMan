@@ -167,10 +167,10 @@ namespace game {
 
 
 	void Game::SetupScene(void) {
-
+		
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
-		
+
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
@@ -253,7 +253,6 @@ namespace game {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glfwSetWindowShouldClose(window, true);
 		}
-		
 		// View control
 		float rot_factor(glm::pi<float>() / 360);
 		float trans_factor = 0.5;
@@ -322,23 +321,23 @@ namespace game {
 		glfwTerminate();
 	}
 
-	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
-
+	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) 
+	{
 		Resource *geom = resman_.GetResource(object_name);
 		if (!geom) {
-			throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
+			throw(GameException(std::string("Could not find Geometry \"") + object_name + std::string("\"")));
 		}
 
 		Resource *mat = resman_.GetResource(material_name);
 		if (!mat) {
-			throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+			throw(GameException(std::string("Could not find Material \"") + material_name + std::string("\"")));
 		}
 
 		Resource *tex = NULL;
 		if (texture_name != "") {
 			tex = resman_.GetResource(texture_name);
 			if (!tex) {
-				throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+				throw(GameException(std::string("Could not find Texture \"") + material_name + std::string("\"")));
 			}
 		}
 
@@ -346,7 +345,7 @@ namespace game {
 		if (envmap_name != "") {
 			envmap = resman_.GetResource(envmap_name);
 			if (!envmap) {
-				throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
+				throw(GameException(std::string("Could not find Envmap \"") + envmap_name + std::string("\"")));
 			}
 		}
 		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap);
@@ -373,10 +372,10 @@ namespace game {
 			break;
 		case(Ground):
 			entity_name = std::string("GroundEntity") + std::to_string(count_++);
-			object_name = std::string("TorusMesh");
-			material_name = std::string("EnvMapMaterial");
+			object_name = std::string("SphereMesh");
+			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
-			envmap_name = std::string("LakeCubeMap");
+			envmap_name = std::string("");
 			break;
 		case(Air):
 			entity_name = std::string("AirEntity") + std::to_string(count_++);
@@ -386,7 +385,7 @@ namespace game {
 			envmap_name = std::string("");
 			break;
 		case(MineProj):
-			entity_name = std::string("MineInstance") + std::to_string(count_++);
+			entity_name = std::string("Mine") + std::to_string(count_++);
 			object_name = std::string("SphereMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
@@ -432,7 +431,6 @@ namespace game {
 		{
 			scn->SetPosition(pos);
 		}
-
 		scn->SetScale(scale);
 		scn->SetGame(this);
 

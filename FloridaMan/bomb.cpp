@@ -29,7 +29,7 @@ namespace game
 		//if (glm::length(target_->GetPosition() - this->GetPosition()) <= 1.5f)
 		//	state_ = BombState::BombBoom;
 
-		std::cout << "Falling" << std::endl;
+		//std::cout << "Falling" << std::endl;
 		velocity_ += glm::vec3(0, -0.5f, 0);
 		this->position_ += velocity_*deltaTime;
 

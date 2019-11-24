@@ -19,7 +19,6 @@
 
 
 namespace game {
-
     // Exception type for the game
     class GameException: public std::exception
     {
