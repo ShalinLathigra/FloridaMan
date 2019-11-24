@@ -10,6 +10,7 @@ set(HDRS
 	asteroid.h 
 	entity.h 
 	camera.h 
+	destructible_entity.h 
 	game.h 
 	ground_entity.h 
 	mine.h
@@ -30,6 +31,7 @@ set(SRCS
 	air_entity.cpp 
 	asteroid.cpp 
 	camera.cpp 
+	destructible_entity.cpp
 	entity.cpp 
 	game.cpp 
 	ground_entity.cpp 

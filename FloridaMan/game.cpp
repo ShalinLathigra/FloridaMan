@@ -156,15 +156,41 @@ namespace game {
 
 	void Game::SetupScene(void) {
 
+		//size = 1000x1000
+		// divide into 10x10 regions
+		// size = 100x100
+		float dim = 1000.0f;
+		float scale = 75.0f;
+		for (float x = -dim/scale; x < dim / scale; x++)
+		{
+			for (float z = -dim / scale; z < dim / scale; z++)
+			{
+				//random number 1 to 3.
+				;
+				int current = ((int)x * (int)z) % 4;
+				switch (current)
+				{
+				case(0):
+					CreateEntity(EntityType::Default, glm::vec3(x * scale, 10, z * scale), glm::vec3(10, 20, 10));
+					break;
+				case(1):
+					CreateEntity(EntityType::Static, glm::vec3(x * scale, 0.0f, z * scale), glm::vec3(6));
+					break;
+				case(2):
+					CreateEntity(EntityType::Ground, glm::vec3(x * scale, 0.0f, z * scale), glm::vec3(7, 5, 30));
+					break;
+				case(3):
+					CreateEntity(EntityType::Air, glm::vec3(x * scale, scale, z * scale), glm::vec3(10.0, 1.0, 15.0));
+					break;
+				}
+			}
+		}
+
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
-
-		//CreateEntity(EntityType::Static, glm::vec3(1.0, 1.0, -10.0), glm::vec3(1.5, 1.5, 1.5));
-		CreateEntity(EntityType::Ground, glm::vec3(1.0, 0.0, -10.0), glm::vec3(1.0, 1.5, 1.5));
-		CreateEntity(EntityType::Air, glm::vec3(1.0, 5.0, -10.0), glm::vec3(1.5, 0.5, 1.5));
-
+		
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
-		wall->SetPosition(glm::vec3(0.0f, -0.7f, 0.0f));
+		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 
@@ -197,10 +223,8 @@ namespace game {
 				if (deltaTime > 0.01) {
 					GetKeyStates(window_);
 					scene_.Update(deltaTime);
-
 					last_time = current_time;
 				}
-			}
 
 			//Check for any nodes/entities to be removed
 			scene_.RemoveNodes();
@@ -208,14 +232,14 @@ namespace game {
 			// Draw the scene
 			scene_.Draw(&camera_);
 
-			// Push buffer drawn in the background onto the display
-			glfwSwapBuffers(window_);
+				// Push buffer drawn in the background onto the display
+				glfwSwapBuffers(window_);
 
-			// Update other events like input handling
-			glfwPollEvents();
+				// Update other events like input handling
+				glfwPollEvents();
+			}
 		}
 	}
-
 
 	void Game::ResizeCallback(GLFWwindow* window, int width, int height) {
 
@@ -238,9 +262,9 @@ namespace game {
 		}
 
 		// Stop animation if space bar is pressed
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			// game->animating_ = (game->animating_ == true) ? false : true;
-		}
+		//if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+		//	 game->animating_ = (game->animating_ == true) ? false : true;
+		//}
 
 		// View control
 		float rot_factor(glm::pi<float>() / 360);
@@ -290,11 +314,11 @@ namespace game {
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-			game->CreateEntity(EntityType::MineInstance, game->camera_.GetPosition(), glm::vec3(1.5));
+			game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5));
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
-			game->CreateEntity(EntityType::Bomb, game->camera_.GetPosition(), glm::vec3(1.0));
+			game->CreateEntity(EntityType::BombProj, game->camera_.GetPosition(), glm::vec3(1.0));
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
@@ -353,7 +377,7 @@ namespace game {
 	}
 
 
-	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
+	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name, bool add) {
 
 		Resource *geom = resman_.GetResource(object_name);
 		if (!geom) {
@@ -380,9 +404,10 @@ namespace game {
 				throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
 			}
 		}
-		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap);
+		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap, add);
 		return scn;
 	}
+
 
 	void Game::CreateEntity(int type, glm::vec3 pos, glm::vec3 scale)
 	{
@@ -390,38 +415,40 @@ namespace game {
 		std::string entity_name, object_name, material_name, texture_name, envmap_name;
 		bool isEnemy = true;
 		bool isProjectile = false;
+		bool child = false;
 		switch (type)
 		{
 		case(Static):
-			entity_name = std::string("StaticEntity") + std::to_string(count_);
+			entity_name = std::string("StaticEntity") + std::to_string(count_++);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("EnvMapMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("LakeCubeMap");
+			child = true;
 			break;
 		case(Ground):
-			entity_name = std::string("GroundEntity") + std::to_string(count_);
+			entity_name = std::string("GroundEntity") + std::to_string(count_++);
 			object_name = std::string("TorusMesh");
 			material_name = std::string("EnvMapMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("LakeCubeMap");
 			break;
 		case(Air):
-			entity_name = std::string("AirEntity") + std::to_string(count_);
+			entity_name = std::string("AirEntity") + std::to_string(count_++);
 			object_name = std::string("SphereMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
 			break;
-		case(MineInstance):
-			entity_name = std::string("MineInstance") + std::to_string(count_);
+		case(MineProj):
+			entity_name = std::string("MineInstance") + std::to_string(count_++);
 			object_name = std::string("SphereMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
 			isEnemy = false;
 			break;
-		case(Bomb):
+		case(BombProj):
 			entity_name = std::string("Bomb") + std::to_string(count_);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("ShinyMaterial");
@@ -438,10 +465,29 @@ namespace game {
 			isEnemy = false;
 			isProjectile = true;
 			break;
+		default:
+			entity_name = std::string("SceneNode") + std::to_string(count_++);
+			object_name = std::string("CubeMesh");
+			material_name = std::string("EnvMapMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("LakeCubeMap");
+			break;
 		}
 
-		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
-		scn->SetPosition(pos);
+		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name, !child);
+
+		if (child)
+		{
+			SceneNode *p = CreateDestructibleDefault();
+			p->AddChild(scn);
+			p->SetPosition(glm::vec3(pos.x, p->GetScale().y/2.0f, pos.z));
+			scn->SetPosition(glm::vec3(0, (p->GetScale().y) / 2.0f + scale.y, 0));
+		}
+		else
+		{
+			scn->SetPosition(pos);
+		}
+
 		scn->SetScale(scale);
 		scn->SetGame(this);
 
@@ -455,4 +501,43 @@ namespace game {
 		}
 	}
 
+	SceneNode *Game::CreateDestructibleDefault(void) {
+
+		std::string entity_name = std::string("DestructibleInstance") + std::to_string(count_);
+		std::string object_name = std::string("CubeMesh");
+		std::string material_name = std::string("ShinyMaterial");
+		std::string texture_name = std::string("");
+		std::string envmap_name = std::string("");
+
+		Resource *geom = resman_.GetResource(object_name);
+		if (!geom) {
+			throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
+		}
+
+		Resource *mat = resman_.GetResource(material_name);
+		if (!mat) {
+			throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+		}
+
+		Resource *tex = NULL;
+		if (texture_name != "") {
+			tex = resman_.GetResource(texture_name);
+			if (!tex) {
+				throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+			}
+		}
+
+		Resource *envmap = NULL;
+		if (envmap_name != "") {
+			envmap = resman_.GetResource(envmap_name);
+			if (!envmap) {
+				throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
+			}
+		}
+		SceneNode *scn = scene_.CreateNode(EntityType::Default, entity_name, geom, mat, tex, envmap);
+		scn->SetPosition(glm::vec3(-13, 10.0, -10));
+		scn->SetScale(glm::vec3(10.0f, 20.0f, 10.0f));
+		count_++;
+		return scn;
+	}
 } // namespace game
