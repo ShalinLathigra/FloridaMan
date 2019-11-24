@@ -32,23 +32,23 @@ namespace game
 
 	void Entity::Idle(float deltaTime)
 	{
-		std::cout << "Idling! " << std::endl;
+		//std::cout << "Idling! " << std::endl;
 	}
 	void Entity::Patrol(float deltaTime)
 	{
-		std::cout << "Patrolling! " << std::endl;
+		//std::cout << "Patrolling! " << std::endl;
 	}
 	void Entity::Chase(float deltaTime)
 	{
-		std::cout << "Chasing! " << std::endl;
+		//std::cout << "Chasing! " << std::endl;
 	}
 	void Entity::Attack(float deltaTime)
 	{
-		std::cout << "Attacking! " << std::endl;
+		//std::cout << "Attacking! " << std::endl;
 	}
 	void Entity::Die(float deltaTime)
 	{
-		std::cout << "Dieing! " << std::endl;
+		//std::cout << "Dieing! " << std::endl;
 	}
 	void Entity::TakeDamage(float amount)
 	{
