@@ -40,6 +40,9 @@ namespace game
 		float chase_radius_;
 		float chase_angle_;
 		float attack_angle_;
+
+		float chase_timer_;
+		float max_chase_timer_;
 	};
 }
 

@@ -6,9 +6,11 @@ namespace game
 
 	AirEntity::AirEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : GroundEntity(name, geometry, material, texture, envmap)
 	{
+		chase_radius_ = 120.0f;
+		chase_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0, 1, 0));
+
 		attack_angle_ = 0.99f;
-		attack_radius_ = 30.0f;
-		chase_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0, 1, 0));
+		attack_radius_ = 60.0f;
 
 		mid_y_ = 10.f;
 		y_offset_[0] = -5.0f;
@@ -22,7 +24,7 @@ namespace game
 		max_off_timer_ = 2.5f;
 
 		y_speed_ = 0.75f;
-		speed_ = 9.0f;
+		speed_ = 27.0f;
 	}
 	AirEntity::~AirEntity()
 	{
@@ -58,10 +60,11 @@ namespace game
 	void AirEntity::Patrol(float deltaTime)
 	{
 		//X-z movement covered here. I need to re-work ywards movement
+
 		GroundEntity::Patrol(deltaTime);
 
 		AssessYOffset(deltaTime);
-		MaintainY(target_->GetPosition(), deltaTime);
+		MaintainY(mid_y_, deltaTime);
 
 		SetState();
 	}
@@ -70,7 +73,7 @@ namespace game
 		GroundEntity::Chase(deltaTime);
 
 		AssessYOffset(deltaTime);
-		MaintainY(target_->GetPosition(), deltaTime);
+		MaintainY(target_->GetPosition().y, deltaTime);
 
 		SetState();
 	}
@@ -82,7 +85,7 @@ namespace game
 		StaticEntity::Chase(deltaTime);
 
 		AssessYOffset(deltaTime);
-		MaintainY(target_->GetPosition(), deltaTime);
+		MaintainY(target_->GetPosition().y, deltaTime);
 		GroundEntity::Attack(deltaTime);
 		SetState();
 		
@@ -110,9 +113,9 @@ namespace game
 		}
 	}
 
-	void AirEntity::MaintainY(glm::vec3 target_pos, float deltaTime)
+	void AirEntity::MaintainY(float target_y, float deltaTime)
 	{
-		desired_y_ = glm::max ( target_pos.y + y_offset_[off_index_], 60.0f);
+		desired_y_ = glm::max ( target_y + y_offset_[off_index_], 60.0f);
 
 		float y_vel = desired_y_ - position_.y;
 
