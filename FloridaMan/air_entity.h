@@ -21,7 +21,7 @@ namespace game
 
 
 		void SetState();
-		void MaintainY(glm::vec3 target_pos, float deltaTime);
+		void MaintainY(float target_y, float deltaTime);
 		void AssessYOffset(float deltaTime);
 
 

@@ -9,11 +9,16 @@ namespace game
 
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
-		chase_radius_ = 75.0f;
+		chase_radius_ = 150.0f;
 		chase_angle_ = 0.7f;
+
 		attack_angle_ = 0.975f;
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;
+
+		max_chase_timer_ = 10.0f;
+		chase_timer_ = max_chase_timer_;
+
 	}
 	StaticEntity::~StaticEntity()
 	{
@@ -69,6 +74,7 @@ namespace game
 			{
 				//std::cout << "PATROL: " << dot << " " << chase_angle_ << std::endl;
 				state_ = State::Chase;
+				chase_timer_ = max_chase_timer_;
 			}
 		}
 
@@ -76,6 +82,12 @@ namespace game
 	void StaticEntity::Chase(float deltaTime)
 	{
 		//Need to rotate such that the dot product increases.
+
+		chase_timer_ = glm::max(chase_timer_ - deltaTime, 0.0f);
+		if (chase_timer_ == 0.0f)
+		{
+			state_ = State::Patrol;
+		}
 
 		glm::vec3 to_target = glm::vec3(target_->GetPosition().x, 0.0, target_->GetPosition().z) - glm::vec3(position_.x, 0, position_.z);
 		float dist_to_target = glm::length(to_target);
@@ -110,6 +122,7 @@ namespace game
 		{
 			state_ = State::Patrol;
 		}
+
 	}
 
 	void StaticEntity::Attack(float deltaTime)
@@ -123,6 +136,7 @@ namespace game
 		if (dot < attack_angle_)
 		{
 			state_ = State::Chase;
+			chase_timer_ = max_chase_timer_;
 		}
 		
 		if (dist_to_target > chase_radius_)

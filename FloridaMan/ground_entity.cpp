@@ -6,15 +6,15 @@ namespace game
 
 	GroundEntity::GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEntity(name, geometry, material, texture, envmap)
 	{
-		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0.0, 1.0, 0.0));
-		chase_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;
 
-		chase_radius_ = 120.0f;
+		chase_radius_ = 180.0f;
 		chase_angle_ = 0.7f;
 
-		attack_radius_ = 30.0f;
+		attack_radius_ = 100.0f;
 		attack_angle_ = 0.99f;
 		max_num_attacks_ = 4;
 		num_attacks_ = max_num_attacks_;
@@ -27,7 +27,7 @@ namespace game
 		vel_ = 0.0f;	// Rate of position change
 		max_vel_ = 15.0f;	// Rate of position change
 
-		speed_ = 6.0f;
+		speed_ = 18.0f;
 	}
 	GroundEntity::~GroundEntity()
 	{
@@ -113,7 +113,7 @@ namespace game
 		}
 
 
-		if (dist_to_target < attack_radius_ / 2.0f)
+		if (dist_to_target < attack_radius_ * 4.0f / 5.0f)
 		{
 			vel_ = glm::max(vel_ - dec_, 0.0f);
 			state_ = State::Attack;
