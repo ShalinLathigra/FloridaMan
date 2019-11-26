@@ -28,13 +28,15 @@ namespace game {
 	void EntityStructure::Update(float deltaTime)
 	{
 
+		//std::cout << GetName() << " " << m_EntityTimer  << ": " << m_EntityCount << "<=" << MAX_CHILDREN << std::endl;
 		if (m_EntityCount < MAX_CHILDREN)
 		{
 			if (m_EntityTimer <= 0.0f)
 			{
 				SceneNode *c = CreateEntity();
-				//game_->AddNode(c);
+				game_->AddNode(c);
 				m_EntityTimer = MAX_SPAWN_TIMER;
+				m_EntityCount++;
 			}
 			else
 			{
@@ -44,31 +46,31 @@ namespace game {
 	}
 	SceneNode* EntityStructure::CreateEntity()
 	{
-		Entity* scn;
+		SceneNode* scn;
 		glm::vec3 pos, scale;
 		std::string mid;
 
-		if (m_type == 0)
+		if (m_type == EntityType::Turret)
 		{
 			//Spawn at position + 1/2 scale + 1/2 entity scale
 			scale = glm::vec3(10);
-			pos = GetPosition() + GetScale().y + scale.y / 2.0f;
+			pos = GetPosition() + glm::vec3(0, GetScale().y + scale.y / 2.0f, 0);
 			mid = std::string("_Turret_");
 			scn = new TurretNode(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
 		}
-		else if (m_type == 1)
+		else if (m_type == EntityType::Ground)
 		{
 			//Spawn at position + 1/2 scale + 1/2 entity scale
-			scale = glm::vec3(10);
+			scale = glm::vec3(15, 5, 25);
 			pos = GetPosition() - GetScale().y / 2.0f + scale.y;
 			mid = std::string("_Ground_");
 			scn = new GroundEntity(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
 		}
-		else
+		else if (m_type == EntityType::Air)
 		{
 			//Spawn at position + 1/2 scale + 1/2 entity scale
-			scale = glm::vec3(10);
-			pos = GetPosition() + GetScale().y + scale.y / 2.0f;
+			scale = glm::vec3(6, 1, 10);
+			pos = GetPosition() + glm::vec3(0, GetScale().y + scale.y / 2.0f, 0);
 			mid = std::string("_Air_");
 			scn = new AirEntity(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
 		}
@@ -76,9 +78,9 @@ namespace game {
 		scn->SetPosition(pos);
 		scn->SetScale(scale);
 		scn->SetOrientation(GetOrientation());
-		scn->SetTarget(game_->GetCamera());
 		scn->SetGame(game_);
 		scn->SetType(m_type);
+		((Entity*)scn)->SetTarget(game_->GetCamera());
 
 		return scn;
 	}
