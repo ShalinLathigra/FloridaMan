@@ -142,6 +142,9 @@ namespace game {
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/textured_material");
 		resman_.LoadResource(Material, "TexturedMaterial", filename.c_str());
+		// Load material to be applied to torus
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/toon_material");
+		resman_.LoadResource(Material, "ToonMaterial", filename.c_str());
 
 
 		// Load material to be applied to torus
@@ -189,7 +192,6 @@ namespace game {
 	}
 
 	void Game::MainLoop(void) {
-
 
 		camera_.InitPlayer(&resman_);
 		scene_.AddNode((SceneNode*)(camera_.GetPlayer()));
@@ -384,7 +386,7 @@ namespace game {
 		case(Air):
 			entity_name = std::string("AirEntity") + std::to_string(count_++);
 			object_name = std::string("SphereMesh");
-			material_name = std::string("ShinyMaterial");
+			material_name = std::string("ToonMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
 			break;
