@@ -7,8 +7,6 @@ namespace game
 {
 	enum State { Idle, Patrol, Chase, Attack, Die};
 
-	class Game;
-
 	//Entity Superclass
 	class Entity :
 		public SceneNode
@@ -33,12 +31,10 @@ namespace game
 		glm::vec3 GetUp(void);
 		void SetState(State state);
 		void SetTarget(Camera* target);
-		void SetGame(Game* g);
 
 	protected:
 		State state_;
 		Camera* target_;
-		Game* game_;
 		glm::vec3 forward_;
 		glm::vec3 up_;
 		float hp_;

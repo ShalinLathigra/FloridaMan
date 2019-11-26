@@ -14,7 +14,7 @@
 // This namespace contains a number of useful functions for a variety of different purposes, including creating 3D models, and random number generation.
 namespace game
 {
-	enum EntityType { Static, Ground, Air, MineInstance, Destructible, Default = -1 };
+	enum EntityType { Turret, Ground, Air, MineInstance, Destructible, TurretSpawn, GroundSpawn, AirSpawn, Default };
 }
 namespace utilities
 {
@@ -44,6 +44,11 @@ namespace utilities
 		return (((float)(rand() % 100) + 1.0f) / 100.0f);
 	}
 
+	inline glm::quat RandQuat(glm::vec3 axis)
+	{
+		return glm::angleAxis((((float)(rand() % 100) + 1.0f) / 100.0f)*glm::pi<float>()*2.0f, axis);
+	}
+	
 	inline float Clamp(float in, float low, float high)
 	{
 		return (in < low) ? low : (in > high) ? high : in;

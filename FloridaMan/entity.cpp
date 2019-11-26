@@ -84,8 +84,4 @@ namespace game
 	{
 		target_ = target;
 	}
-	void Entity::SetGame(Game* game)
-	{
-		game_ = game;
-	}
 }

@@ -4,7 +4,7 @@
 namespace game
 {
 
-	GroundEntity::GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEntity(name, geometry, material, texture, envmap)
+	GroundEntity::GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : TurretNode(name, geometry, material, texture, envmap)
 	{
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
@@ -40,7 +40,7 @@ namespace game
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			StaticEntity::Idle(deltaTime);
+			TurretNode::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
@@ -56,7 +56,7 @@ namespace game
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			StaticEntity::Die(deltaTime);
+			TurretNode::Die(deltaTime);
 			break;
 		}
 	}

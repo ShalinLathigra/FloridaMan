@@ -14,7 +14,7 @@ vec4 specular_albedo = vec4(0.8, 0.5, 0.9, 1.0);
 float phong_exponent = 64.0;
 float Ia = 0.2; // Ambient light amount
 
-
+uniform int type;
 void main() 
 {
     vec3 N, // Interpolated normal for fragment
@@ -44,7 +44,18 @@ void main()
         
     // Assign illumination to the fragment
     gl_FragColor = Ia*ambient_albedo + Id*diffuse_albedo + Is*specular_albedo;
-                    
+    if (type == 0)
+	{
+	gl_FragColor = gl_FragColor.bbga;
+	}
+	if (type == 1)
+	{
+	gl_FragColor = gl_FragColor.brga;
+	}
+	if (type == 2)
+	{
+	gl_FragColor = gl_FragColor.rbga;
+	}
     // For debug, we can display the different values
     //gl_FragColor = ambient_albedo;
     //gl_FragColor = diffuse_albedo;

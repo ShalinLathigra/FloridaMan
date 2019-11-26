@@ -15,6 +15,7 @@
 
 namespace game {
 
+	class Game;
     // Class that manages one object in a scene 
     class SceneNode {
 
@@ -65,6 +66,9 @@ namespace game {
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
+
+			inline void SetType(int type) { type_ = type; }
+			void SetGame(Game* g);
         protected:
             std::string name_; // Name of the scene node
             GLuint array_buffer_; // References to geometry: vertex and array buffers
@@ -86,6 +90,8 @@ namespace game {
             void SetupShader(GLuint program, Camera *camera);
 			glm::mat4 GetParentTransform();
 
+			int type_;
+			Game* game_;
     }; // class SceneNode
 
 } // namespace game

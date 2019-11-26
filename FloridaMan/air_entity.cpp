@@ -36,7 +36,7 @@ namespace game
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			StaticEntity::Idle(deltaTime);
+			TurretNode::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
@@ -52,7 +52,7 @@ namespace game
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			StaticEntity::Die(deltaTime);
+			TurretNode::Die(deltaTime);
 			break;
 		}
 	}
@@ -82,7 +82,7 @@ namespace game
 	{
 		glm::vec3 right = glm::normalize(glm::cross(GetForward(), GetUp()));
 		Translate(5.0f * right * deltaTime);
-		StaticEntity::Chase(deltaTime);
+		TurretNode::Chase(deltaTime);
 
 		AssessYOffset(deltaTime);
 		MaintainY(target_->GetPosition().y, deltaTime);

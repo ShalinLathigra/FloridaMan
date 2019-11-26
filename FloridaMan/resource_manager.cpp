@@ -9,7 +9,8 @@
 #include "resource_manager.h"
 #include "model_loader.h"
 
-namespace game {
+namespace game
+{
 
 	ResourceManager::ResourceManager(void) {
 	}
