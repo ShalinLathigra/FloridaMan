@@ -149,28 +149,27 @@ namespace game {
 		//m_pRootNode->Update(deltaTime);
 		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
 		bool qx, qz;
-		for (int i = 0; i < quads.size(); i++)
+		for (std::vector<SceneNode*>::iterator it = quads.begin(); it != quads.end(); it++)
 		{
-			qx = (quads.at(i))->GetPosition().x > 0;
-			qz = (quads.at(i))->GetPosition().z > 0;
+			qx = (*it)->GetPosition().x > 0;
+			qz = (*it)->GetPosition().z > 0;
 
-			std::vector<SceneNode*> quad = (quads.at(i))->GetChildren();
+			std::vector<SceneNode*> quad = (*it)->GetChildren();
 
-			for (int j = 0; j < quad.size(); j++)
+			for (std::vector<SceneNode*>::iterator iter = quad.begin(); iter != quad.end(); iter++)
 			{
-				if ((quad.at(j))->GetUpdated() != update_state)
+				if ((*iter)->GetUpdated() != update_state)
 				{
-					(quad.at(j))->Update(deltaTime);
-					(quad.at(j))->SetUpdated(update_state);
+					(*iter)->Update(deltaTime);
+					(*iter)->SetUpdated(update_state);
 
-					bool x = (quad.at(j))->GetPosition().x > 0;
-					bool z = (quad.at(j))->GetPosition().z > 0;
+					bool x = (*iter)->GetPosition().x>0;
+					bool z = (*iter)->GetPosition().z>0;
 
-					//std::cout << x << qx << " " << z << qz << std::endl;
 					if (x != qx || z != qz)
 					{
-						//Remove this node
-						//Add back this node
+						//Remove node from this one, add it to another
+						//Perform Re-parenting logic here!
 					}
 				}
 			}

@@ -62,6 +62,7 @@ namespace game {
 
 		updated_ = false;
 	}
+
 	SceneNode::SceneNode(const std::string name)
 	{
 		name_ = name;

@@ -152,6 +152,12 @@ namespace game {
 		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
 
 
+
+		// Load material to be applied to torus
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle");
+		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
+
+
 		// Load cube map to be applied to skybox
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/mp_sist/sist.tga");
 		resman_.LoadResource(CubeMap, "LakeCubeMap", filename.c_str());
@@ -170,6 +176,10 @@ namespace game {
 		
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
+
+		//Want a new subclass of SceneNode: ParticleNode
+			//Will have override for setup shader and an attribute for color
+
 
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -441,6 +451,7 @@ namespace game {
 			((Shuriken*)scn)->SetSpawnPos(pos);
 
 		}
+
 		return scn;
 	}
 	

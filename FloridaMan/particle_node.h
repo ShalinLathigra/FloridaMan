@@ -1,3 +1,4 @@
+
 #ifndef PARTICLE_NODE_H_
 #define PARTICLE_NODE_H_
 
@@ -14,7 +15,6 @@
 
 namespace game {
 
-    // Abstraction of an asteroid
     class ParticleNode : public SceneNode {
 
         public:
