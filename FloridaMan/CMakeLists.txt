@@ -21,6 +21,7 @@ set(HDRS
 	static_entity.h
 	utilities.h
 	bomb.h
+	shuriken.h
 )
  
 set(SRCS
@@ -37,6 +38,7 @@ set(SRCS
 	resource_manager.cpp 
 	scene_graph.cpp 
 	scene_node.cpp 
+	shuriken.cpp
 	static_entity.cpp
 	utilties.cpp
 	material_fp.glsl 

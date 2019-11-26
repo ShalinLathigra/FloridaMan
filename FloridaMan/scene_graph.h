@@ -9,6 +9,7 @@
 #include "air_entity.h"
 #include "mine.h"
 #include "bomb.h"
+#include "shuriken.h"
 #include "resource.h"
 #include "camera.h"
 
