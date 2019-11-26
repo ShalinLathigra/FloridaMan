@@ -1,4 +1,6 @@
 #include "entity_structure.h"
+#include <iostream>
+#include "game.h"
 
 #include <iostream>
 #include "game.h"
@@ -34,7 +36,6 @@ namespace game {
 
 	void EntityStructure::Update(float deltaTime)
 	{
-
 		//std::cout << GetName() << " " << m_EntityTimer  << ": " << m_EntityCount << "<=" << MAX_CHILDREN << std::endl;
 		if (m_EntityCount < m_MaxEntityCount)
 		{

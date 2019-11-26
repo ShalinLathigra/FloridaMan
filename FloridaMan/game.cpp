@@ -183,7 +183,6 @@ namespace game {
 		skybox_->SetPosition(glm::vec3(0, 50, 0));
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
-		
 		CreateTowerField();
 	}
 
@@ -447,7 +446,7 @@ namespace game {
 	{
 		scene_.AddNode4(scn);
 	}
-
+	
 	Camera * Game::GetCamera(void)
 	{
 		return &camera_;
@@ -456,7 +455,8 @@ namespace game {
 	void Game::CreateTowerField(void)
 	{
 		float range = 1000;
-		float dim = 150;
+		//float dim = 150;
+		float dim = 500;
 		SceneNode *scn;
 		glm::vec3 scale;
 		std::string object_name, material_name, texture_name, envmap_name;
@@ -490,7 +490,6 @@ namespace game {
 					case(Air):
 						object_name = std::string("SphereMesh");
 					}
-					//material_name = std::string("ShinyMaterial");
 					material_name = std::string("ToonMaterial");
 					texture_name = std::string("");
 					envmap_name = std::string("");

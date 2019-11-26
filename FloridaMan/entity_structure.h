@@ -15,6 +15,7 @@
 #include "particle_node.h"
 
 #define MAX_SPAWN_TIMER 10.0f
+
 namespace game {
     // Abstraction of an EntityStructure
     class EntityStructure : public SceneNode {
