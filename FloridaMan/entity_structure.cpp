@@ -6,7 +6,8 @@ namespace game {
 
 	EntityStructure::EntityStructure(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap)
 	{
-		m_EntityTimer = MAX_SPAWN_TIMER;
+		m_EntityTimer = 0.0f;
+		m_MaxEntityCount = 3;
 		m_EntityCount = 0;
 	}
 
@@ -23,13 +24,15 @@ namespace game {
 		m_tex = tex;
 		m_env = env;
 
+		if (m_type == EntityType::Turret)
+			m_MaxEntityCount = 1;
 	}
 
 	void EntityStructure::Update(float deltaTime)
 	{
 
 		//std::cout << GetName() << " " << m_EntityTimer  << ": " << m_EntityCount << "<=" << MAX_CHILDREN << std::endl;
-		if (m_EntityCount < MAX_CHILDREN)
+		if (m_EntityCount < m_MaxEntityCount)
 		{
 			if (m_EntityTimer <= 0.0f)
 			{
@@ -46,7 +49,7 @@ namespace game {
 	}
 	SceneNode* EntityStructure::CreateEntity()
 	{
-		SceneNode* scn;
+		Entity* scn;
 		glm::vec3 pos, scale;
 		std::string mid;
 
@@ -69,18 +72,19 @@ namespace game {
 		else if (m_type == EntityType::Air)
 		{
 			//Spawn at position + 1/2 scale + 1/2 entity scale
-			scale = glm::vec3(6, 1, 10);
+			scale = glm::vec3(6, 5, 10);
 			pos = GetPosition() + glm::vec3(0, GetScale().y + scale.y / 2.0f, 0);
 			mid = std::string("_Air_");
 			scn = new AirEntity(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
 		}
 
 		scn->SetPosition(pos);
-		scn->SetScale(scale);
+		scn->SetScale(glm::vec3(0));
+		scn->SetEndScale(scale);
 		scn->SetOrientation(GetOrientation());
 		scn->SetGame(game_);
 		scn->SetType(m_type);
-		((Entity*)scn)->SetTarget(game_->GetCamera());
+		scn->SetTarget(game_->GetCamera());
 
 		return scn;
 	}

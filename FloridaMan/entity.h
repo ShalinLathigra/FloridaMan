@@ -31,6 +31,7 @@ namespace game
 		glm::vec3 GetUp(void);
 		void SetState(State state);
 		void SetTarget(Camera* target);
+		void SetEndScale(glm::vec3 end_scale);
 
 	protected:
 		State state_;
@@ -41,6 +42,8 @@ namespace game
 
 		float idle_timer_;
 		float max_idle_timer_;
+
+		glm::vec3 end_scale_;
 	};
 }
 #endif // Entity_H_
