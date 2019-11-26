@@ -146,11 +146,9 @@ namespace game {
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/toon_material");
 		resman_.LoadResource(Material, "ToonMaterial", filename.c_str());
 
-
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle");
 		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
-
 
 
 		// Load material to be applied to torus
