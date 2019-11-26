@@ -28,6 +28,10 @@ namespace game {
 
             // Scene nodes to render
 			SceneNode *m_pRootNode;
+			SceneNode *m_p1;
+			SceneNode *m_p2;
+			SceneNode *m_p3;
+			SceneNode *m_p4;
 
             // Frame buffer for drawing to texture
             GLuint frame_buffer_;
@@ -47,9 +51,10 @@ namespace game {
             glm::vec3 GetBackgroundColor(void) const;
             
             // Create a scene node from the specified resources
-            SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL, bool add=true);
+            SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
             // Add an already-created node to the root of the tree
-            void AddNode(SceneNode *node);
+			void AddNode(SceneNode *node);
+			void AddNode4(SceneNode *node);
             // Find a scene node with a specific name
             SceneNode *GetNode(std::string node_name) const;
             

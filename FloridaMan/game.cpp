@@ -21,7 +21,7 @@ namespace game {
 	float camera_far_clip_distance_g = 1000.0;
 	float camera_fov_g = 50.0; // Field-of-view of camera
 	const glm::vec3 viewport_background_color_g(0.0, 0.0, 0.0);
-	glm::vec3 camera_position_g(0.0, 0.0, 0.0);
+	glm::vec3 camera_position_g(0.0, 0.5, 0.0);
 	glm::vec3 camera_look_at_g(0.0, 0.0, -10.0);
 	glm::vec3 camera_up_g(0.0, 1.0, 0.0);
 
@@ -156,57 +156,26 @@ namespace game {
 
 	void Game::SetupScene(void) {
 
-		//size = 1000x1000
-		// divide into 10x10 regions
-		// size = 100x100
-		float dim = 1000.0f;
-		float scale = 75.0f;
-		for (float x = -dim/scale; x < dim / scale; x++)
-		{
-			for (float z = -dim / scale; z < dim / scale; z++)
-			{
-				//random number 1 to 3.
-				;
-				int current = ((int)x * (int)z) % 4;
-				switch (current)
-				{
-				case(0):
-					CreateEntity(EntityType::Default, glm::vec3(x * scale, 10, z * scale), glm::vec3(10, 20, 10));
-					break;
-				case(1):
-					CreateEntity(EntityType::Static, glm::vec3(x * scale, 0.0f, z * scale), glm::vec3(6));
-					break;
-				case(2):
-					CreateEntity(EntityType::Ground, glm::vec3(x * scale, 0.0f, z * scale), glm::vec3(7, 5, 30));
-					break;
-				case(3):
-					CreateEntity(EntityType::Air, glm::vec3(x * scale, scale, z * scale), glm::vec3(10.0, 1.0, 15.0));
-					break;
-				}
-			}
-		}
-
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
-		
+
+		CreateTowerField();
+
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
+		scene_.AddNode(wall);
+
 
 		// Create skybox
 		skybox_ = CreateInstance(EntityType::Default, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
 		skybox_->Scale(glm::vec3(1001.0f));
 		skybox_->SetPosition(glm::vec3(0, 50, 0));
 		skybox_->SetSkybox(true);
-	}
+		scene_.AddNode(skybox_);
 
-	/*
-	Destructible Buildings
-		Alien particle effects
-			Animated to run!
-			disappear in a ring -explosion dealio
-	*/
+	}
 
 	void Game::MainLoop(void) {
 
@@ -334,50 +303,7 @@ namespace game {
 		glfwTerminate();
 	}
 
-
-	Asteroid *Game::CreateAsteroidInstance(std::string entity_name, std::string object_name, std::string material_name) {
-
-		// Get resources
-		Resource *geom = resman_.GetResource(object_name);
-		if (!geom) {
-			throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
-		}
-
-		Resource *mat = resman_.GetResource(material_name);
-		if (!mat) {
-			throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
-		}
-
-		// Create asteroid instance
-		Asteroid *ast = new Asteroid(entity_name, geom, mat);
-		scene_.AddNode(ast);
-		return ast;
-	}
-
-
-	void Game::CreateAsteroidField(int num_asteroids) {
-
-		// Create a number of asteroid instances
-		for (int i = 0; i < num_asteroids; i++) {
-			// Create instance name
-			std::stringstream ss;
-			ss << i;
-			std::string index = ss.str();
-			std::string name = "AsteroidInstance" + index;
-
-			// Create asteroid instance
-			Asteroid *ast = CreateAsteroidInstance(name, "SimpleSphereMesh", "ObjectMaterial");
-
-			// Set attributes of asteroid: random position, orientation, and
-			// angular momentum
-			ast->SetPosition(glm::vec3(-300.0 + 600.0*((float)rand() / RAND_MAX), -300.0 + 600.0*((float)rand() / RAND_MAX), 600.0*((float)rand() / RAND_MAX)));
-			ast->SetOrientation(glm::normalize(glm::angleAxis(glm::pi<float>()*((float)rand() / RAND_MAX), glm::vec3(((float)rand() / RAND_MAX), ((float)rand() / RAND_MAX), ((float)rand() / RAND_MAX)))));
-			ast->SetAngM(glm::normalize(glm::angleAxis(0.05f*glm::pi<float>()*((float)rand() / RAND_MAX), glm::vec3(((float)rand() / RAND_MAX), ((float)rand() / RAND_MAX), ((float)rand() / RAND_MAX)))));
-		}
-	}
-
-
-	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name, bool add) {
+	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
 
 		Resource *geom = resman_.GetResource(object_name);
 		if (!geom) {
@@ -404,7 +330,7 @@ namespace game {
 				throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
 			}
 		}
-		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap, add);
+		SceneNode *scn = scene_.CreateNode(type, entity_name, geom, mat, tex, envmap);
 		return scn;
 	}
 
@@ -418,8 +344,8 @@ namespace game {
 		bool child = false;
 		switch (type)
 		{
-		case(Static):
-			entity_name = std::string("StaticEntity") + std::to_string(count_++);
+		case(Turret):
+			entity_name = std::string("TurretNode") + std::to_string(count_++);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("EnvMapMaterial");
 			texture_name = std::string("");
@@ -474,13 +400,13 @@ namespace game {
 			break;
 		}
 
-		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name, !child);
+		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
 
 		if (child)
 		{
-			SceneNode *p = CreateDestructibleDefault();
+			SceneNode *p = CreateInstance(Default, std::string("Stand") + std::to_string(count_++), std::string("CubeMesh"), std::string("ShinyMaterial"), "", "");
 			p->AddChild(scn);
-			p->SetPosition(glm::vec3(pos.x, p->GetScale().y/2.0f, pos.z));
+			p->SetPosition(glm::vec3(pos.x, p->GetScale().y / 2.0f, pos.z));
 			scn->SetPosition(glm::vec3(0, (p->GetScale().y) / 2.0f + scale.y, 0));
 		}
 		else
@@ -501,43 +427,43 @@ namespace game {
 		}
 	}
 
-	SceneNode *Game::CreateDestructibleDefault(void) {
 
-		std::string entity_name = std::string("DestructibleInstance") + std::to_string(count_);
-		std::string object_name = std::string("CubeMesh");
-		std::string material_name = std::string("ShinyMaterial");
-		std::string texture_name = std::string("");
-		std::string envmap_name = std::string("");
+	void Game::CreateTowerField(void)
+	{
+		float range = 1000;
+		float dim = 150;
+		SceneNode *scn;
+		glm::vec3 scale;
+		std::string object_name, material_name, texture_name, envmap_name;
 
-		Resource *geom = resman_.GetResource(object_name);
-		if (!geom) {
-			throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
-		}
+		for (float x = -range / dim; x < range / dim; x += 1.0f)
+		{
+			for (float z = -range / dim; z < range / dim; z += 1.0f)
+			{
+				int type = utilities::RandPercent()*4.0f;
+				std::string suffix = std::to_string(x) + std::to_string(z);
+				scale = glm::vec3(7, 10, 7);
+				scn = CreateInstance(TurretSpawn + type, "Tower: " + suffix, "CubeMesh", "ShinyMaterial");
+				scn->SetOrientation(utilities::RandQuat(glm::vec3(0, 1, 0)));
+				scn->SetScale(scale);
+				scn->SetPosition(glm::vec3(x*dim, scale.y/2.0f, z*dim));
+				scn->SetType(type);
 
-		Resource *mat = resman_.GetResource(material_name);
-		if (!mat) {
-			throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
-		}
+				if (type < 3)
+				{
+					//switch (type)
+					//{
+					//case(0):break;
+					//case(1):break;
+					//case(2):break;
+					//}
+					//
+					//
+					//((EntityStructure*)scn)->InitResources(type, obj, mat, tex, env);
+				}
 
-		Resource *tex = NULL;
-		if (texture_name != "") {
-			tex = resman_.GetResource(texture_name);
-			if (!tex) {
-				throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+				scene_.AddNode4(scn);
 			}
 		}
-
-		Resource *envmap = NULL;
-		if (envmap_name != "") {
-			envmap = resman_.GetResource(envmap_name);
-			if (!envmap) {
-				throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
-			}
-		}
-		SceneNode *scn = scene_.CreateNode(EntityType::Default, entity_name, geom, mat, tex, envmap);
-		scn->SetPosition(glm::vec3(-13, 10.0, -10));
-		scn->SetScale(glm::vec3(10.0f, 20.0f, 10.0f));
-		count_++;
-		return scn;
 	}
 } // namespace game

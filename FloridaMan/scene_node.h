@@ -68,12 +68,14 @@ namespace game {
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
+
 			void RemoveChildAt(int index);
-			virtual void SetGame(Game* g);
+
+			inline void SetType(int type) { type_ = type; }
+			void SetGame(Game* g);
 
         protected:
             std::string name_; // Name of the scene node
-			Game* game_; //pointer to game instance because we don't have a game manager :(
             GLuint array_buffer_; // References to geometry: vertex and array buffers
             GLuint element_array_buffer_;
             GLenum mode_; // Type of geometry
@@ -94,6 +96,8 @@ namespace game {
             void SetupShader(GLuint program, Camera *camera);
 			glm::mat4 GetParentTransform();
 
+			int type_;
+			Game* game_;
     }; // class SceneNode
 
 } // namespace game
