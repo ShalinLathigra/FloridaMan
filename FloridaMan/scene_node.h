@@ -16,7 +16,6 @@
 namespace game {
 
 	class Game;
-
     // Class that manages one object in a scene 
     class SceneNode {
 
@@ -71,7 +70,6 @@ namespace game {
 			SceneNode *FindChild(std::string nodeName);
 
 			void RemoveChildAt(int index);
-
 			inline void SetType(int type) { type_ = type; }
 			void SetGame(Game* g);
 

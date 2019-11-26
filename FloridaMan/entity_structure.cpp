@@ -1,4 +1,5 @@
 #include "entity_structure.h"
+
 #include <iostream>
 #include "game.h"
 

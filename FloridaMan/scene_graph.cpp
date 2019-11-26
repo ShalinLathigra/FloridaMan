@@ -10,8 +10,8 @@
 
 namespace game {
 
-	SceneGraph::SceneGraph(void) {
-
+	SceneGraph::SceneGraph(void) 
+	{
 		background_color_ = glm::vec3(0.0, 0.0, 0.0);
 		m_pRootNode = new SceneNode("Root Node");
 
@@ -38,14 +38,14 @@ namespace game {
 	}
 
 
-	void SceneGraph::SetBackgroundColor(glm::vec3 color) {
-
+	void SceneGraph::SetBackgroundColor(glm::vec3 color) 
+	{
 		background_color_ = color;
 	}
 
 
-	glm::vec3 SceneGraph::GetBackgroundColor(void) const {
-
+	glm::vec3 SceneGraph::GetBackgroundColor(void) const 
+	{
 		return background_color_;
 	}
 

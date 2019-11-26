@@ -176,17 +176,15 @@ namespace game {
 		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 		scene_.AddNode(wall);
-		
-		
+
 		// Create skybox
 		skybox_ = CreateInstance(EntityType::Default, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
 		skybox_->Scale(glm::vec3(1001.0f));
 		skybox_->SetPosition(glm::vec3(0, 50, 0));
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
-
-
-		//CreateTowerField();
+		
+		CreateTowerField();
 	}
 
 	void Game::MainLoop(void) {
@@ -442,7 +440,6 @@ namespace game {
 			((Shuriken*)scn)->SetSpawnPos(pos);
 
 		}
-
 		return scn;
 	}
 	
