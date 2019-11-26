@@ -24,11 +24,11 @@ namespace game
 	{
 		switch (state_)
 		{
-		case(State::Idle): std::cout<<"State: Idle"<<std::endl; break;
-		case(State::Patrol): std::cout << "State: Patrol" << std::endl;  break;
-		case(State::Chase): std::cout << "State: Chase" << std::endl;  break;
-		case(State::Attack): std::cout << "State: Attack" << std::endl;  break;
-		case(State::Die): std::cout << "State: Die" << std::endl;  break;
+		//case(State::Idle): std::cout<<"State: Idle"<<std::endl; break;
+		//case(State::Patrol): std::cout << "State: Patrol" << std::endl;  break;
+		//case(State::Chase): std::cout << "State: Chase" << std::endl;  break;
+		//case(State::Attack): std::cout << "State: Attack" << std::endl;  break;
+		//case(State::Die): std::cout << "State: Die" << std::endl;  break;
 		}
 	}
 	void Entity::TakeDamage(float amount)

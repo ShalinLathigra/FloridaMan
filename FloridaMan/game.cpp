@@ -188,6 +188,8 @@ namespace game {
 		skybox_->SetPosition(glm::vec3(0, 50, 0));
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
+
+
 		//CreateTowerField();
 	}
 
@@ -213,9 +215,9 @@ namespace game {
 					last_time = current_time;
 
 
-					if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
-						scn->TakeDamage(10.0f);
-					}
+					//if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
+					//	scn->TakeDamage(10.0f);
+					//}
 
 				}
 
@@ -492,7 +494,7 @@ namespace game {
 					switch (type)
 					{
 					case(Turret):
-						object_name = std::string("CubeMesh");
+						object_name = std::string("TorusMesh");
 						break;
 					case(Ground):
 						object_name = std::string("TorusMesh");
@@ -500,7 +502,8 @@ namespace game {
 					case(Air):
 						object_name = std::string("SphereMesh");
 					}
-					material_name = std::string("ShinyMaterial");
+					//material_name = std::string("ShinyMaterial");
+					material_name = std::string("ToonMaterial");
 					texture_name = std::string("");
 					envmap_name = std::string("");
 					
