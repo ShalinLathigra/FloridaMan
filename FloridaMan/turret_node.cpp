@@ -164,7 +164,13 @@ namespace game
 	void TurretNode::Die(float deltaTime)
 	{
 		//Die
-		std::cout << "I AM DEAD" << std::endl;
+		glm::vec3 grow_dir = glm::normalize(-scale_);
+
+		scale_ += grow_dir * 25.0f * deltaTime;
+		scale_.x = glm::max(scale_.x, 0.0f);
+		scale_.y = glm::max(scale_.y, 0.0f);
+		scale_.z = glm::max(scale_.z, 0.0f);
+
 	}
 
 
