@@ -433,8 +433,7 @@ namespace game {
 	void Game::CreateTowerField(void)
 	{
 		float range = 1000;
-		//float dim = 150;
-		float dim = 500;
+		float dim = 150;
 		SceneNode *scn;
 		glm::vec3 scale;
 		std::string object_name, material_name, texture_name, envmap_name;
@@ -453,6 +452,7 @@ namespace game {
 				scn->SetScale(scale);
 				scn->SetPosition(glm::vec3(x*dim, scale.y/2.0f, z*dim));
 				scn->SetType(type);
+				scn->SetGame(this);
 				
 				if (type < 3)
 				{
