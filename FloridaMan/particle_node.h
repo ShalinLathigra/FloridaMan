@@ -1,4 +1,3 @@
-
 #ifndef PARTICLE_NODE_H_
 #define PARTICLE_NODE_H_
 

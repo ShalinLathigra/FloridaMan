@@ -191,13 +191,16 @@ namespace game {
 		skybox_->SetPosition(glm::vec3(0, 50, 0));
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
+
 		CreateTowerField();
+
 	}
 
 	void Game::MainLoop(void) {
 
 		camera_.InitPlayer(&resman_);
 		scene_.AddNode((SceneNode*)(camera_.GetPlayer()));
+
 
 		AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
 		scn->SetEndScale(glm::vec3(10, 7, 10));
@@ -217,7 +220,6 @@ namespace game {
 					GetKeyStates(window_);
 					scene_.Update(deltaTime);
 					last_time = current_time;
-
 
 					if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
 						scn->TakeDamage(1.0f);

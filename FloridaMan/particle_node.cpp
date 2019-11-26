@@ -15,13 +15,12 @@ namespace game {
 		std::cout << start << std::endl;
 		duration = 1.5f;
 	}
-	ParticleNode::ParticleNode():SceneNode()
+	ParticleNode::ParticleNode() :SceneNode()
 	{
 		start = glfwGetTime();
 		std::cout << start << std::endl;
 		duration = 1.5f;
 	}
-
 
 	ParticleNode::~ParticleNode()
 	{
