@@ -15,6 +15,7 @@ float phong_exponent = 64.0;
 float Ia = 0.2; // Ambient light amount
 
 uniform int type;
+
 void main() 
 {
     vec3 N, // Interpolated normal for fragment
