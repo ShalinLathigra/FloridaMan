@@ -10,6 +10,7 @@ namespace game {
 	EntityStructure::EntityStructure(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap)
 	{
 		death_part_ = ParticleNode("");
+
 		m_EntityTimer = 0.0f;
 		m_MaxEntityCount = 3;
 		m_EntityCount = 0;
@@ -92,7 +93,6 @@ namespace game {
 		scn->SetTarget(game_->GetCamera());
 
 		scn->SetDeathEffect(death_part_);
-
 		return scn;
 	}
 } // namespace game

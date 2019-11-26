@@ -28,9 +28,9 @@ namespace game
 		void SetState(State state);
 		void SetTarget(Camera* target);
 		void SetEndScale(glm::vec3 end_scale);
+
 		bool IsAlive(void);
 		void SetDeathEffect(ParticleNode part);
-		
 	protected:
 		State state_;
 		Camera* target_;

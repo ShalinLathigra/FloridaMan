@@ -89,5 +89,4 @@ namespace game
 		death_particles_ = part;
 		death_part_ = true;
 	}
-
 }
