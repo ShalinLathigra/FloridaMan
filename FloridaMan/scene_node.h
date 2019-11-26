@@ -91,7 +91,7 @@ namespace game {
 			SceneNode *m_pParentNode;
 			std::vector<SceneNode*> m_childNodes;
             // Set matrices that transform the node in a shader program
-            void SetupShader(GLuint program, Camera *camera);
+            virtual void SetupShader(GLuint program, Camera *camera);
 			glm::mat4 GetParentTransform();
 
 			int type_;

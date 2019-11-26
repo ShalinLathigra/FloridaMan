@@ -52,6 +52,8 @@ set(SRCS
 	plastic_vp.glsl 
 	textured_material_fp.glsl 
 	textured_material_vp.glsl 
+	toon_material_fp.glsl 
+	toon_material_vp.glsl 
 	three-term_shiny_blue_fp.glsl 
 	three-term_shiny_blue_vp.glsl 
 	normal_map_vp.glsl 
