@@ -46,11 +46,11 @@ void main()
     gl_FragColor = Ia*ambient_albedo + Id*diffuse_albedo + Is*specular_albedo;
     if (type == 0)
 	{
-	gl_FragColor = gl_FragColor.bbga;
+	gl_FragColor = gl_FragColor.brga;
 	}
 	if (type == 1)
 	{
-	gl_FragColor = gl_FragColor.brga;
+	gl_FragColor = gl_FragColor.bbga;
 	}
 	if (type == 2)
 	{

@@ -6,6 +6,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "entity_structure.h"
 #include "air_entity.h"
 #include "mine.h"
 #include "resource.h"

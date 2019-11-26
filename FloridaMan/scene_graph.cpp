@@ -19,7 +19,7 @@ SceneGraph::SceneGraph(void){
 	m_p2 = new SceneNode("Root Node2");
 	m_p3 = new SceneNode("Root Node3");
 	m_p4 = new SceneNode("Root Node4");
-
+	
 	m_pRootNode->AddChild(m_p1);
 	m_pRootNode->AddChild(m_p2);
 	m_pRootNode->AddChild(m_p3);
@@ -64,7 +64,13 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 		scn = new Mine(node_name, geometry, material, texture, envmap); 
 		break;
 	case(EntityType::Destructible):
-		//break;
+		scn = new SceneNode(node_name, geometry, material, texture, envmap);
+		break;
+	case(EntityType::TurretSpawn):
+	case(EntityType::GroundSpawn):
+	case(EntityType::AirSpawn):
+		scn = new EntityStructure(node_name, geometry, material, texture, envmap);
+		break;
 	default:
 		scn = new SceneNode(node_name, geometry, material, texture, envmap);
 		break;
