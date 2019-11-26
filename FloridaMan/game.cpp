@@ -298,16 +298,18 @@ namespace game {
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-			game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5));
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
-			game->CreateEntity(EntityType::BombProj, game->camera_.GetPosition(), glm::vec3(1.0));
+			game->AddNode(game->CreateEntity(EntityType::BombProj, game->camera_.GetPosition(), glm::vec3(1.0)));
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
-			game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition(), glm::vec3(1.0f, 0.25f, 1.0f));
+			game->AddNode(game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition(), glm::vec3(1.0f, 0.25f, 1.0f)));
+
 		}
+
+		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+			game->AddNode(game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5)));
+		}
+
 		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
 			game->camera_.TogglePOV();
 		}
@@ -455,8 +457,7 @@ namespace game {
 	void Game::CreateTowerField(void)
 	{
 		float range = 1000;
-		//float dim = 150;
-		float dim = 500;
+		float dim = 150;
 		SceneNode *scn;
 		glm::vec3 scale;
 		std::string object_name, material_name, texture_name, envmap_name;
