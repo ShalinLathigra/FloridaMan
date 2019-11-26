@@ -84,4 +84,9 @@ namespace game
 	{
 		target_ = target;
 	}
+	void Entity::SetEndScale(glm::vec3 end_scale)
+	{
+		end_scale_ = end_scale;
+	}
+
 }

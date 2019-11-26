@@ -6,11 +6,11 @@ namespace game
 
 	AirEntity::AirEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : GroundEntity(name, geometry, material, texture, envmap)
 	{
-		chase_radius_ = 120.0f;
+		chase_radius_ = 230.0f;
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0, 1, 0));
 
 		attack_angle_ = 0.99f;
-		attack_radius_ = 60.0f;
+		attack_radius_ = 100.0f;
 
 		mid_y_ = 10.f;
 		y_offset_[0] = -5.0f;

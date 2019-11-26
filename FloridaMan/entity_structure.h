@@ -13,8 +13,7 @@
 #include "scene_node.h"
 #include "air_entity.h"
 
-#define MAX_SPAWN_TIMER 2.5f
-#define MAX_CHILDREN 3
+#define MAX_SPAWN_TIMER 10.0f
 namespace game {
     // Abstraction of an EntityStructure
     class EntityStructure : public SceneNode {
@@ -35,6 +34,7 @@ namespace game {
 
 			float m_EntityTimer;
 			int m_EntityCount;
+			int m_MaxEntityCount;
 
 			Resource *m_geom;
 			Resource *m_mat;
