@@ -20,6 +20,8 @@ set(HDRS
 	scene_node.h
 	static_entity.h
 	utilities.h
+	bomb.h
+	shuriken.h
 )
  
 set(SRCS
@@ -37,6 +39,8 @@ set(SRCS
 	scene_node.cpp 
 	static_entity.cpp
 	utilties.cpp
+	shuriken.cpp
+	bomb.cpp
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 
