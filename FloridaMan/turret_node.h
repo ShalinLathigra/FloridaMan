@@ -15,11 +15,11 @@ namespace game
 
 		// Update geometry configuration
 		void Update(float deltaTime);
-		void Idle(float deltaTime);
-		void Patrol(float deltaTime);
-		void Chase(float deltaTime);
-		void Attack(float deltaTime);
-		void Die(float deltaTime);
+		virtual void Idle(float deltaTime);
+		virtual void Patrol(float deltaTime);
+		virtual void Chase(float deltaTime);
+		virtual void Attack(float deltaTime);
+		virtual void Die(float deltaTime);
 
 		// Get/set attributes specific to asteroids
 		glm::quat GetPatrolAngM(void) const;

@@ -17,11 +17,6 @@ namespace game
 		
 		void Update(float deltaTime);
 
-		virtual void Idle(float deltaTime);
-		virtual void Patrol(float deltaTime);
-		virtual void Chase(float deltaTime);
-		virtual void Attack(float deltaTime);
-		virtual void Die(float deltaTime);
 		virtual void TakeDamage(float amount);
 
 
@@ -32,6 +27,7 @@ namespace game
 		void SetState(State state);
 		void SetTarget(Camera* target);
 		void SetEndScale(glm::vec3 end_scale);
+		bool IsAlive(void);
 
 	protected:
 		State state_;
