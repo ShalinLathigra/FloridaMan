@@ -23,6 +23,8 @@ float Ss = 2.0;
 vec4 outline_color = vec4(0.0, 0.0, 0.0, 1.0);
 float outline_strength = 0.2;
 
+uniform int type;
+
 void main() 
 {
     vec3 N, // Interpolated normal for fragment
@@ -60,6 +62,19 @@ void main()
 	//Need to pass in the actual direction of the eye.
     float O = int(1-max(dot(V, N), 0.0)+outline_strength);
 	gl_FragColor = (O*outline_color) + (1.0 - O) * (Ia*amb + Id*diff + Is*spec);
+
+	if (type == 0)
+	{
+		gl_FragColor = gl_FragColor.rbga;
+	}
+	if (type == 1)
+	{
+		gl_FragColor = gl_FragColor.rrga;
+	}
+	if (type == 2)
+	{
+		gl_FragColor = gl_FragColor.brga;
+	}
 
     // For debug, we can display the different values
     //gl_FragColor = ambient_color;

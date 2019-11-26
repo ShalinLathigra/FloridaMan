@@ -27,31 +27,31 @@ namespace game
 
 	void TurretNode::Update(float deltaTime)
 	{
-		std::cout << "HP: " << hp_ << " STATE: ";
+		//std::cout << "HP: " << hp_ << " STATE: ";
 		switch (state_)
 		{
 		case(State::Idle):
-			std::cout<< "Idle" << std::endl;
+			//std::cout<< "Idle" << std::endl;
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
 			TurretNode::Idle(deltaTime);
 			break;
 		case(State::Patrol):
-			std::cout<< "Patrol" << std::endl;
+			//std::cout<< "Patrol" << std::endl;
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
 			TurretNode::Patrol(deltaTime); 
 			break;
 		case(State::Chase):
-			std::cout<< "Chase" << std::endl;
+			//std::cout<< "Chase" << std::endl;
 			//std::cout<< GetName() << " " << "Chase" << std::endl;
 			TurretNode::Chase(deltaTime); 
 			break;
 		case(State::Attack):
-			std::cout<< "Attack" << std::endl;
+			//std::cout<< "Attack" << std::endl;
 			//std::cout<< GetName() << " " << "Attack" << std::endl;
 			TurretNode::Attack(deltaTime); 
 			break;
 		case(State::Die):
-			std::cout<< "Die" << std::endl; 
+			//std::cout<< "Die" << std::endl; 
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
 			TurretNode::Die(deltaTime); 
 			break;

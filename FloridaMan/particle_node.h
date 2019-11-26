@@ -1,5 +1,5 @@
-/*#ifndef ASTEROID_H_
-#define ASTEROID_H_
+#ifndef PARTICLE_NODE_H_
+#define PARTICLE_NODE_H_
 
 #include <string>
 #define GLEW_STATIC
@@ -15,28 +15,18 @@
 namespace game {
 
     // Abstraction of an asteroid
-    class Asteroid : public SceneNode {
+    class ParticleNode : public SceneNode {
 
         public:
             // Create asteroid from given resources
-            Asteroid(const std::string name, const Resource *geometry, const Resource *material);
+			ParticleNode(const std::string name, const Resource *geometry, const Resource *material);
 
             // Destructor
-            ~Asteroid();
-            
-            // Get/set attributes specific to asteroids
-            glm::quat GetAngM(void) const;
-            void SetAngM(glm::quat angm);
-
-            // Update geometry configuration
-            void Update(void);
-            
+            ~ParticleNode();
+                        
         private:
-            // Angular momentum of asteroid
-            glm::quat angm_;
     }; // class Asteroid
 
 } // namespace game
 
-#endif // ASTEROID_H_
-*/
+#endif // PARTICLE_NODE
