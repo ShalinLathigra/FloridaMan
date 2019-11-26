@@ -22,33 +22,12 @@ namespace game
 	{
 		switch (state_)
 		{
-		case(State::Idle): Entity::Idle(deltaTime); break;
-		case(State::Patrol): Entity::Patrol(deltaTime); break;
-		case(State::Chase): Entity::Chase(deltaTime); break;
-		case(State::Attack): Entity::Attack(deltaTime); break;
-		case(State::Die): Entity::Die(deltaTime); break;
+		case(State::Idle): std::cout<<"State: Idle"<<std::endl; break;
+		case(State::Patrol): std::cout << "State: Patrol" << std::endl;  break;
+		case(State::Chase): std::cout << "State: Chase" << std::endl;  break;
+		case(State::Attack): std::cout << "State: Attack" << std::endl;  break;
+		case(State::Die): std::cout << "State: Die" << std::endl;  break;
 		}
-	}
-
-	void Entity::Idle(float deltaTime)
-	{
-		//std::cout << "Idling! " << std::endl;
-	}
-	void Entity::Patrol(float deltaTime)
-	{
-		//std::cout << "Patrolling! " << std::endl;
-	}
-	void Entity::Chase(float deltaTime)
-	{
-		//std::cout << "Chasing! " << std::endl;
-	}
-	void Entity::Attack(float deltaTime)
-	{
-		//std::cout << "Attacking! " << std::endl;
-	}
-	void Entity::Die(float deltaTime)
-	{
-		//std::cout << "Dieing! " << std::endl;
 	}
 	void Entity::TakeDamage(float amount)
 	{
@@ -56,6 +35,7 @@ namespace game
 		if (hp_ <= 0.0f)
 		{
 			state_ = State::Die;
+			//Logic to Create a death or damage effect here
 		}
 	}
 
@@ -87,6 +67,10 @@ namespace game
 	void Entity::SetEndScale(glm::vec3 end_scale)
 	{
 		end_scale_ = end_scale;
+	}
+	bool Entity::IsAlive(void)
+	{
+		return hp_ > 0;
 	}
 
 }
