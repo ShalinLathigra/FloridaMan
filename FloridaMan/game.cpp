@@ -116,6 +116,7 @@ namespace game {
 		// Create a torus
 		resman_.CreateTorus("TorusMesh");
 
+		resman_.CreateCylinder("CylinderMesh");
 		// Use sphere to better analyze the environment map
 		resman_.CreateSphere("SphereMesh");
 
@@ -288,6 +289,10 @@ namespace game {
 		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
 			game->CreateEntity(EntityType::Bomb, game->camera_.GetPosition(), glm::vec3(1.0));
 		}
+
+		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+			game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition(), glm::vec3(1.0f, 0.25f, 1.0f));
+		}
 	}
 
 	Game::~Game() {
@@ -374,6 +379,7 @@ namespace game {
 
 		std::string entity_name, object_name, material_name, texture_name, envmap_name;
 		bool isEnemy = true;
+		bool isProjectile = false;
 		switch (type)
 		{
 		case(Static):
@@ -413,15 +419,29 @@ namespace game {
 			envmap_name = std::string("");
 			isEnemy = false;
 			break;
+		case(ShurikenProj):
+			entity_name = std::string("Shuriken") + std::to_string(count_);
+			object_name = std::string("CubeMesh");
+			material_name = std::string("ShinyMaterial");
+			texture_name = std::string("");
+			envmap_name = std::string("");
+			isEnemy = false;
+			isProjectile = true;
+			break;
 		}
 
 		SceneNode *scn = (SceneNode*)CreateInstance(type, entity_name, object_name, material_name, texture_name, envmap_name);
 		scn->SetPosition(pos);
 		scn->SetScale(scale);
-		((Entity*)scn)->SetGame(this);
+		scn->SetGame(this);
 
 		if (isEnemy) {
 			((Entity*)scn)->SetTarget(&camera_);
+		}
+		if (isProjectile) {
+			((Shuriken*)scn)->SetForward(this->camera_.GetForward());
+			((Shuriken*)scn)->SetSpawnPos(pos);
+
 		}
 	}
 

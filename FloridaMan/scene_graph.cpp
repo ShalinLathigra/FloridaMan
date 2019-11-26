@@ -45,6 +45,7 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 	case(2): scn = new AirEntity(node_name, geometry, material, texture, envmap); break;
 	case(3): scn = new Mine(node_name, geometry, material, texture, envmap); break;
 	case(4): scn = new Bomb(node_name, geometry, material, texture, envmap); break;
+	case(5): scn = new Shuriken(node_name, geometry, material, texture, envmap); break;
 	default: scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
 	}
 	//std::cout << type << std::endl;

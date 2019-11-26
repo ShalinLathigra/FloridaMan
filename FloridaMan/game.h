@@ -14,12 +14,13 @@
 #include "asteroid.h"
 #include "mine.h"
 #include "bomb.h"
+#include "shuriken.h"
 #include "air_entity.h"
 
 
 namespace game {
 
-	enum EntityType { Static, Ground, Air, MineInstance, Bomb, Default=-1 };
+	enum EntityType { Static, Ground, Air, MineInstance, Bomb, ShurikenProj, Default=-1 };
 
     // Exception type for the game
     class GameException: public std::exception
