@@ -155,8 +155,6 @@ namespace game {
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
 
-		CreateTowerField();
-
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
@@ -171,6 +169,8 @@ namespace game {
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
 
+
+		CreateTowerField();
 	}
 
 	void Game::MainLoop(void) {
@@ -419,12 +419,22 @@ namespace game {
 
 		}
 	}
+	
+	void Game::AddNode(SceneNode *scn)
+	{
+		scene_.AddNode4(scn);
+	}
 
+	Camera * Game::GetCamera(void)
+	{
+		return &camera_;
+	}
 
 	void Game::CreateTowerField(void)
 	{
 		float range = 1000;
-		float dim = 150;
+		//float dim = 150;
+		float dim = 500;
 		SceneNode *scn;
 		glm::vec3 scale;
 		std::string object_name, material_name, texture_name, envmap_name;
@@ -434,27 +444,59 @@ namespace game {
 			for (float z = -range / dim; z < range / dim; z += 1.0f)
 			{
 				int type = utilities::RandPercent()*4.0f;
-				std::string suffix = std::to_string(x) + std::to_string(z);
+
+				std::string suffix = std::to_string((int)x) + std::to_string((int)z);
 				scale = glm::vec3(7, 10, 7);
+
 				scn = CreateInstance(TurretSpawn + type, "Tower: " + suffix, "CubeMesh", "ShinyMaterial");
 				scn->SetOrientation(utilities::RandQuat(glm::vec3(0, 1, 0)));
 				scn->SetScale(scale);
 				scn->SetPosition(glm::vec3(x*dim, scale.y/2.0f, z*dim));
 				scn->SetType(type);
-
+				
 				if (type < 3)
 				{
-					//switch (type)
-					//{
-					//case(0):break;
-					//case(1):break;
-					//case(2):break;
-					//}
-					//
-					//
-					//((EntityStructure*)scn)->InitResources(type, obj, mat, tex, env);
-				}
+					switch (type)
+					{
+					case(Turret):
+						object_name = std::string("CubeMesh");
+						break;
+					case(Ground):
+						object_name = std::string("TorusMesh");
+						break;
+					case(Air):
+						object_name = std::string("SphereMesh");
+					}
+					material_name = std::string("ShinyMaterial");
+					texture_name = std::string("");
+					envmap_name = std::string("");
+					
+					Resource *geom = resman_.GetResource(object_name);
+					if (!geom) {
+						throw(GameException(std::string("Could not find resource \"") + object_name + std::string("\"")));
+					}
+					Resource *mat = resman_.GetResource(material_name);
+					if (!mat) {
+						throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+					}
+					Resource *tex = NULL;
+					if (texture_name != "") {
+						tex = resman_.GetResource(texture_name);
+						if (!tex) {
+							throw(GameException(std::string("Could not find resource \"") + material_name + std::string("\"")));
+						}
+					}
+					Resource *envmap = NULL;
+					if (envmap_name != "") {
+						envmap = resman_.GetResource(envmap_name);
+						if (!envmap) {
+							throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
+						}
+					}
 
+					((EntityStructure*)scn)->InitResources(type, geom, mat, tex, envmap);
+				}
+				//AddNode(scn);
 				scene_.AddNode4(scn);
 			}
 		}

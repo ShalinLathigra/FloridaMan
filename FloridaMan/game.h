@@ -52,6 +52,8 @@ namespace game {
 			//Return the Scene Graph
 			SceneGraph* GetGraph();
 
+			void AddNode(SceneNode *scn);
+			Camera * GetCamera(void);
         private:
             // GLFW window
             GLFWwindow* window_;

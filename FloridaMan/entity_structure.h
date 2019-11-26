@@ -11,11 +11,11 @@
 
 #include "resource.h"
 #include "scene_node.h"
-#include "game.h"
+#include "air_entity.h"
+
 #define MAX_SPAWN_TIMER 2.5f
 #define MAX_CHILDREN 3
 namespace game {
-
     // Abstraction of an EntityStructure
     class EntityStructure : public SceneNode {
 
@@ -31,17 +31,17 @@ namespace game {
 			void InitResources(int type, Resource* obj, Resource* mat, Resource* tex, Resource* env);
 
         protected:
-			//SceneNode* CreateEntity();
+			SceneNode* CreateEntity();
 
-			float m_SpawnTimer;
-			int m_ChildCount;
+			float m_EntityTimer;
+			int m_EntityCount;
 
 			Resource *m_geom;
 			Resource *m_mat;
 			Resource *m_tex;
 			Resource *m_env;
 			int m_type;
-			int count = 0;
+			int m_count = 0;
     }; // class EntityStructure
 
 } // namespace game

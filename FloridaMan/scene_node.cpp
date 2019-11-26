@@ -66,6 +66,7 @@ namespace game {
 		name_ = name;
 		m_isVisible = false;
 		m_pParentNode = nullptr;
+		m_childNodes = std::vector<SceneNode*>();
 	}
 
 	SceneNode *SceneNode::GetParent()
@@ -417,7 +418,7 @@ namespace game {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture_); // First texture we bind
 			// Define texture interpolation
-			glGenerateMipmap(GL_TEXTURE_2D);
+ 			glGenerateMipmap(GL_TEXTURE_2D);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
