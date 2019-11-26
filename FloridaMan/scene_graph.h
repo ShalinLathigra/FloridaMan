@@ -40,6 +40,8 @@ namespace game {
             GLuint texture_;
             GLuint depth_buffer_;
 
+
+			bool update_state;
         public:
             // Constructor and destructor
             SceneGraph(void);
@@ -55,9 +57,8 @@ namespace game {
 			void AddNode(SceneNode *node);
 			void AddNode4(SceneNode *node);
             // Find a scene node with a specific name
-            SceneNode *GetNode(std::string node_name) const;
+			SceneNode *GetNode(std::string node_name) const;
             
-
             // Draw the entire scene
             void Draw(Camera *camera);
 

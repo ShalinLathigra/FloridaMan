@@ -59,6 +59,8 @@ namespace game {
 		blending_ = false;
 		m_isVisible = true;
 		skybox_ = false;
+
+		updated_ = false;
 	}
 
 	SceneNode::SceneNode(const std::string name)
@@ -436,6 +438,15 @@ namespace game {
 	void SceneNode::SetGame(Game* game)
 	{
 		game_ = game;
+	}
+
+	void SceneNode::SetUpdated(bool u)
+	{
+		updated_ = u;
+	}
+	bool SceneNode::GetUpdated(void)
+	{
+		return updated_;
 	}
 
 } // namespace game;

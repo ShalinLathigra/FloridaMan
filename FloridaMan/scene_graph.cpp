@@ -20,11 +20,18 @@ namespace game {
 		m_p3 = new SceneNode("Root Node3");
 		m_p4 = new SceneNode("Root Node4");
 
+		m_p1->SetPosition(glm::vec3(0.1, 0, 0.1));
+		m_p2->SetPosition(glm::vec3(0.1, 0, -0.1));
+		m_p3->SetPosition(glm::vec3(-0.1, 0, 0.1));
+		m_p4->SetPosition(glm::vec3(-0.1, 0, -0.1));
+
 
 		m_pRootNode->AddChild(m_p1);
 		m_pRootNode->AddChild(m_p2);
 		m_pRootNode->AddChild(m_p3);
 		m_pRootNode->AddChild(m_p4);
+
+		update_state = true;
 	}
 
 
@@ -139,19 +146,34 @@ namespace game {
 		//m_pRootNode->Update(deltaTime);
 
 		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
+		bool qx, qz;
 		for (std::vector<SceneNode*>::iterator it = quads.begin(); it != quads.end(); it++)
 		{
+			qx = (*it)->GetPosition().x > 0;
+			qz = (*it)->GetPosition().z > 0;
+
 			std::vector<SceneNode*> quad = (*it)->GetChildren();
+
 			for (std::vector<SceneNode*>::iterator iter = quad.begin(); iter != quad.end(); iter++)
 			{
-				//if ((*iter)->IsUpdated() != state)
-				//{
-				(*iter)->Update(deltaTime);
-				//(*iter)->SetUpdated(state);
-				//}
-				//Check if Node should be re-balanced
+				if ((*iter)->GetUpdated() != update_state)
+				{
+					(*iter)->Update(deltaTime);
+					(*iter)->SetUpdated(update_state);
+
+					bool x = (*iter)->GetPosition().x>0;
+					bool z = (*iter)->GetPosition().z>0;
+
+					if (x != qx || z != qz)
+					{
+						//Remove node from this one, add it to another
+						//Perform Re-parenting logic here!
+					}
+				}
 			}
 		}
+		update_state = !update_state;
+
 	}
 
 

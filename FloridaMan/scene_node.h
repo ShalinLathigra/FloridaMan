@@ -69,6 +69,10 @@ namespace game {
 
 			inline void SetType(int type) { type_ = type; }
 			void SetGame(Game* g);
+
+			void SetUpdated(bool u);
+			bool GetUpdated(void);
+
         protected:
             std::string name_; // Name of the scene node
             GLuint array_buffer_; // References to geometry: vertex and array buffers
@@ -92,6 +96,7 @@ namespace game {
 
 			int type_;
 			Game* game_;
+			bool updated_;
     }; // class SceneNode
 
 } // namespace game
