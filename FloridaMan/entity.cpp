@@ -10,6 +10,8 @@ namespace game
 		up_ = glm::vec3(0.0, 1.0, 0.0);
 		max_idle_timer_ = 10.0f;
 		idle_timer_ = max_idle_timer_;
+		max_hp_ = 50.0f;
+		hp_ = max_hp_;
 	}
 
 
