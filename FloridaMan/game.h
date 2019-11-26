@@ -13,12 +13,14 @@
 #include "camera.h"
 #include "asteroid.h"
 #include "mine.h"
+#include "bomb.h"
+#include "shuriken.h"
 #include "air_entity.h"
 
 
 namespace game {
 
-	enum EntityType { Static, Ground, Air, MineInstance, Default=-1 };
+	enum EntityType { Static, Ground, Air, MineInstance, Bomb, ShurikenProj, Default=-1 };
 
     // Exception type for the game
     class GameException: public std::exception
@@ -46,6 +48,8 @@ namespace game {
             void SetupScene(void);
             // Run the game: keep the application active
             void MainLoop(void); 
+			//Return the Scene Graph
+			SceneGraph* GetGraph();
 
         private:
             // GLFW window

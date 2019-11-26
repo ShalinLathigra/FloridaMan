@@ -25,6 +25,7 @@ set(HDRS
 )
  
 set(SRCS
+	bomb.cpp
 	air_entity.cpp 
 	asteroid.cpp 
 	camera.cpp 
@@ -37,6 +38,7 @@ set(SRCS
 	resource_manager.cpp 
 	scene_graph.cpp 
 	scene_node.cpp 
+	shuriken.cpp
 	static_entity.cpp
 	utilties.cpp
 	shuriken.cpp

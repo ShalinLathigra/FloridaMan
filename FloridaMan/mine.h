@@ -25,8 +25,6 @@ namespace game
 		Mine(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
 		~Mine();
 
-		virtual void Init(void);
-
 		void Update(float deltaTime);
 
 		void Idle(float deltaTime);
@@ -47,6 +45,7 @@ namespace game
 		glm::vec3 up_;
 		float hp_;
 		bool target_set_;
+		float accel_ = 4.0f;
 		std::vector<SceneNode> enemies;
 
 		float idle_timer_;
