@@ -11,10 +11,10 @@ namespace game
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;
 
-		chase_radius_ = 400.0f;
+		chase_radius_ = 200.0f;
 		chase_angle_ = 0.7f;
 
-		attack_radius_ = 200.0f;
+		attack_radius_ = 180.0f;
 		attack_angle_ = 0.99f;
 		max_num_attacks_ = 4;
 		num_attacks_ = max_num_attacks_;

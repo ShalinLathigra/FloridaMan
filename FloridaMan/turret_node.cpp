@@ -54,6 +54,12 @@ namespace game
 
 	void TurretNode::Idle(float deltaTime)
 	{
+		glm::vec3 grow_dir = glm::normalize(end_scale_ - scale_);
+		float step = glm::length(end_scale_ - scale_) / max_idle_timer_;
+
+		scale_ += grow_dir * step*deltaTime;
+
+		//This will be the spawning Animation
 		idle_timer_ = glm::max(idle_timer_ - deltaTime, 0.0f);
 		//std::cout << idle_timer_ << std::endl;
 		if (idle_timer_ == 0.0f)
