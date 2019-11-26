@@ -9,8 +9,8 @@ set(HDRS
 	air_entity.h
 	asteroid.h 
 	entity.h 
+	entity_structure.h 
 	camera.h 
-	destructible_entity.h 
 	game.h 
 	ground_entity.h 
 	mine.h
@@ -20,6 +20,7 @@ set(HDRS
 	scene_graph.h 
 	scene_node.h
 	static_entity.h
+	turret_node.h
 	utilities.h
 	bomb.h
 	shuriken.h
@@ -30,8 +31,8 @@ set(SRCS
 	air_entity.cpp 
 	asteroid.cpp 
 	camera.cpp 
-	destructible_entity.cpp
 	entity.cpp 
+	entity_structure.cpp 
 	game.cpp 
 	ground_entity.cpp 
 	main.cpp 
@@ -42,9 +43,11 @@ set(SRCS
 	scene_node.cpp 
 	shuriken.cpp
 	static_entity.cpp
+	turret_node.cpp
 	utilties.cpp
 	shuriken.cpp
 	bomb.cpp
+
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 

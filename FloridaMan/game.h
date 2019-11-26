@@ -10,12 +10,13 @@
 
 #include "scene_graph.h"
 #include "resource_manager.h"
+#include "entity_structure.h"
 #include "camera.h"
-#include "asteroid.h"
-#include "mine.h"
-#include "bomb.h"
-#include "shuriken.h"
-#include "air_entity.h"
+
+#include "entity.h"
+
+#include "scene_node.h"
+
 #include "utilities.h"
 
 
@@ -82,18 +83,12 @@ namespace game {
             
 			void GetKeyStates(GLFWwindow* window);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
-
-            // Asteroid field
-            // Create instance of one asteroid
-            Asteroid *CreateAsteroidInstance(std::string entity_name, std::string object_name, std::string material_name);
-            // Create entire random asteroid field
-            void CreateAsteroidField(int num_asteroids = 1500);
-
+			
             // Create an instance of an object stored in the resource manager
-			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""), bool add=true);
-			SceneNode *Game::CreateDestructibleDefault(void);
+			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
 			void CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
+			void CreateTowerField(void);
     }; // class Game
 
 } // namespace game

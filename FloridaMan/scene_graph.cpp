@@ -14,6 +14,16 @@ SceneGraph::SceneGraph(void){
 
     background_color_ = glm::vec3(0.0, 0.0, 0.0);
 	m_pRootNode = new SceneNode("Root Node");
+
+	m_p1 = new SceneNode("Root Node1");
+	m_p2 = new SceneNode("Root Node2");
+	m_p3 = new SceneNode("Root Node3");
+	m_p4 = new SceneNode("Root Node4");
+
+	m_pRootNode->AddChild(m_p1);
+	m_pRootNode->AddChild(m_p2);
+	m_pRootNode->AddChild(m_p3);
+	m_pRootNode->AddChild(m_p4);
 }
 
 
@@ -33,17 +43,16 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 }
  
 
-SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap, bool add){
+SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap){
 
     // Create scene node with the specified resources
 	SceneNode *scn;
-	SceneNode *child;
 
 	//std::cout << node_name << std::endl;
 	switch (type)
 	{
-	case(EntityType::Static):
-		scn = new StaticEntity(node_name, geometry, material, texture, envmap); 
+	case(EntityType::Turret):
+		scn = new TurretNode(node_name, geometry, material, texture, envmap); 
 		//This thing needs a child node
 		break;
 	case(EntityType::Ground):
@@ -68,16 +77,40 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 	}
 	//std::cout << type << std::endl;
     // Add node to the scene
-	if (add)
-		m_pRootNode->AddChild(scn);
 
     return scn;
 }
 
 
-void SceneGraph::AddNode(SceneNode *node){
+void SceneGraph::AddNode(SceneNode *node) {
 
 	m_pRootNode->AddChild(node);
+}
+
+
+void SceneGraph::AddNode4(SceneNode *node) {
+	if (node->GetPosition().x > 0)
+	{
+		if (node->GetPosition().y > 0)
+		{
+			m_p1->AddChild(node);
+		}
+		else
+		{
+			m_p2->AddChild(node);
+		}
+	}
+	else
+	{
+		if (node->GetPosition().y > 0)
+		{
+			m_p3->AddChild(node);
+		}
+		else
+		{
+			m_p4->AddChild(node);
+		}
+	}
 }
 
 

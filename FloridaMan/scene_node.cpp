@@ -61,10 +61,6 @@ namespace game {
 		skybox_ = false;
 	}
 
-	void SceneNode::SetGame(Game *game) {
-		game_ = game;
-	}
-
 	SceneNode::SceneNode(const std::string name)
 	{
 		name_ = name;
@@ -442,5 +438,13 @@ namespace game {
 		GLint timer_var = glGetUniformLocation(program, "timer");
 		double current_time = glfwGetTime();
 		glUniform1f(timer_var, (float)current_time);
+		// Type
+		GLint type_var = glGetUniformLocation(program, "type");
+		glUniform1i(type_var, type_);
 	}
+	void SceneNode::SetGame(Game* game)
+	{
+		game_ = game;
+	}
+
 } // namespace game;
