@@ -35,6 +35,7 @@ namespace game
 		glm::vec3 forward_;
 		glm::vec3 up_;
 		float hp_;
+		float max_hp_;
 
 		float idle_timer_;
 		float max_idle_timer_;

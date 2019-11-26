@@ -88,7 +88,7 @@ namespace game {
 			
             // Create an instance of an object stored in the resource manager
 			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
-			void CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
+			SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
 			void CreateTowerField(void);
     }; // class Game
