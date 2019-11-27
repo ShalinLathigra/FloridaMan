@@ -843,8 +843,8 @@ namespace game
 			throw e;
 		}
 
-		float trad = 0.2; // Defines the starting point of the particles along the normal
-		float maxspray = 0.5; // This is how much we allow the points to deviate from the sphere
+		float trad = 0.0; // Defines the starting point of the particles along the normal
+		float maxspray = 0.25; // This is how much we allow the points to deviate from the sphere
 		float u, v, w, theta, phi, spray; // Work variables
 
 		for (int i = 0; i < num_particles; i++) {
@@ -864,7 +864,7 @@ namespace game
 			// Define the normal and point based on theta, phi and the spray
 			glm::vec3 normal(spray*cos(theta)*sin(phi), spray*sin(theta)*sin(phi), spray*cos(phi));
 			glm::vec3 position(normal.x*trad, normal.y*trad, normal.z*trad);
-			glm::vec3 color(i / (float)num_particles, 0.0, 1.0 - (i / (float)num_particles)); // We can use the color for debug, if needed
+			glm::vec3 color(i / (float)num_particles, w*10.0f, 1.0 - (i / (float)num_particles)); // We can use the color for debug, if needed
 
 			// Add vectors to the data buffer
 			for (int k = 0; k < 3; k++) {

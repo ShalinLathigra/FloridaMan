@@ -93,6 +93,7 @@ namespace game {
 		scn->SetTarget(game_->GetCamera());
 
 		scn->SetDeathEffect(death_part_);
+
 		return scn;
 	}
 } // namespace game

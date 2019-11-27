@@ -150,7 +150,6 @@ namespace game {
 
 		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
 		bool qx, qz;
-		//for (std::vector<SceneNode*>::iterator it = quads.begin(); it != quads.end(); it++)
 		for (int i = 0; i < quads.size(); i++)
 		{
 			qx = (quads.at(i))->GetPosition().x > 0;

@@ -48,7 +48,6 @@ namespace game
 				game_->AddNode(&death_particles_);
 			}
 			state_ = State::Die;
-			//Logic to Create a death or damage effect here
 		}
 	}
 

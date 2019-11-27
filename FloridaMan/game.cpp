@@ -174,11 +174,7 @@ namespace game {
 		
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
-
-		//Want a new subclass of SceneNode: ParticleNode
-			//Will have override for setup shader and an attribute for color
-
-
+		
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
@@ -260,6 +256,7 @@ namespace game {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glfwSetWindowShouldClose(window, true);
 		}
+
 		// View control
 		float rot_factor(glm::pi<float>() / 360);
 		float trans_factor = 0.5;
