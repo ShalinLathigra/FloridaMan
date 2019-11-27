@@ -41,8 +41,11 @@ namespace game
 	void Bomb::Boom(float deltaTime)
 	{
 		//Apply some health damage to enemies in a radius here
-
-		this->set_toDestroy = true;
+		//Instantiate Death Effects
+		if (!set_toDestroy)
+		{
+			this->set_toDestroy = true;
+		}
 	}
 
 

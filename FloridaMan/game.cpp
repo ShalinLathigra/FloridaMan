@@ -212,8 +212,8 @@ namespace game {
 					}
 				}
 
-			//Check for any nodes/entities to be removed
-			scene_.RemoveNodes();
+				//Check for any nodes/entities to be removed
+				scene_.RemoveNodes();
 
 				// Draw the scene
 				scene_.Draw(&camera_);
@@ -384,7 +384,7 @@ namespace game {
 			isEnemy = false;
 			break;
 		case(BombProj):
-			entity_name = std::string("Bomb") + std::to_string(count_);
+			entity_name = std::string("Bomb") + std::to_string(count_++);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
@@ -392,7 +392,7 @@ namespace game {
 			isEnemy = false;
 			break;
 		case(ShurikenProj):
-			entity_name = std::string("Shuriken") + std::to_string(count_);
+			entity_name = std::string("Shuriken") + std::to_string(count_++);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
@@ -401,7 +401,7 @@ namespace game {
 			isProjectile = true;
 			break;
 		default:
-			entity_name = std::string("SceneNode") + std::to_string(count_);
+			entity_name = std::string("SceneNode") + std::to_string(count_++);
 			object_name = std::string("CubeMesh");
 			material_name = std::string("ShinyMaterial");
 			texture_name = std::string("");
@@ -453,7 +453,7 @@ namespace game {
 	void Game::CreateTowerField(void)
 	{
 		float range = 1000;
-		float dim = 150;
+		float dim = 900;
 		SceneNode *scn;
 		glm::vec3 scale;
 		std::string object_name, material_name, texture_name, envmap_name;
@@ -467,7 +467,7 @@ namespace game {
 				std::string suffix = std::to_string((int)x) + std::to_string((int)z);
 				scale = glm::vec3(7, 10, 7);
 
-				scn = CreateInstance(TurretSpawn + type, "Tower: " + suffix, "CubeMesh", "ShinyMaterial");
+				scn = CreateInstance(TurretSpawn + type, "Tower: " + suffix, "CylinderMesh", "ToonMaterial");
 				scn->SetOrientation(utilities::RandQuat(glm::vec3(0, 1, 0)));
 				scn->SetScale(scale);
 				scn->SetPosition(glm::vec3(x*dim, scale.y/2.0f, z*dim));

@@ -120,9 +120,11 @@ namespace game {
 		return set_toDestroy;
 	}
 
-	void SceneNode::RemoveChildAt(int index) {
+	SceneNode* SceneNode::RemoveChildAt(int index) {
 		if (m_childNodes[index]->m_childNodes.empty()) {
+			SceneNode *node = *(m_childNodes.begin() + index);
 			m_childNodes.erase(m_childNodes.begin() + index);
+			return node;
 		}
 	}
 

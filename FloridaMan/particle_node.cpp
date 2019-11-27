@@ -6,19 +6,19 @@ namespace game {
 	ParticleNode::ParticleNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap):SceneNode(name, geometry, material, texture, envmap)
 	{
 		start = glfwGetTime();
-		std::cout << start << std::endl;
+		//std::cout << start << std::endl;
 		duration = 1.5f;
 	}
 	ParticleNode::ParticleNode(const std::string name) :SceneNode(name)
 	{
 		start = glfwGetTime();
-		std::cout << start << std::endl;
+		//std::cout << start << std::endl;
 		duration = 1.5f;
 	}
 	ParticleNode::ParticleNode():SceneNode()
 	{
 		start = glfwGetTime();
-		std::cout << start << std::endl;
+		//std::cout << start << std::endl;
 		duration = 1.5f;
 	}
 

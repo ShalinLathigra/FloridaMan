@@ -69,7 +69,7 @@ namespace game {
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
 
-			void RemoveChildAt(int index);
+			SceneNode* RemoveChildAt(int index);
 
 			inline void SetType(int type) { type_ = type; }
 			void SetGame(Game* g);
