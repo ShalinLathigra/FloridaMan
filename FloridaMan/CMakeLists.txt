@@ -43,7 +43,9 @@ set(SRCS
 	static_entity.cpp
 	turret_node.cpp
 	utilties.cpp
-
+	CMakeLists.txt
+)
+set(SRC_SHADERS
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 
@@ -70,14 +72,14 @@ set(SRCS
 	skybox_fp.glsl 
 	envmap_vp.glsl 
 	envmap_fp.glsl 
-	CMakeLists.txt
 )
 
 # Add path name to configuration file
 configure_file(path_config.h.in path_config.h)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} ${HDRS} ${SRCS})
+add_executable(${PROJ_NAME} ${HDRS} ${SRCS} ${SRC_SHADERS})
+source_group("Shaders" FILES ${SRC_SHADERS})
 
 # Require OpenGL library
 find_package(OpenGL REQUIRED)
