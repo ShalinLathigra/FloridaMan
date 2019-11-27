@@ -65,6 +65,10 @@ namespace game {
 		game_ = game;
 	}
 
+	void SceneNode::setDestroyFlag(bool toggle) {
+		set_toDestroy = toggle;
+	}
+
 	SceneNode::SceneNode(const std::string name)
 	{
 		name_ = name;
