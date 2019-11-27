@@ -70,6 +70,7 @@ namespace game {
 			SceneNode *FindChild(std::string nodeName);
 			void RemoveChildAt(int index);
 			virtual void SetGame(Game* g);
+			void setDestroyFlag(bool toggle);
 
         protected:
             std::string name_; // Name of the scene node
