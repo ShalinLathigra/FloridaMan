@@ -182,7 +182,6 @@ namespace game {
 		scene_.AddNode(skybox_);
 
 		CreateTowerField();
-
 	}
 
 	void Game::MainLoop(void) {
@@ -216,8 +215,8 @@ namespace game {
 			//Check for any nodes/entities to be removed
 			scene_.RemoveNodes();
 
-			// Draw the scene
-			scene_.Draw(&camera_);
+				// Draw the scene
+				scene_.Draw(&camera_);
 
 				// Push buffer drawn in the background onto the display
 				glfwSwapBuffers(window_);
@@ -352,7 +351,6 @@ namespace game {
 		bool isEnemy = true;
 		bool isProjectile = false;
 		bool child = false;
-		//std::cout << type << std::endl;
 		switch (type)
 		{
 		case(Turret):

@@ -14,10 +14,7 @@
 #include "entity_structure.h"
 #include "camera.h"
 
-#include "entity.h"
-
 #include "scene_node.h"
-
 #include "utilities.h"
 
 

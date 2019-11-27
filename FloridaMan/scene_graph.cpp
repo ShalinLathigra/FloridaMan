@@ -33,8 +33,7 @@ namespace game {
 		update_state = true;
 	}
 
-
-	SceneGraph::~SceneGraph() {
+		SceneGraph::~SceneGraph() {
 	}
 
 
@@ -142,11 +141,9 @@ namespace game {
 		m_pRootNode->Draw(camera);
 	}
 
-
 	void SceneGraph::Update(float deltaTime) {
 
 		//m_pRootNode->Update(deltaTime);
-
 		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
 		bool qx, qz;
 		for (int i = 0; i < quads.size(); i++)
@@ -163,8 +160,8 @@ namespace game {
 					(quad.at(j))->Update(deltaTime);
 					(quad.at(j))->SetUpdated(update_state);
 
-					bool x = (quad.at(j))->GetPosition().x>0;
-					bool z = (quad.at(j))->GetPosition().z>0;
+					bool x = (quad.at(j))->GetPosition().x > 0;
+					bool z = (quad.at(j))->GetPosition().z > 0;
 
 					//std::cout << x << qx << " " << z << qz << std::endl;
 					if (x != qx || z != qz)
@@ -176,7 +173,6 @@ namespace game {
 			}
 		}
 		update_state = !update_state;
-
 	}
 
 	void SceneGraph::RemoveNodes() {
@@ -188,7 +184,6 @@ namespace game {
 			}
 		}
 	}
-
 
 	void SceneGraph::SetupDrawToTexture(void) {
 

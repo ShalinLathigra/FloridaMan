@@ -27,6 +27,7 @@ namespace game
 
 	void TurretNode::Update(float deltaTime)
 	{
+
 		switch (state_)
 		{
 		case(State::Idle):
