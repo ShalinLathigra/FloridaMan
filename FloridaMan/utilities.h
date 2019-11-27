@@ -15,7 +15,7 @@
 namespace game
 {
 
-	enum EntityType { Turret, Ground, Air, MineInstance, MineProj, BombProj, ShurikenProj, TurretSpawn, GroundSpawn, AirSpawn, Default };
+	enum EntityType { Turret, Ground, Air, MineInstance, Particle, MineProj, BombProj, ShurikenProj, TurretSpawn, GroundSpawn, AirSpawn, Default };
 
 }
 namespace utilities

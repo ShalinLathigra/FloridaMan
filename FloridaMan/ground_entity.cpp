@@ -1,6 +1,7 @@
 #include "ground_entity.h"
 #include "utilities.h"
 #include <iostream>
+#include "game.h"
 namespace game
 {
 
@@ -25,9 +26,9 @@ namespace game
 		dec_ = 4.5f; // Deceleration Rate
 
 		vel_ = 0.0f;	// Rate of position change
-		max_vel_ = 15.0f;	// Rate of position change
+		max_vel_ = 60.0f;	// Rate of position change
 
-		speed_ = 18.0f;
+		speed_ = 30.0f;
 	}
 	GroundEntity::~GroundEntity()
 	{
@@ -153,6 +154,7 @@ namespace game
 				// Attack Here
 				// Need some method to specify target of attack, and to Instantiate Entity missiles.
 				//std::cout << "Attack! " << num_attacks_ << std::endl;
+
 				num_attacks_--;
 				if (num_attacks_ > 0)
 				{

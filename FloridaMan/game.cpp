@@ -121,7 +121,7 @@ namespace game {
 		resman_.CreateSphere("SphereMesh");
 
 		// Use sphere to better analyze the environment map
-		resman_.CreateSphereParticles("SpherePartMesh");
+		resman_.CreateSphereParticles("SpherePartMesh", 500);
 
 		// Create a cube for the skybox
 		resman_.CreateCube("CubeMesh");
@@ -166,18 +166,14 @@ namespace game {
 
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
-
-		//Want a new subclass of SceneNode: ParticleNode
-			//Will have override for setup shader and an attribute for color
-
-
+		
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "LakeCubeMap");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 		scene_.AddNode(wall);
-
-
+		
+		
 		// Create skybox
 		skybox_ = CreateInstance(EntityType::Default, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
 		skybox_->Scale(glm::vec3(1001.0f));
@@ -192,9 +188,12 @@ namespace game {
 	void Game::MainLoop(void) {
 
 
-		//AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
-		//scn->SetEndScale(glm::vec3(10, 7, 10));
-		//scene_.AddNode4(scn);
+		AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
+		scn->SetEndScale(glm::vec3(10, 7, 10));
+		scene_.AddNode4(scn);
+
+		ParticleNode *part = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "ExplosionMaterial");
+		scn->SetDeathEffect(*part);
 
 		// Loop while the user did not close the window
 		while (!glfwWindowShouldClose(window_)) {
@@ -209,10 +208,9 @@ namespace game {
 					last_time = current_time;
 
 
-					//if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
-					//	scn->TakeDamage(10.0f);
-					//}
-
+					if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
+						scn->TakeDamage(1.0f);
+					}
 				}
 
 			//Check for any nodes/entities to be removed
@@ -249,12 +247,7 @@ namespace game {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glfwSetWindowShouldClose(window, true);
 		}
-
-		// Stop animation if space bar is pressed
-		//if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-		//	 game->animating_ = (game->animating_ == true) ? false : true;
-		//}
-
+		
 		// View control
 		float rot_factor(glm::pi<float>() / 360);
 		float trans_factor = 0.5;
@@ -523,8 +516,8 @@ namespace game {
 							throw(GameException(std::string("Could not find resource \"") + envmap_name + std::string("\"")));
 						}
 					}
-
-					((EntityStructure*)scn)->InitResources(type, geom, mat, tex, envmap);
+					ParticleNode *part = (ParticleNode*)CreateInstance(EntityType::Particle, "boom_effect", "SpherePartMesh", "ExplosionMaterial");
+					((EntityStructure*)scn)->InitResources(type, geom, mat, tex, envmap, *part);
 				}
 				//AddNode(scn);
 				scene_.AddNode4(scn);

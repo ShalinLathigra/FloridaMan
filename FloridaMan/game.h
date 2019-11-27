@@ -10,6 +10,7 @@
 
 #include "scene_graph.h"
 #include "resource_manager.h"
+#include "particle_node.h"
 #include "entity_structure.h"
 #include "camera.h"
 

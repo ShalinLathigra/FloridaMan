@@ -12,6 +12,7 @@
 #include "resource.h"
 #include "scene_node.h"
 #include "air_entity.h"
+#include "particle_node.h"
 
 #define MAX_SPAWN_TIMER 10.0f
 namespace game {
@@ -27,10 +28,11 @@ namespace game {
 
             // Update geometry configuration
 			void Update(float deltaTime);
-			void InitResources(int type, Resource* obj, Resource* mat, Resource* tex, Resource* env);
+			void InitResources(int type, Resource* obj, Resource* mat, Resource* tex, Resource* env, ParticleNode part);
 
         protected:
 			SceneNode* CreateEntity();
+			ParticleNode death_part_;
 
 			float m_EntityTimer;
 			int m_EntityCount;

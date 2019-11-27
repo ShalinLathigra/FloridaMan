@@ -1,10 +1,13 @@
 #include "entity.h"
 #include <iostream>
 #include "utilities.h"
+#include "game.h"
 namespace game
 {
 	Entity::Entity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap)
 	{
+		death_particles_ = ParticleNode(name + std::string("death"));
+		death_part_ = false;
 		state_ = game::State::Idle;
 		forward_ = glm::vec3(0.0, 0.0, 1.0);
 		up_ = glm::vec3(0.0, 1.0, 0.0);
@@ -36,8 +39,15 @@ namespace game
 		hp_ -= amount;
 		if (hp_ <= 0.0f)
 		{
+			if (death_part_ && state_ != State::Die)
+			{
+				death_particles_.SetScale(glm::vec3(1));
+				death_particles_.SetPosition(GetPosition());
+				death_particles_.Start();
+				std::cout << death_particles_.GetStart() << std::endl;
+				game_->AddNode(&death_particles_);
+			}
 			state_ = State::Die;
-			//Logic to Create a death or damage effect here
 		}
 	}
 
@@ -73,6 +83,11 @@ namespace game
 	bool Entity::IsAlive(void)
 	{
 		return hp_ > 0;
+	}
+	void Entity::SetDeathEffect(ParticleNode part)
+	{
+		death_particles_ = part;
+		death_part_ = true;
 	}
 
 }

@@ -70,6 +70,13 @@ namespace game {
 		m_pParentNode = nullptr;
 		m_childNodes = std::vector<SceneNode*>();
 	}
+	SceneNode::SceneNode()
+	{
+		name_ = std::string("Undefined Node");
+		m_isVisible = false;
+		m_pParentNode = nullptr;
+		m_childNodes = std::vector<SceneNode*>();
+	}
 
 	SceneNode *SceneNode::GetParent()
 	{
