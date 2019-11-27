@@ -71,6 +71,9 @@ namespace game {
 		case(EntityType::MineInstance):
 			scn = new Mine(node_name, geometry, material, texture, envmap);
 			break;
+		case(EntityType::Particle):
+			scn = new ParticleNode(node_name, geometry, material, texture, envmap);
+			break;
 		case(EntityType::Destructible):
 			scn = new SceneNode(node_name, geometry, material, texture, envmap);
 			break;
@@ -146,7 +149,6 @@ namespace game {
 		//m_pRootNode->Update(deltaTime);
 		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
 		bool qx, qz;
-		//for (std::vector<SceneNode*>::iterator it = quads.begin(); it != quads.end(); it++)
 		for (int i = 0; i < quads.size(); i++)
 		{
 			qx = (quads.at(i))->GetPosition().x > 0;

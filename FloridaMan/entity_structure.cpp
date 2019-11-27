@@ -6,6 +6,7 @@ namespace game {
 
 	EntityStructure::EntityStructure(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap)
 	{
+		death_part_ = ParticleNode("");
 		m_EntityTimer = 0.0f;
 		m_MaxEntityCount = 3;
 		m_EntityCount = 0;
@@ -16,13 +17,15 @@ namespace game {
 	{
 	}
 
-	void EntityStructure::InitResources(int type, Resource* obj, Resource* mat, Resource* tex, Resource* env)
+	void EntityStructure::InitResources(int type, Resource* obj, Resource* mat, Resource* tex, Resource* env, ParticleNode part)
 	{
 		m_type = type;
 		m_geom = obj;
 		m_mat = mat;
 		m_tex = tex;
 		m_env = env;
+
+		death_part_ = part;
 
 		if (m_type == EntityType::Turret)
 			m_MaxEntityCount = 1;
@@ -85,6 +88,8 @@ namespace game {
 		scn->SetGame(game_);
 		scn->SetType(m_type);
 		scn->SetTarget(game_->GetCamera());
+
+		scn->SetDeathEffect(death_part_);
 
 		return scn;
 	}
