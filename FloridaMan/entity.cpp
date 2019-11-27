@@ -44,7 +44,6 @@ namespace game
 				death_particles_.SetScale(glm::vec3(1));
 				death_particles_.SetPosition(GetPosition());
 				death_particles_.Start();
-				std::cout << death_particles_.GetStart() << std::endl;
 				game_->AddNode(&death_particles_);
 			}
 			state_ = State::Die;

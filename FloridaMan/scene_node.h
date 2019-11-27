@@ -68,8 +68,9 @@ namespace game {
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
+			
+			SceneNode* RemoveChildAt(int index);
 
-			void RemoveChildAt(int index);
 			inline void SetType(int type) { type_ = type; }
 			void SetGame(Game* g);
 

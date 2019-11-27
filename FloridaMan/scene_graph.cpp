@@ -182,10 +182,21 @@ namespace game {
 
 	void SceneGraph::RemoveNodes() {
 
-		for (int i = 0; i < m_pRootNode->GetChildren().size(); i++) {
-			if (m_pRootNode->GetChildren()[i]->checkIfDestroy() == true) {
-				m_pRootNode->RemoveChildAt(i);
-				i--;
+		//m_pRootNode->Update(deltaTime);
+		int del_count;
+		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
+		for (int i = 0; i < quads.size(); i++)
+		{
+			std::vector<SceneNode*> quad = (quads.at(i))->GetChildren();
+			del_count = 0;
+			for (int j = 0; j < quad.size(); j++)
+			{
+				if (quad.at(j)->checkIfDestroy() == true)
+				{
+					quads.at(i)->RemoveChildAt(del_count);
+					del_count--;
+				}
+				del_count++;
 			}
 		}
 	}
