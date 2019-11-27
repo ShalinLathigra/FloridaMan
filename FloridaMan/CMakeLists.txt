@@ -8,6 +8,7 @@ project(${PROJ_NAME})
 set(HDRS
 	air_entity.h
 	asteroid.h 
+	bomb.h
 	entity.h 
 	entity_structure.h 
 	camera.h 
@@ -20,17 +21,16 @@ set(HDRS
 	resource_manager.h 
 	scene_graph.h 
 	scene_node.h
+	shuriken.h
 	static_entity.h
 	turret_node.h
 	utilities.h
-	bomb.h
-	shuriken.h
 )
  
 set(SRCS
-	bomb.cpp
 	air_entity.cpp 
 	asteroid.cpp 
+	bomb.cpp
 	camera.cpp 
 	entity.cpp 
 	entity_structure.cpp 
@@ -47,9 +47,10 @@ set(SRCS
 	static_entity.cpp
 	turret_node.cpp
 	utilties.cpp
-	shuriken.cpp
-	bomb.cpp
 
+	CMakeLists.txt
+)
+set(SRC_SHADERS
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 
@@ -76,14 +77,14 @@ set(SRCS
 	skybox_fp.glsl 
 	envmap_vp.glsl 
 	envmap_fp.glsl 
-	CMakeLists.txt
 )
 
 # Add path name to configuration file
 configure_file(path_config.h.in path_config.h)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} ${HDRS} ${SRCS})
+add_executable(${PROJ_NAME} ${HDRS} ${SRCS} ${SRC_SHADERS})
+source_group("Shaders" FILES ${SRC_SHADERS})
 
 # Require OpenGL library
 find_package(OpenGL REQUIRED)
