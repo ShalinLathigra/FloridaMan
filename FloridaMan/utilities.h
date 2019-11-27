@@ -14,7 +14,7 @@
 // This namespace contains a number of useful functions for a variety of different purposes, including creating 3D models, and random number generation.
 namespace game
 {
-	enum EntityType { Turret, Ground, Air, MineProj, BombProj, ShurikenProj, TurretSpawn, GroundSpawn, AirSpawn, Default };
+	enum EntityType { Turret, Ground, Air, MineProj, BombProj, ShurikenProj, Particle, Destructible, TurretSpawn, GroundSpawn, AirSpawn, Default };
 }
 namespace utilities
 {

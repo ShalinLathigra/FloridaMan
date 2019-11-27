@@ -23,6 +23,7 @@ namespace game {
         public:
             SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture = NULL, const Resource *envmap = NULL);
 			SceneNode(const std::string name);
+			SceneNode();
             // Destructor
             ~SceneNode();
             
