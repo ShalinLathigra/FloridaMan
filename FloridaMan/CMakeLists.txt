@@ -69,9 +69,12 @@ set(SRC_SHADERS
 	normal_map_fp.glsl 
 	screen_space_vp.glsl 
 	screen_space_fp.glsl 
-	particle_vp.glsl 
-	particle_fp.glsl 
-	particle_gp.glsl 
+	particle_boom_vp.glsl 
+	particle_boom_fp.glsl 
+	particle_boom_gp.glsl 
+	particle_spawn_vp.glsl 
+	particle_spawn_fp.glsl 
+	particle_spawn_gp.glsl 
 	fire_vp.glsl 
 	fire_gp.glsl 
 	fire_fp.glsl 

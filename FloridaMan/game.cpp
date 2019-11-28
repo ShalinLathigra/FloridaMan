@@ -145,15 +145,13 @@ namespace game {
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/toon_material");
 		resman_.LoadResource(Material, "ToonMaterial", filename.c_str());
-
+			   
 		// Load material to be applied to torus
-		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle");
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_boom");
 		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
-
-
 		// Load material to be applied to torus
-		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle");
-		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_spawn");
+		resman_.LoadResource(Material, "SpawnMaterial", filename.c_str());
 
 
 		// Load cube map to be applied to skybox
@@ -201,9 +199,15 @@ namespace game {
 		AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
 		scn->SetEndScale(glm::vec3(10, 7, 10));
 		scene_.AddNode4(scn);
-
+		
 		ParticleNode *part = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "ExplosionMaterial");
 		scn->SetDeathEffect(*part);
+		
+		ParticleNode *part2 = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "SpawnMaterial");
+		part2->SetPosition(glm::vec3(0, 5, -30));
+		part2->SetScale(glm::vec3(0.25f));
+
+		scene_.AddNode(part2);
 
 		// Loop while the user did not close the window
 		while (!glfwWindowShouldClose(window_)) {
