@@ -26,6 +26,7 @@ namespace game
 		envmap_ = 0;
 		m_isVisible = true;
 		blending_ = false;
+		skybox_ = false;
 		scale_ = glm::vec3(1.0, 1.0, 1.0);
 		Translate(glm::vec3(0.0, 0.0, 0));
 	}
