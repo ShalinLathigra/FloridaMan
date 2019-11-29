@@ -26,6 +26,14 @@ namespace game {
 	ParticleNode::~ParticleNode()
 	{
 	}
+
+	void ParticleNode::Update(float deltaTime)
+	{
+		if (glfwGetTime() > start + duration && !set_toDestroy)
+		{
+			set_toDestroy = true;
+		}
+	}
             
 
 	void ParticleNode::SetupShader(GLuint program, Camera *camera) 

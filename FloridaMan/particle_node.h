@@ -26,6 +26,8 @@ namespace game {
             // Destructor
             ~ParticleNode();
 
+			void Update(float deltaTime);
+
 			//Setup Shader for Particle Shader
 			void SetupShader(GLuint program, Camera *camera);
 			void Start(void);
