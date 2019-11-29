@@ -1,104 +1,131 @@
-#include <stdexcept>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <stdexcept>
 #define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "scene_graph.h"
 
-namespace game {
-
-SceneGraph::SceneGraph(void){
-
+namespace game
+{
+SceneGraph::SceneGraph(void)
+{
     background_color_ = glm::vec3(0.0, 0.0, 0.0);
-	m_pRootNode = new SceneNode("Root Node");
+    m_pRootNode = new SceneNode("Root Node");
+
+    update_state = true;
 }
 
-
-SceneGraph::~SceneGraph(){
+SceneGraph::~SceneGraph()
+{
 }
 
-
-void SceneGraph::SetBackgroundColor(glm::vec3 color){
-
+void SceneGraph::SetBackgroundColor(glm::vec3 color)
+{
     background_color_ = color;
 }
 
-
-glm::vec3 SceneGraph::GetBackgroundColor(void) const {
-
+glm::vec3 SceneGraph::GetBackgroundColor(void) const
+{
     return background_color_;
 }
- 
 
-SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap){
-
+SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture, Resource *envmap)
+{
     // Create scene node with the specified resources
-	SceneNode *scn;
-	
-	switch (type)
-	{
-	case(0): scn = new StaticEntity(node_name, geometry, material, texture, envmap); break;
-	case(1): scn = new GroundEntity(node_name, geometry, material, texture, envmap); break;
-	case(2): scn = new AirEntity(node_name, geometry, material, texture, envmap); break;
-	case(3): scn = new Mine(node_name, geometry, material, texture, envmap); break;
-	case(4): scn = new Bomb(node_name, geometry, material, texture, envmap); break;
-	case(5): scn = new Shuriken(node_name, geometry, material, texture, envmap); break;
-	default: scn = new SceneNode(node_name, geometry, material, texture, envmap); break;
-	}
-	//std::cout << type << std::endl;
-    // Add node to the scene
-	m_pRootNode->AddChild(scn);
-
+    SceneNode *scn;
+	SceneNode* child;
+	float r;
+    switch (type)
+    {
+        case (EntityType::Turret):
+            scn = new TurretNode(node_name, geometry, material, texture, envmap);
+            //This thing needs a child node
+            break;
+        case (EntityType::Ground):
+            scn = new GroundEntity(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::Air):
+            scn = new AirEntity(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::MineProj):
+            scn = new Mine(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::BombProj):
+            scn = new Bomb(node_name, geometry, material, texture, envmap);
+            break;
+		case (EntityType::ShurikenProj):
+		case (EntityType::MissileProj):
+            scn = new Shuriken(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::Particle):
+            scn = new ParticleNode(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::TurretSpawn):
+        case (EntityType::GroundSpawn):
+		case (EntityType::AirSpawn):
+			scn = new EntityStructure(node_name, geometry, material, texture, envmap);
+			break;
+		case (EntityType::AlienSpawn):
+			scn = new Entity(node_name, geometry, material, texture, envmap);
+			break;
+		case (EntityType::AsteroidInst):
+			scn = new Asteroid(node_name, geometry, material, texture, envmap);
+			break;
+        default:
+            scn = new SceneNode(node_name, geometry, material, texture, envmap);
+            break;
+    }
     return scn;
 }
 
-
-void SceneGraph::AddNode(SceneNode *node){
-
-	m_pRootNode->AddChild(node);
+void SceneGraph::AddNode(SceneNode *node)
+{
+    m_pRootNode->AddChild(node);
 }
 
-
-SceneNode *SceneGraph::GetNode(std::string node_name) const {
-
-	return m_pRootNode->FindChild(node_name);
-
+SceneNode *SceneGraph::GetNode(std::string node_name) const
+{
+    return m_pRootNode->FindChild(node_name);
 }
 
-void SceneGraph::RemoveNodes() {
-
-	for (int i = 0; i < m_pRootNode->GetChildren().size(); i++){
-		if (m_pRootNode->GetChildren()[i]->checkIfDestroy() == true) {
-			m_pRootNode->RemoveChildAt(i);
-			i--;
-		}
-	}
-}
-
-void SceneGraph::Draw(Camera *camera){
-
+void SceneGraph::Draw(Camera *camera)
+{
     // Clear background
-    glClearColor(background_color_[0], 
+    glClearColor(background_color_[0],
                  background_color_[1],
                  background_color_[2], 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw all scene nodes
-	m_pRootNode->Draw(camera);
+    m_pRootNode->Draw(camera);
 }
 
-
-void SceneGraph::Update(float deltaTime){
-	
-	m_pRootNode->Update(deltaTime);
+void SceneGraph::Update(float deltaTime)
+{
+    m_pRootNode->Update(deltaTime);
 }
 
+void SceneGraph::RemoveNodes()
+{
+    //m_pRootNode->Update(deltaTime);
+    int del_count = 0;
+    std::vector<SceneNode *> nodes = m_pRootNode->GetChildren();
+    for (int i = 0; i < nodes.size(); i++)
+    {
+        if (nodes.at(i)->checkIfDestroy() == true)
+        {
+            m_pRootNode->RemoveChildAt(del_count);
+            del_count--;
+        }
+        del_count++;
+    }
+}
 
-void SceneGraph::SetupDrawToTexture(void){
-
+void SceneGraph::SetupDrawToTexture(void)
+{
     // Set up frame buffer
     glGenFramebuffers(1, &frame_buffer_);
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_);
@@ -123,8 +150,9 @@ void SceneGraph::SetupDrawToTexture(void){
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
     glDrawBuffers(1, DrawBuffers);
 
-    // Check if frame buffer was setup successfully 
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+    // Check if frame buffer was setup successfully
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
         throw(std::ios_base::failure(std::string("Error setting up frame buffer")));
     }
 
@@ -133,12 +161,36 @@ void SceneGraph::SetupDrawToTexture(void){
 
     // Set up quad for drawing to the screen
     static const GLfloat quad_vertex_data[] = {
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-         1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-         1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-         1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        -1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        1.0f,
+        -1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        1.0f,
+        1.0f,
+        0.0f,
+        1.0f,
+        1.0f,
     };
 
     // Create buffer for quad
@@ -147,25 +199,24 @@ void SceneGraph::SetupDrawToTexture(void){
     glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertex_data), quad_vertex_data, GL_STATIC_DRAW);
 }
 
-
-void SceneGraph::DrawToTexture(Camera *camera){
-
+void SceneGraph::DrawToTexture(Camera *camera)
+{
     // Save current viewport
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
 
     // Enable frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_);
-    glViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT); 
+    glViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
 
     // Clear background
-    glClearColor(background_color_[0], 
+    glClearColor(background_color_[0],
                  background_color_[1],
                  background_color_[2], 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw all scene nodes
-	m_pRootNode->Draw(camera);
+    m_pRootNode->Draw(camera);
 
     // Reset frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -174,9 +225,8 @@ void SceneGraph::DrawToTexture(Camera *camera){
     glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 }
 
-
-void SceneGraph::DisplayTexture(GLuint program){
-
+void SceneGraph::DisplayTexture(GLuint program)
+{
     // Configure output to the screen
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
@@ -194,7 +244,7 @@ void SceneGraph::DisplayTexture(GLuint program){
 
     GLint tex_att = glGetAttribLocation(program, "uv");
     glEnableVertexAttribArray(tex_att);
-    glVertexAttribPointer(tex_att, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *) (3*sizeof(GLfloat)));
+    glVertexAttribPointer(tex_att, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void *)(3 * sizeof(GLfloat)));
 
     // Timer
     GLint timer_var = glGetUniformLocation(program, "timer");
@@ -212,10 +262,9 @@ void SceneGraph::DisplayTexture(GLuint program){
     glEnable(GL_DEPTH_TEST);
 }
 
-
-void SceneGraph::SaveTexture(char *filename){
-
-    unsigned char data[FRAME_BUFFER_WIDTH*FRAME_BUFFER_HEIGHT*4];
+void SceneGraph::SaveTexture(char *filename)
+{
+    unsigned char data[FRAME_BUFFER_WIDTH * FRAME_BUFFER_HEIGHT * 4];
 
     // Retrieve image data from texture
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_);
@@ -225,8 +274,9 @@ void SceneGraph::SaveTexture(char *filename){
     // Open the file
     std::ofstream f;
     f.open(filename);
-    if (f.fail()){
-        throw(std::ios_base::failure(std::string("Error opening file ")+std::string(filename)));
+    if (f.fail())
+    {
+        throw(std::ios_base::failure(std::string("Error opening file ") + std::string(filename)));
     }
 
     // Write header
@@ -235,10 +285,13 @@ void SceneGraph::SaveTexture(char *filename){
     f << "255" << std::endl;
 
     // Write data
-    for (int i = 0; i < FRAME_BUFFER_HEIGHT; i++){
-        for (int j = 0; j < FRAME_BUFFER_WIDTH; j++){
-            for (int k = 0; k < 3; k++){
-                int dt = data[i*FRAME_BUFFER_WIDTH*4 + j*4 + k];
+    for (int i = 0; i < FRAME_BUFFER_HEIGHT; i++)
+    {
+        for (int j = 0; j < FRAME_BUFFER_WIDTH; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int dt = data[i * FRAME_BUFFER_WIDTH * 4 + j * 4 + k];
                 f << dt << " ";
             }
         }
@@ -250,6 +303,45 @@ void SceneGraph::SaveTexture(char *filename){
 
     // Reset frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // Set up quad for drawing to the screen
+    static const GLfloat quad_vertex_data[] = {
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        -1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        1.0f,
+        1.0f,
+        -1.0f,
+        0.0f,
+        1.0f,
+        0.0f,
+        1.0f,
+        1.0f,
+        0.0f,
+        1.0f,
+        1.0f,
+    };
+
+    // Create buffer for quad
+    glGenBuffers(1, &quad_array_buffer_);
+    glBindBuffer(GL_ARRAY_BUFFER, quad_array_buffer_);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertex_data), quad_vertex_data, GL_STATIC_DRAW);
 }
 
 } // namespace game

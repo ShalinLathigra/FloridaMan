@@ -4,75 +4,80 @@
 #include <string>
 #include <vector>
 #define GLEW_STATIC
+#include "air_entity.h"
+#include "bomb.h"
+#include "camera.h"
+#include "entity_structure.h"
+#include "mine.h"
+#include "particle_node.h"
+#include "resource.h"
+#include "shuriken.h"
+#include "utilities.h"
+#include "asteroid.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "air_entity.h"
-#include "mine.h"
-#include "bomb.h"
-#include "shuriken.h"
-#include "resource.h"
-#include "camera.h"
 
 // Size of the texture that we will draw
 #define FRAME_BUFFER_WIDTH 1024
 #define FRAME_BUFFER_HEIGHT 768
 
-namespace game {
-    // Class that manages all the objects in a scene
-    class SceneGraph {
+namespace game
+{
+// Class that manages all the objects in a scene
+class SceneGraph
+{
+private:
+    // Background color
+    glm::vec3 background_color_;
 
-        private:
-            // Background color
-            glm::vec3 background_color_;
+    // Scene nodes to render
+    SceneNode *m_pRootNode;
 
-            // Scene nodes to render
-			SceneNode *m_pRootNode;
+    // Frame buffer for drawing to texture
+    GLuint frame_buffer_;
+    // Quad vertex array for drawing from texture
+    GLuint quad_array_buffer_;
+    // Render targets
+    GLuint texture_;
+    GLuint depth_buffer_;
 
-            // Frame buffer for drawing to texture
-            GLuint frame_buffer_;
-            // Quad vertex array for drawing from texture
-            GLuint quad_array_buffer_;
-            // Render targets
-            GLuint texture_;
-            GLuint depth_buffer_;
+    bool update_state;
 
-        public:
-            // Constructor and destructor
-            SceneGraph(void);
-            ~SceneGraph();
+public:
+    // Constructor and destructor
+    SceneGraph(void);
+    ~SceneGraph();
 
-            // Background color
-            void SetBackgroundColor(glm::vec3 color);
-            glm::vec3 GetBackgroundColor(void) const;
-            
-            // Create a scene node from the specified resources
-            SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
-            // Add an already-created node to the root of the tree
-            void AddNode(SceneNode *node);
-            // Find a scene node with a specific name
-            SceneNode *GetNode(std::string node_name) const;
-            
+    // Background color
+    void SetBackgroundColor(glm::vec3 color);
+    glm::vec3 GetBackgroundColor(void) const;
 
-            // Draw the entire scene
-            void Draw(Camera *camera);
+    // Create a scene node from the specified resources
+    SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
+    // Add an already-created node to the root of the tree
+    void AddNode(SceneNode *node);
+    // Find a scene node with a specific name
+    SceneNode *GetNode(std::string node_name) const;
 
-            // Update entire scene
-            void Update(float deltaTime);
+    // Draw the entire scene
+    void Draw(Camera *camera);
 
-			//Check for nodes to be removed from hierarchy
-			void RemoveNodes();
+    // Update entire scene
+    void Update(float deltaTime);
 
-            // Drawing from/to a texture
-            // Setup the texture
-            void SetupDrawToTexture(void);
-            // Draw the scene into a texture
-            void DrawToTexture(Camera *camera);
-            // Process and draw the texture on the screen
-            void DisplayTexture(GLuint program);
-            // Save texture to a file in ppm format
-            void SaveTexture(char *filename);
+    //Check for nodes to be removed from hierarchy
+    void RemoveNodes();
 
-    }; // class SceneGraph
+    // Drawing from/to a texture
+    // Setup the texture
+    void SetupDrawToTexture(void);
+    // Draw the scene into a texture
+    void DrawToTexture(Camera *camera);
+    // Process and draw the texture on the screen
+    void DisplayTexture(GLuint program);
+    // Save texture to a file in ppm format
+    void SaveTexture(char *filename);
+}; // class SceneGraph
 
 } // namespace game
 

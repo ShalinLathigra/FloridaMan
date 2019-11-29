@@ -12,29 +12,29 @@
 #include "resource.h"
 #include "scene_node.h"
 
-namespace game {
+namespace game
+{
+// Abstraction of an asteroid
+class Asteroid : public SceneNode
+{
+public:
+    // Create asteroid from given resources
+    Asteroid(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture = NULL, const Resource *envmap = NULL);
 
-    // Abstraction of an asteroid
-    class Asteroid : public SceneNode {
+    // Destructor
+    ~Asteroid();
 
-        public:
-            // Create asteroid from given resources
-            Asteroid(const std::string name, const Resource *geometry, const Resource *material);
+    // Get/set attributes specific to asteroids
+    glm::quat GetAngM(void) const;
+    void SetAngM(glm::quat angm);
 
-            // Destructor
-            ~Asteroid();
-            
-            // Get/set attributes specific to asteroids
-            glm::quat GetAngM(void) const;
-            void SetAngM(glm::quat angm);
+    // Update geometry configuration
+    void Update(float deltaTime);
 
-            // Update geometry configuration
-            void Update(void);
-            
-        private:
-            // Angular momentum of asteroid
-            glm::quat angm_;
-    }; // class Asteroid
+private:
+    // Angular momentum of asteroid
+    glm::quat angm_;
+}; // class Asteroid
 
 } // namespace game
 
