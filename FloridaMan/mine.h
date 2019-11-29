@@ -31,8 +31,6 @@ namespace game
 		void Chase(float deltaTime);
 		void Boom(float deltaTime);
 
-		void checkCollision(SceneNode* someTarget);
-
 		MineState GetState(void);
 		SceneNode* GetTarget(void);
 		void SetState(MineState state);

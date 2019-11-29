@@ -25,21 +25,12 @@ namespace game
 		~Shuriken();
 
 		void Update(float deltaTime);
-		void AdvanceTimers(float deltaTime);
-
-		void Fire(void);
-		void StartCooldown(void);
-		bool IsActive(void);
 
 		void turnOff(void);
 
-		float GetWidth(void) const;
 		glm::vec3 GetForward(void) const;
 		void SetForward(glm::vec3 forward_new);
 		void SetSpawnPos(glm::vec3);
-		void SetJoint(glm::vec3);
-
-		glm::mat4 CalculateMatrix(glm::mat4 p);
 
 		void setParent(Camera *camera);
 	private:
@@ -60,7 +51,9 @@ namespace game
 		float duration_timer_;
 		float cd_timer_;
 
+		void checkIfHit();
 		void distanceTravelled();
+		bool checkSphereCollision(SceneNode* someEnemy);
 	};
 }
 

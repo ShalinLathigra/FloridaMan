@@ -54,6 +54,7 @@ namespace game {
             // Update the node
             virtual void Update(float deltaTime);
 			bool CheckCollision(SceneNode *pNode);
+			bool CheckSphereCollision(SceneNode *pNode, float dist);
 
             // OpenGL variables
             GLenum GetMode(void) const;
@@ -70,6 +71,7 @@ namespace game {
 			SceneNode *FindChild(std::string nodeName);
 			void RemoveChildAt(int index);
 			virtual void SetGame(Game* g);
+			void setDestroyFlag(bool toggle);
 
         protected:
             std::string name_; // Name of the scene node
