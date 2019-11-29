@@ -6,10 +6,13 @@
 #include <iostream>
 
 #include "camera.h"
+#include "player.h"
 
 namespace game {
 
+
 Camera::Camera(void){
+	m_isFirstPerson = true;
 }
 
 
@@ -30,20 +33,26 @@ glm::quat Camera::GetOrientation(void) const {
 
 
 void Camera::SetPosition(glm::vec3 position){
-
+	//m_pPlayer->SetPosition(position);
     position_ = position;
 }
 
+void Camera::TogglePOV()
+{
+	m_isFirstPerson = !m_isFirstPerson;
+}
 
 void Camera::SetOrientation(glm::quat orientation){
 
     orientation_ = orientation;
+	m_pPlayer->SetOrientation(orientation_);
 }
 
 
 void Camera::Translate(glm::vec3 trans){
 
     position_ += trans;
+	m_pPlayer->Translate(trans);
 }
 
 
@@ -51,6 +60,8 @@ void Camera::Rotate(glm::quat rot){
 
     orientation_ = rot * orientation_;
     orientation_ = glm::normalize(orientation_);
+	m_pPlayer->SetOrientation(orientation_);
+
 }
 
 
@@ -83,14 +94,16 @@ void Camera::Pitch(float angle){
     glm::quat rotation = glm::angleAxis(angle, GetSide());
     orientation_ = rotation * orientation_;
     orientation_ = glm::normalize(orientation_);
+	m_pPlayer->SetOrientation(orientation_);
 }
 
 
 void Camera::Yaw(float angle){
 
     glm::quat rotation = glm::angleAxis(angle, GetUp());
-    orientation_ = rotation * orientation_;
-    orientation_ = glm::normalize(orientation_);
+	orientation_ = rotation * orientation_;
+	orientation_ = glm::normalize(orientation_);
+	m_pPlayer->SetOrientation(orientation_);
 }
 
 
@@ -99,6 +112,7 @@ void Camera::Roll(float angle){
     glm::quat rotation = glm::angleAxis(angle, GetForward());
     orientation_ = rotation * orientation_;
     orientation_ = glm::normalize(orientation_);
+	m_pPlayer->SetOrientation(orientation_);
 }
 
 
@@ -130,7 +144,7 @@ void Camera::SetupShader(GLuint program){
 
     // Update view matrix
     SetupViewMatrix();
-
+	
     // Set view matrix in shader
     GLint view_mat = glGetUniformLocation(program, "view_mat");
     glUniformMatrix4fv(view_mat, 1, GL_FALSE, glm::value_ptr(view_matrix_));
@@ -150,18 +164,37 @@ glm::mat4 Camera::GetCurrentViewMatrix(void){
     return view_matrix_;
 }
 
+void Camera::InitPlayer(ResourceManager *resMan)
+{
+	m_pPlayer = new Player();
+	m_pPlayer->PlayerInit(resMan);
+}
+
+Player *Camera::GetPlayer()
+{
+	return m_pPlayer;
+}
 
 void Camera::SetupViewMatrix(void){
 
     //view_matrix_ = glm::lookAt(position, look_at, up);
-
+	
     // Get current vectors of coordinate system
     // [side, up, forward]
     // See slide in "Camera control" for details
     glm::vec3 current_forward = orientation_ * forward_;
+	glm::vec3 newPosition = m_pPlayer->GetPosition();
     glm::vec3 current_side = orientation_ * side_;
     glm::vec3 current_up = glm::cross(current_forward, current_side);
     current_up = glm::normalize(current_up);
+	if (m_isFirstPerson)
+	{
+		SetPosition(newPosition - current_forward);
+	}
+	else
+	{
+		SetPosition(newPosition + current_forward * 2.0f + current_up * 1.0f);
+	}
 
     // Initialize the view matrix as an identity matrix
     view_matrix_ = glm::mat4(1.0); 
@@ -185,7 +218,7 @@ void Camera::SetupViewMatrix(void){
     glm::mat4 trans = glm::translate(glm::mat4(1.0), -position_);
 
     // Combine translation and view matrix in proper order
-    view_matrix_ *= trans;
+	view_matrix_ *= trans;//glm::mat4_cast(orientation_) * trans;
 }
 
 } // namespace game

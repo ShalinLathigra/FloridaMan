@@ -125,9 +125,13 @@ namespace game {
 
 		resman_.CreateWall("PlaneMesh");
 
+
 		// Load material to be applied to torus
 		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
 		resman_.LoadResource(Material, "EnvMapMaterial", filename.c_str());
+
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
+		resman_.LoadResource(Material, "MetalMaterial", filename.c_str());
 
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/three-term_shiny_blue");
@@ -180,6 +184,9 @@ namespace game {
 
 	void Game::MainLoop(void) {
 
+
+		camera_.InitPlayer(&resman_);
+		scene_.AddNode((SceneNode*)(camera_.GetPlayer()));
 		// Loop while the user did not close the window
 		while (!glfwWindowShouldClose(window_)) {
 			// Animate the scene
@@ -292,6 +299,9 @@ namespace game {
 
 		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 			game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition(), glm::vec3(1.0f, 0.25f, 1.0f));
+		}
+		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+			game->camera_.TogglePOV();
 		}
 	}
 
