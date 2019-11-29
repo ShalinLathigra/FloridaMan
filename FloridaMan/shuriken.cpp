@@ -78,8 +78,7 @@ namespace game
 		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
 			//std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
 			if (checkSphereCollision(childz[i]) && childz[i]->GetName().find("Entity") != std::string::npos) {
-				std::cout << "We hit!" << std::endl;
-				childz[i]->setDestroyFlag(true);
+				((Entity*)childz[i])->TakeDamage(100);
 			}
 		}
 	}

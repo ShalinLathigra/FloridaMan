@@ -1,8 +1,8 @@
+#include "game.h"
 #include "scene_graph.h"
 #include "mine.h"
 #include <iostream>
 #include "utilities.h"
-#include "game.h"
 namespace game
 {
 	Mine::Mine(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap) {
@@ -34,9 +34,8 @@ namespace game
 
 		//std::cout << "No Target" << std::endl;
 		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
-			std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
 			if (childz[i]->GetName().find("Entity") != std::string::npos && target_set_ == false) {
-				checkCollision(childz[i]);
+				SetTarget(childz[i]);
 			}
 		}
 
@@ -50,22 +49,21 @@ namespace game
 
 		if (glm::length(target_->GetPosition() - this->GetPosition()) <= 1.0f)
 			state_ = MineState::Boom;
-
-		
 	}
 	void Mine::Boom(float deltaTime)
 	{
 		//Apply some health damage to enemy here
 		//Blow up effects here
 
-		this->set_toDestroy = true;
-
-	}
-
-	void Mine::checkCollision(SceneNode* someEnemy) {
-		if (glm::length(someEnemy->GetPosition() - this->position_) <= 50.0f) {
-
-			SetTarget(someEnemy);
+		this->set_toDestroy = true; 
+		SceneGraph *o = game_->GetGraph();
+		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
+		
+		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
+			if (childz[i]->GetName().find("Entity") != std::string::npos &&
+				CheckSphereCollision(childz[i], 10.0f)) {
+				((Entity*)childz[i])->TakeDamage(100);
+			}
 		}
 	}
 
@@ -84,8 +82,10 @@ namespace game
 	}
 	void Mine::SetTarget(SceneNode* target)
 	{
-		target_ = target;
-		target_set_ = true;
-		state_ = MineState::MineChase;
+		if (CheckSphereCollision(target, 50.0f)) {
+			target_ = target;
+			target_set_ = true;
+			state_ = MineState::MineChase;
+		}
 	}
 }

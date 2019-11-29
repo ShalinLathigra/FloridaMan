@@ -139,6 +139,13 @@ namespace game {
 		return position_;
 	}
 
+	bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist) {
+		if (glm::length(someNode->GetPosition() - this->position_) <= dist)
+			return true;
+		else
+			return false;
+	}
+
 	bool SceneNode::CheckCollision(SceneNode *pNode)
 	{
 		//Set up the local variables to be used for calculating the collision
