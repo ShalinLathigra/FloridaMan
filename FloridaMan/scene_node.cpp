@@ -148,7 +148,7 @@ namespace game {
 	}
 
 	bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist) {
-		if (glm::length(someNode->GetPosition() - this->position_) <= dist)
+		if (glm::length(someNode->GetPosition() - position_) <= dist)
 			return true;
 		else
 			return false;
@@ -387,7 +387,7 @@ namespace game {
 
 	glm::mat4 SceneNode::GetParentTransform()
 	{
-		if (m_pParentNode)
+		if (m_pParentNode && m_pParentNode->GetName().find("Root") == std::string::npos)
 		{
 			glm::mat4 rotation = glm::mat4_cast(m_pParentNode->GetOrientation());
 			glm::mat4 translation = glm::translate(glm::mat4(1.0), m_pParentNode->GetPosition());

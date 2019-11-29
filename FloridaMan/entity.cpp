@@ -48,6 +48,7 @@ namespace game
 			}
 			state_ = State::Die;
 		}
+		std::cout << GetName() << " OUCH!!!!" << hp_ << std::endl;
 	}
 
 	//Getters + Setters

@@ -173,6 +173,11 @@ namespace game
 		scale_.y = glm::max(scale_.y, 0.0f);
 		scale_.z = glm::max(scale_.z, 0.0f);
 
+		if (scale_.x < 0 || scale_.y < 0 || scale_.z < 0)
+		{
+			set_toDestroy = true;
+		}
+
 	}
 
 

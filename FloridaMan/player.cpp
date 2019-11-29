@@ -35,7 +35,6 @@ namespace game
 		m_BombTimer = 0.0f;
 		m_MineTimer = 0.0f;
 
-		std::cout << m_ShurikenTimer << " " << m_BombTimer << " " << m_MineTimer << "!" << std::endl;
 	}
 	void Player::Draw(Camera *cam)
 	{
@@ -51,29 +50,30 @@ namespace game
 
 	void Player::Fire(int entityType)
 	{
+		glm::vec3 offset = -game_->GetCamera()->GetUp() * 0.5f;
 		switch (entityType)
 		{
 		case(EntityType::ShurikenProj):
 			if (m_ShurikenTimer <= 0.0f)
 			{
-			std::cout << "Fire Shuriken!" << std::endl;
-			game_->AddNode(game_->CreateEntity(EntityType::ShurikenProj, position_, glm::vec3(1.0f, 0.25f, 1.0f)));
+			//std::cout << "Fire Shuriken!" << std::endl;
+			game_->AddNode(game_->CreateEntity(EntityType::ShurikenProj, position_ + offset, glm::vec3(1.0f, 0.25f, 1.0f)));
 			m_ShurikenTimer = MAX_SHURIKEN_TIMER;
 			}
 			break;
 		case(EntityType::BombProj):
 			if (m_BombTimer <= 0.0f)
 			{
-			std::cout << "Fire Bomb!!" << std::endl;
-			game_->AddNode(game_->CreateEntity(EntityType::BombProj, position_, glm::vec3(5.0)));
+			//std::cout << "Fire Bomb!!" << std::endl;
+			game_->AddNode(game_->CreateEntity(EntityType::BombProj, position_ + offset, glm::vec3(5.0)));
 			m_BombTimer = MAX_BOMB_TIMER;
 			}
 			break;
 		case(EntityType::MineProj):
 			if (m_MineTimer <= 0.0f)
 			{
-			std::cout << "Fire Mine!!!" << std::endl;
-			SceneNode* mine = game_->CreateEntity(EntityType::MineProj, position_, glm::vec3(5.0));
+			//std::cout << "Fire Mine!!!" << std::endl;
+			SceneNode* mine = game_->CreateEntity(EntityType::MineProj, position_ + offset, glm::vec3(5.0));
 			mine->SetGame(game_);
 			game_->AddNode(mine);
 			m_MineTimer = MAX_MINE_TIMER;

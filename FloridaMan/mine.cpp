@@ -8,6 +8,7 @@ namespace game
 	Mine::Mine(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap) {
 		state_ = MineState::MineIdle;
 		target_set_ = false;
+		boom_radius_ = 37.5f;
 	}
 
 
@@ -30,7 +31,7 @@ namespace game
 	void Mine::Idle(float deltaTime)
 	{
 		SceneGraph *o = game_->GetGraph();
-		std::vector<SceneNode*> childz = o->GetQuadContaining(position_);
+		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
 		
 		//std::cout << "No Target" << std::endl;
 		for (int i = 0; i < childz.size(); i++) {
@@ -59,9 +60,9 @@ namespace game
 		SceneGraph *o = game_->GetGraph();
 		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
 		
-		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
+		for (int i = 0; i < childz.size(); i++) {
 			if (childz[i]->GetName().find("Entity") != std::string::npos &&
-				CheckSphereCollision(childz[i], 10.0f)) {
+				CheckSphereCollision(childz[i], boom_radius_)) {
 				((Entity*)childz[i])->TakeDamage(100);
 			}
 		}
@@ -82,7 +83,7 @@ namespace game
 	}
 	void Mine::SetTarget(SceneNode* target)
 	{
-		if (CheckSphereCollision(target, 50.0f)) {
+		if (CheckSphereCollision(target, boom_radius_)) {
 			target_ = target;
 			target_set_ = true;
 			state_ = MineState::MineChase;

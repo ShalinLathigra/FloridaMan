@@ -23,7 +23,6 @@ set(HDRS
 	scene_graph.h 
 	scene_node.h
 	shuriken.h
-	static_entity.h
 	turret_node.h
 	utilities.h
 )
@@ -46,7 +45,6 @@ set(SRCS
 	scene_graph.cpp 
 	scene_node.cpp 
 	shuriken.cpp
-	static_entity.cpp
 	turret_node.cpp
 	utilties.cpp
 

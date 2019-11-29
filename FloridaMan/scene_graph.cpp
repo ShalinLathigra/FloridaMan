@@ -15,21 +15,6 @@ namespace game {
 		background_color_ = glm::vec3(0.0, 0.0, 0.0);
 		m_pRootNode = new SceneNode("Root Node");
 
-		m_p1 = new SceneNode("Root Node1");
-		m_p2 = new SceneNode("Root Node2");
-		m_p3 = new SceneNode("Root Node3");
-		m_p4 = new SceneNode("Root Node4");
-
-		m_p1->SetPosition(glm::vec3(0.1, 0, 0.1));
-		m_p2->SetPosition(glm::vec3(0.1, 0, -0.1));
-		m_p3->SetPosition(glm::vec3(-0.1, 0, 0.1));
-		m_p4->SetPosition(glm::vec3(-0.1, 0, -0.1));
-
-		m_pRootNode->AddChild(m_p1);
-		m_pRootNode->AddChild(m_p2);
-		m_pRootNode->AddChild(m_p3);
-		m_pRootNode->AddChild(m_p4);
-
 		update_state = true;
 	}
 
@@ -96,59 +81,6 @@ namespace game {
 		m_pRootNode->AddChild(node);
 	}
 
-
-	void SceneGraph::AddNode4(SceneNode *node) {
-		if (node->GetPosition().x > 0)
-		{
-			if (node->GetPosition().y > 0)
-			{
-				m_p1->AddChild(node);
-			}
-			else
-			{
-				m_p2->AddChild(node);
-			}
-		}
-		else
-		{
-			if (node->GetPosition().y > 0)
-			{
-				m_p3->AddChild(node);
-			}
-			else
-			{
-				m_p4->AddChild(node);
-			}
-		}
-	}
-
-
-	std::vector<SceneNode*> SceneGraph::GetQuadContaining(glm::vec3 position)
-	{
-		if (position.x > 0)
-		{
-			if (position.y > 0)
-			{
-				return m_p1->GetChildren();
-			}
-			else
-			{
-				return m_p2->GetChildren();
-			}
-		}
-		else
-		{
-			if (position.y > 0)
-			{
-				return m_p3->GetChildren();
-			}
-			else
-			{
-				return m_p4->GetChildren();
-			}
-		}
-	}
-
 	SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
 		return m_pRootNode->FindChild(node_name);
@@ -169,58 +101,22 @@ namespace game {
 
 	void SceneGraph::Update(float deltaTime) {
 
-		//m_pRootNode->Update(deltaTime);
-		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
-		bool qx, qz;
-		int index;
-
-		for (int i = 0; i < quads.size(); i++)
-		{
-			qx = (quads.at(i))->GetPosition().x > 0;
-			qz = (quads.at(i))->GetPosition().z > 0;
-
-			std::vector<SceneNode*> quad = (quads.at(i))->GetChildren();
-
-			index = 0;
-			for (int j = 0; j < quad.size(); j++, index++)
-			{
-				if ((quad.at(j))->GetUpdated() != update_state)
-				{
-					(quad.at(j))->Update(deltaTime);
-					(quad.at(j))->SetUpdated(update_state);
-
-					bool x = (quad.at(j))->GetPosition().x > 0;
-					bool z = (quad.at(j))->GetPosition().z > 0;
-
-					//std::cout << x << qx << " " << z << qz << std::endl;
-					if (x != qx || z != qz)
-					{
-						AddNode4(quads.at(i)->RemoveChildAt(index--));
-					}
-				}
-			}
-		}
-		update_state = !update_state;
+		m_pRootNode->Update(deltaTime);
 	}
 
 	void SceneGraph::RemoveNodes() {
 
 		//m_pRootNode->Update(deltaTime);
-		int del_count;
-		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
-		for (int i = 0; i < quads.size(); i++)
+		int del_count=0;
+		std::vector<SceneNode*> nodes = m_pRootNode->GetChildren();
+		for (int i = 0; i < nodes.size(); i++)
 		{
-			std::vector<SceneNode*> quad = (quads.at(i))->GetChildren();
-			del_count = 0;
-			for (int j = 0; j < quad.size(); j++)
+			if (nodes.at(i)->checkIfDestroy() == true)
 			{
-				if (quad.at(j)->checkIfDestroy() == true)
-				{
-					quads.at(i)->RemoveChildAt(del_count);
-					del_count--;
-				}
-				del_count++;
+				m_pRootNode->RemoveChildAt(del_count);
+				del_count--;
 			}
+			del_count++;
 		}
 	}
 

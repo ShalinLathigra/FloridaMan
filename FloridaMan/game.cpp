@@ -458,12 +458,12 @@ namespace game {
 	
 	void Game::AddNode(SceneNode *scn)
 	{
-		scene_.AddNode4(scn);
+		scene_.AddNode(scn);
 		if (scn->GetName().find("Entity") != std::string::npos)
 		{
 			ParticleNode *part = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "SpawnMaterial");
 			part->SetPosition(scn->GetPosition());
-			scene_.AddNode4(part);
+			scene_.AddNode(part);
 		}
 	}
 	
@@ -540,7 +540,7 @@ namespace game {
 					((EntityStructure*)scn)->InitResources(type, geom, mat, tex, envmap, *part);
 				}
 				//AddNode(scn);
-				scene_.AddNode4(scn);
+				scene_.AddNode(scn);
 			}
 		}
 	}

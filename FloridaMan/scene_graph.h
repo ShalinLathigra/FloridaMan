@@ -30,10 +30,6 @@ namespace game {
 
             // Scene nodes to render
 			SceneNode *m_pRootNode;
-			SceneNode *m_p1;
-			SceneNode *m_p2;
-			SceneNode *m_p3;
-			SceneNode *m_p4;
 
             // Frame buffer for drawing to texture
             GLuint frame_buffer_;
@@ -58,7 +54,6 @@ namespace game {
             SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
             // Add an already-created node to the root of the tree
 			void AddNode(SceneNode *node);
-			void AddNode4(SceneNode *node);
             // Find a scene node with a specific name
 			SceneNode *GetNode(std::string node_name) const;
             
@@ -80,8 +75,6 @@ namespace game {
             void DisplayTexture(GLuint program);
             // Save texture to a file in ppm format
             void SaveTexture(char *filename);
-
-			std::vector<SceneNode*> GetQuadContaining(glm::vec3 position);
     }; // class SceneGraph
 
 } // namespace game
