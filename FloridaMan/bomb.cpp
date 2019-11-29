@@ -1,3 +1,5 @@
+#include "game.h"
+#include "scene_graph.h"
 #include "bomb.h"
 #include <iostream>
 #include "utilities.h"
@@ -29,7 +31,6 @@ namespace game
 		//if (glm::length(target_->GetPosition() - this->GetPosition()) <= 1.5f)
 		//	state_ = BombState::BombBoom;
 
-		//std::cout << "Falling" << std::endl;
 		velocity_ += glm::vec3(0, -0.5f, 0);
 		this->position_ += velocity_*deltaTime;
 
@@ -45,6 +46,15 @@ namespace game
 		if (!set_toDestroy)
 		{
 			this->set_toDestroy = true;
+
+		SceneGraph *o = game_->GetGraph();
+		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
+
+		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
+			if (childz[i]->GetName().find("Entity") != std::string::npos &&
+				CheckSphereCollision(childz[i], 10.0f)) {
+				((Entity*)childz[i])->TakeDamage(100);
+			}
 		}
 	}
 

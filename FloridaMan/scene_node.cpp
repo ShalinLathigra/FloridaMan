@@ -63,6 +63,10 @@ namespace game {
 		updated_ = false;
 	}
 
+	void SceneNode::setDestroyFlag(bool toggle) {
+		set_toDestroy = toggle;
+	}
+
 	SceneNode::SceneNode(const std::string name)
 	{
 		name_ = name;
@@ -141,6 +145,13 @@ namespace game {
 	glm::vec3 SceneNode::GetPosition(void) const {
 
 		return position_;
+	}
+
+	bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist) {
+		if (glm::length(someNode->GetPosition() - this->position_) <= dist)
+			return true;
+		else
+			return false;
 	}
 
 	bool SceneNode::CheckCollision(SceneNode *pNode)
