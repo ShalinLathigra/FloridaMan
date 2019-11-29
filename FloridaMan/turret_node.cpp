@@ -28,7 +28,7 @@ namespace game
 
 	void TurretNode::Update(float deltaTime)
 	{
-		//std::cout << "HP: " << hp_ << " STATE: ";
+
 		switch (state_)
 		{
 		case(State::Idle):
@@ -172,6 +172,7 @@ namespace game
 		scale_.x = glm::max(scale_.x, 0.0f);
 		scale_.y = glm::max(scale_.y, 0.0f);
 		scale_.z = glm::max(scale_.z, 0.0f);
+
 	}
 
 

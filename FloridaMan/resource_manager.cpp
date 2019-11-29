@@ -670,7 +670,6 @@ namespace game
 		AddResource(Mesh, name, vbo, ebo, mesh.face.size() * face_att);
 	}
 
-
 	void string_trim(std::string str, std::string to_trim) {
 
 		// Trim any character in to_trim from the beginning of the string str
@@ -716,7 +715,6 @@ namespace game
 
 		return output;
 	}
-
 
 	std::vector<std::string> string_split_once(std::string str, std::string separator) {
 
@@ -822,7 +820,6 @@ namespace game
 		// Create resource
 		AddResource(Mesh, object_name, vbo, ebo, 2 * 3);
 	}
-
 
 	void ResourceManager::CreateSphereParticles(std::string object_name, int num_particles) {
 

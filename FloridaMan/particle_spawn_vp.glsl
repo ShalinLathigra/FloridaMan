@@ -47,7 +47,6 @@ void main()
 
 	float net = clamp(pow(norm.x*color.g, 2)*t*speed + pow(norm.y*color.g, 2)*t*speed + pow(norm.z*color.g, 2)*t*speed, 0, 1);
 
-
 	vec3 color_ = vec3(color.r, color.g*10, color.b);
 	vertex_color = (net) * color_.rgb + (1-net)*color_.grr;
 

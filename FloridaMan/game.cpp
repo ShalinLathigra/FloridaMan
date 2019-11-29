@@ -187,7 +187,6 @@ namespace game {
 		scene_.AddNode(skybox_);
 
 		CreateTowerField();
-
 	}
 
 	void Game::MainLoop(void) {
@@ -204,8 +203,6 @@ namespace game {
 
 		AddNode(scn);
 		
-		
-
 		// Loop while the user did not close the window
 		while (!glfwWindowShouldClose(window_)) {
 			// Animate the scene
@@ -226,8 +223,8 @@ namespace game {
 				//Check for any nodes/entities to be removed
 				scene_.RemoveNodes();
 
-			// Draw the scene
-			scene_.Draw(&camera_);
+				// Draw the scene
+				scene_.Draw(&camera_);
 
 				// Push buffer drawn in the background onto the display
 				glfwSwapBuffers(window_);
@@ -506,6 +503,7 @@ namespace game {
 					case(Air):
 						object_name = std::string("SphereMesh");
 					}
+
 					material_name = std::string("ToonMaterial");
 					texture_name = std::string("");
 					envmap_name = std::string("");
