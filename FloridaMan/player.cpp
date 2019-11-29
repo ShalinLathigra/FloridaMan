@@ -65,7 +65,7 @@ namespace game
 			if (m_BombTimer <= 0.0f)
 			{
 			std::cout << "Fire Bomb!!" << std::endl;
-			game_->AddNode(game_->CreateEntity(EntityType::BombProj, position_, glm::vec3(1.0)));
+			game_->AddNode(game_->CreateEntity(EntityType::BombProj, position_, glm::vec3(5.0)));
 			m_BombTimer = MAX_BOMB_TIMER;
 			}
 			break;
@@ -73,7 +73,9 @@ namespace game
 			if (m_MineTimer <= 0.0f)
 			{
 			std::cout << "Fire Mine!!!" << std::endl;
-			game_->AddNode(game_->CreateEntity(EntityType::MineProj, position_, glm::vec3(1.5)));
+			SceneNode* mine = game_->CreateEntity(EntityType::MineProj, position_, glm::vec3(5.0));
+			mine->SetGame(game_);
+			game_->AddNode(mine);
 			m_MineTimer = MAX_MINE_TIMER;
 			}
 			break;

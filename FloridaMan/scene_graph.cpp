@@ -133,18 +133,18 @@ namespace game {
 			}
 			else
 			{
-				m_p2->GetChildren();
+				return m_p2->GetChildren();
 			}
 		}
 		else
 		{
 			if (position.y > 0)
 			{
-				m_p3->GetChildren();
+				return m_p3->GetChildren();
 			}
 			else
 			{
-				m_p4->GetChildren();
+				return m_p4->GetChildren();
 			}
 		}
 	}

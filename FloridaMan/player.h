@@ -3,9 +3,9 @@
 #include "scene_node.h"
 #include "utilities.h"
 
-#define MAX_SHURIKEN_TIMER 0.5f
-#define MAX_BOMB_TIMER 5.0f
-#define MAX_MINE_TIMER 10.0f
+#define MAX_SHURIKEN_TIMER 0.05f
+#define MAX_BOMB_TIMER 0.5f
+#define MAX_MINE_TIMER 1.0f
 
 namespace game
 {

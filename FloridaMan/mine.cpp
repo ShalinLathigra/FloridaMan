@@ -31,7 +31,7 @@ namespace game
 	{
 		SceneGraph *o = game_->GetGraph();
 		std::vector<SceneNode*> childz = o->GetQuadContaining(position_);
-
+		
 		//std::cout << "No Target" << std::endl;
 		for (int i = 0; i < childz.size(); i++) {
 			//std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
