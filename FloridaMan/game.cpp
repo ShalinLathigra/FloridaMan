@@ -198,16 +198,13 @@ namespace game {
 
 		AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
 		scn->SetEndScale(glm::vec3(10, 7, 10));
-		scene_.AddNode4(scn);
-		
+
 		ParticleNode *part = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "ExplosionMaterial");
 		scn->SetDeathEffect(*part);
-		
-		ParticleNode *part2 = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "SpawnMaterial");
-		part2->SetPosition(glm::vec3(0, 5, -30));
-		part2->SetScale(glm::vec3(0.25f));
 
-		scene_.AddNode(part2);
+		AddNode(scn);
+		
+		
 
 		// Loop while the user did not close the window
 		while (!glfwWindowShouldClose(window_)) {
@@ -459,6 +456,12 @@ namespace game {
 	void Game::AddNode(SceneNode *scn)
 	{
 		scene_.AddNode4(scn);
+		if (scn->GetName().find("Entity") != std::string::npos)
+		{
+			ParticleNode *part = (ParticleNode*)CreateInstance(EntityType::Particle, "PartInstance1", "SpherePartMesh", "SpawnMaterial");
+			part->SetPosition(scn->GetPosition());
+			scene_.AddNode4(part);
+		}
 	}
 	
 	Camera * Game::GetCamera(void)
@@ -469,7 +472,7 @@ namespace game {
 	void Game::CreateTowerField(void)
 	{
 		float range = 1000;
-		float dim = 900;
+		float dim = 250;
 		SceneNode *scn;
 		glm::vec3 scale;
 		std::string object_name, material_name, texture_name, envmap_name;
