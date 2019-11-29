@@ -1,5 +1,7 @@
+#include "scene_graph.h"
 #include "shuriken.h"
 #include <iostream>
+#include "game.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace game
@@ -48,6 +50,7 @@ namespace game
 		glm::vec3 fireDirection = glm::normalize(forward_);
 		this->position_ += fireDirection * speed * deltaTime;
 		distanceTravelled();
+		checkIfHit();
 		//AdvanceTimers(deltaTime);
 		//glm::mat4 fullTransf = CalculateMatrix(parent_node_->GetCurrentViewMatrix());
 		//SetPosition(glm::vec3(-0.5f,-1.0f,0));
@@ -61,7 +64,25 @@ namespace game
 		if (t_distance > 50.0f) {
 			set_toDestroy = true;
 		}
+	}
 
+	bool Shuriken::checkSphereCollision(SceneNode* someEnemy) {
+		if (glm::length(someEnemy->GetPosition() - this->position_) <= 1.0f) {
+			return true;
+		}
+		return false;
+	}
+
+	void Shuriken::checkIfHit() {
+		SceneGraph *o = game_->GetGraph();
+		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
+
+		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
+			//std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
+			if (checkSphereCollision(childz[i]) && childz[i]->GetName().find("Entity") != std::string::npos) {
+				((Entity*)childz[i])->TakeDamage(100);
+			}
+		}
 	}
 
 	glm::vec3 Shuriken::GetForward(void) const
