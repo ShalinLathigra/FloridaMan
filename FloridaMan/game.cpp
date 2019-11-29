@@ -125,12 +125,13 @@ namespace game {
 
 		resman_.CreateWall("PlaneMesh");
 
-		filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
-		resman_.LoadResource(Material, "MetalMaterial", filename.c_str());
 
 		// Load material to be applied to torus
 		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
 		resman_.LoadResource(Material, "EnvMapMaterial", filename.c_str());
+
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
+		resman_.LoadResource(Material, "MetalMaterial", filename.c_str());
 
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/three-term_shiny_blue");

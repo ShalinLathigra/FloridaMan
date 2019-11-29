@@ -101,7 +101,8 @@ void Camera::Pitch(float angle){
 void Camera::Yaw(float angle){
 
     glm::quat rotation = glm::angleAxis(angle, GetUp());
-	Rotate(rotation);
+	orientation_ = rotation * orientation_;
+	orientation_ = glm::normalize(orientation_);
 	m_pPlayer->SetOrientation(orientation_);
 }
 
