@@ -128,9 +128,13 @@ namespace game {
 
 		resman_.CreateWall("PlaneMesh");
 
+
 		// Load material to be applied to torus
 		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
 		resman_.LoadResource(Material, "EnvMapMaterial", filename.c_str());
+
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
+		resman_.LoadResource(Material, "MetalMaterial", filename.c_str());
 
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/three-term_shiny_blue");
@@ -141,8 +145,7 @@ namespace game {
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/toon_material");
 		resman_.LoadResource(Material, "ToonMaterial", filename.c_str());
-
-
+			   
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_boom");
 		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
@@ -166,7 +169,7 @@ namespace game {
 
 
 	void Game::SetupScene(void) {
-
+		
 		// Set background color for the scene
 		scene_.SetBackgroundColor(viewport_background_color_g);
 		
@@ -175,8 +178,7 @@ namespace game {
 		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 		scene_.AddNode(wall);
-		
-		
+
 		// Create skybox
 		skybox_ = CreateInstance(EntityType::Default, "CubeInstance1", "CubeMesh", "SkyboxMaterial", "LakeCubeMap");
 		skybox_->Scale(glm::vec3(1001.0f));
@@ -189,6 +191,9 @@ namespace game {
 
 	void Game::MainLoop(void) {
 
+		camera_.InitPlayer(&resman_);
+		scene_.AddNode((SceneNode*)(camera_.GetPlayer()));
+
 
 		AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
 		scn->SetEndScale(glm::vec3(10, 7, 10));
@@ -197,7 +202,6 @@ namespace game {
 		scn->SetDeathEffect(*part);
 
 		AddNode(scn);
-		
 		
 
 		// Loop while the user did not close the window
@@ -213,9 +217,9 @@ namespace game {
 					last_time = current_time;
 
 
-					//if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
-					//	scn->TakeDamage(1.0f);
-					//}
+					if (glfwGetKey(window_, GLFW_KEY_F) == GLFW_PRESS) {
+						scn->TakeDamage(1.0f);
+					}
 				}
 
 				//Check for any nodes/entities to be removed
@@ -252,7 +256,7 @@ namespace game {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 			glfwSetWindowShouldClose(window, true);
 		}
-		
+
 		// View control
 		float rot_factor(glm::pi<float>() / 360);
 		float trans_factor = 0.5;
@@ -301,15 +305,20 @@ namespace game {
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-			game->AddNode(game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5)));
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 			game->AddNode(game->CreateEntity(EntityType::BombProj, game->camera_.GetPosition(), glm::vec3(1.0)));
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 			game->AddNode(game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition(), glm::vec3(1.0f, 0.25f, 1.0f)));
+
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+			game->AddNode(game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5)));
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+			game->camera_.TogglePOV();
 		}
 	}
 
@@ -318,8 +327,8 @@ namespace game {
 		glfwTerminate();
 	}
 
-	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) {
-
+	SceneNode *Game::CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name, std::string envmap_name) 
+	{
 		Resource *geom = resman_.GetResource(object_name);
 		if (!geom) {
 			throw(GameException(std::string("Could not find Geometry \"") + object_name + std::string("\"")));
@@ -409,11 +418,9 @@ namespace game {
 		default:
 			entity_name = std::string("SceneNode") + std::to_string(count_++);
 			object_name = std::string("CubeMesh");
-			material_name = std::string("ShinyMaterial");
+			material_name = std::string("EnvMapMaterial");
 			texture_name = std::string("");
-			envmap_name = std::string("");
-			isEnemy = false;
-			isProjectile = true;
+			envmap_name = std::string("LakeCubeMap");
 			break;
 		}
 
@@ -430,7 +437,6 @@ namespace game {
 		{
 			scn->SetPosition(pos);
 		}
-
 		scn->SetScale(scale);
 		scn->SetGame(this);
 
@@ -456,7 +462,7 @@ namespace game {
 			scene_.AddNode4(part);
 		}
 	}
-
+	
 	Camera * Game::GetCamera(void)
 	{
 		return &camera_;
@@ -499,7 +505,7 @@ namespace game {
 					case(Air):
 						object_name = std::string("SphereMesh");
 					}
-					//material_name = std::string("ShinyMaterial");
+
 					material_name = std::string("ToonMaterial");
 					texture_name = std::string("");
 					envmap_name = std::string("");

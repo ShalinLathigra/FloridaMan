@@ -14,7 +14,6 @@
 
 namespace game {
 
-    // Abstraction of an asteroid
     class ParticleNode : public SceneNode {
 
         public:

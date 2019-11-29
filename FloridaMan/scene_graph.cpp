@@ -10,8 +10,8 @@
 
 namespace game {
 
-	SceneGraph::SceneGraph(void) {
-
+	SceneGraph::SceneGraph(void) 
+	{
 		background_color_ = glm::vec3(0.0, 0.0, 0.0);
 		m_pRootNode = new SceneNode("Root Node");
 
@@ -349,6 +349,20 @@ namespace game {
 
 		// Reset frame buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	}
 
+		// Set up quad for drawing to the screen
+		static const GLfloat quad_vertex_data[] = {
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+		};
+
+		// Create buffer for quad
+		glGenBuffers(1, &quad_array_buffer_);
+		glBindBuffer(GL_ARRAY_BUFFER, quad_array_buffer_);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertex_data), quad_vertex_data, GL_STATIC_DRAW);
+	}
 } // namespace game

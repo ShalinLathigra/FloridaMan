@@ -33,7 +33,6 @@ namespace game {
 
 	void EntityStructure::Update(float deltaTime)
 	{
-
 		//std::cout << GetName() << " " << m_EntityTimer  << ": " << m_EntityCount << "<=" << MAX_CHILDREN << std::endl;
 		if (m_EntityCount < m_MaxEntityCount)
 		{

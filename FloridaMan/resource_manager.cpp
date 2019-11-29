@@ -19,7 +19,6 @@ namespace game
 	ResourceManager::~ResourceManager() {
 	}
 
-
 	void ResourceManager::AddResource(ResourceType type, const std::string name, GLuint resource, GLsizei size) {
 
 		Resource *res;
@@ -28,7 +27,6 @@ namespace game
 
 		resource_.push_back(res);
 	}
-
 
 	void ResourceManager::AddResource(ResourceType type, const std::string name, GLuint array_buffer, GLuint element_array_buffer, GLsizei size) {
 
@@ -672,7 +670,6 @@ namespace game
 		AddResource(Mesh, name, vbo, ebo, mesh.face.size() * face_att);
 	}
 
-
 	void string_trim(std::string str, std::string to_trim) {
 
 		// Trim any character in to_trim from the beginning of the string str
@@ -719,7 +716,6 @@ namespace game
 		return output;
 	}
 
-
 	std::vector<std::string> string_split_once(std::string str, std::string separator) {
 
 		// Initialize output
@@ -744,7 +740,6 @@ namespace game
 				i++;
 			}
 		}
-
 		return output;
 	}
 
@@ -825,7 +820,6 @@ namespace game
 		// Create resource
 		AddResource(Mesh, object_name, vbo, ebo, 2 * 3);
 	}
-
 
 	void ResourceManager::CreateSphereParticles(std::string object_name, int num_particles) {
 
@@ -1112,7 +1106,6 @@ namespace game
 		AddResource(PointSet, object_name, vbo, 0, num_particles);
 	}
 
-
 	// Create the geometry for a cube centered at (0, 0, 0) with sides of length 1
 	void ResourceManager::CreateCube(std::string object_name) {
 
@@ -1192,7 +1185,6 @@ namespace game
 		// Create resource
 		AddResource(Mesh, object_name, vbo, ebo, sizeof(face) / sizeof(GLfloat));
 	}
-
 
 	void ResourceManager::LoadCubeMap(const std::string name, const char *filename) {
 

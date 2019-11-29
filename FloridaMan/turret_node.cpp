@@ -9,6 +9,7 @@ namespace game
 
 		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
 		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
+
 		chase_radius_ = 300.0f;
 		chase_angle_ = 0.3f;
 
