@@ -61,6 +61,8 @@ namespace game
 		float cd_timer_;
 
 		void distanceTravelled();
+
+		float speed;
 	};
 }
 

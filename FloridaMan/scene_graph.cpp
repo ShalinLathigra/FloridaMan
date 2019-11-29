@@ -123,6 +123,32 @@ namespace game {
 	}
 
 
+	std::vector<SceneNode*> SceneGraph::GetQuadContaining(glm::vec3 position)
+	{
+		if (position.x > 0)
+		{
+			if (position.y > 0)
+			{
+				return m_p1->GetChildren();
+			}
+			else
+			{
+				m_p2->GetChildren();
+			}
+		}
+		else
+		{
+			if (position.y > 0)
+			{
+				m_p3->GetChildren();
+			}
+			else
+			{
+				m_p4->GetChildren();
+			}
+		}
+	}
+
 	SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
 		return m_pRootNode->FindChild(node_name);
@@ -146,6 +172,8 @@ namespace game {
 		//m_pRootNode->Update(deltaTime);
 		std::vector<SceneNode*> quads = m_pRootNode->GetChildren();
 		bool qx, qz;
+		int index;
+
 		for (int i = 0; i < quads.size(); i++)
 		{
 			qx = (quads.at(i))->GetPosition().x > 0;
@@ -153,7 +181,8 @@ namespace game {
 
 			std::vector<SceneNode*> quad = (quads.at(i))->GetChildren();
 
-			for (int j = 0; j < quad.size(); j++)
+			index = 0;
+			for (int j = 0; j < quad.size(); j++, index++)
 			{
 				if ((quad.at(j))->GetUpdated() != update_state)
 				{
@@ -166,8 +195,7 @@ namespace game {
 					//std::cout << x << qx << " " << z << qz << std::endl;
 					if (x != qx || z != qz)
 					{
-						//Remove this node
-						//Add back this node
+						AddNode4(quads.at(i)->RemoveChildAt(index--));
 					}
 				}
 			}
@@ -365,4 +393,6 @@ namespace game {
 		glBindBuffer(GL_ARRAY_BUFFER, quad_array_buffer_);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertex_data), quad_vertex_data, GL_STATIC_DRAW);
 	}
+
+
 } // namespace game

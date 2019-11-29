@@ -18,6 +18,8 @@ namespace game
 
 		joint_ = glm::vec3(0.0f);
 		orbit_amount_ = glm::angleAxis(glm::pi<float>() / 2.0f, glm::vec3(-1.0f, 0.0f, 0.0f));
+
+		speed = 100.0f;
 		
 	}
 
@@ -44,7 +46,7 @@ namespace game
 	void Shuriken::Update(float deltaTime)
 	{
 		glm::vec3 fireDirection = glm::normalize(forward_);
-		this->position_ += fireDirection * 25.0f * deltaTime;
+		this->position_ += fireDirection * speed * deltaTime;
 		distanceTravelled();
 		//AdvanceTimers(deltaTime);
 		//glm::mat4 fullTransf = CalculateMatrix(parent_node_->GetCurrentViewMatrix());

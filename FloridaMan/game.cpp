@@ -192,7 +192,9 @@ namespace game {
 	void Game::MainLoop(void) {
 
 		camera_.InitPlayer(&resman_);
-		scene_.AddNode((SceneNode*)(camera_.GetPlayer()));
+		AddNode((SceneNode*)(camera_.GetPlayer()));
+		player_ = camera_.GetPlayer();
+		player_->SetGame(this);
 
 
 		AirEntity *scn = (AirEntity*)CreateEntity(EntityType::Air, glm::vec3(0, 5, -30), glm::vec3(0));
@@ -305,16 +307,18 @@ namespace game {
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-			game->AddNode(game->CreateEntity(EntityType::BombProj, game->camera_.GetPosition(), glm::vec3(1.0)));
+			//game->AddNode(game->CreateEntity(EntityType::BombProj, game->camera_.GetPosition(), glm::vec3(1.0)));
+			game->player_->Fire(EntityType::BombProj);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
-			game->AddNode(game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition(), glm::vec3(1.0f, 0.25f, 1.0f)));
-
+			//game->AddNode(game->CreateEntity(EntityType::ShurikenProj, game->camera_.GetPosition() + game->camera_.GetUp() * -.5f, glm::vec3(1.0f, 0.25f, 1.0f)));
+			game->player_->Fire(EntityType::ShurikenProj);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
-			game->AddNode(game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5)));
+			//game->AddNode(game->CreateEntity(EntityType::MineProj, game->camera_.GetPosition(), glm::vec3(1.5)));
+			game->player_->Fire(EntityType::MineProj);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {

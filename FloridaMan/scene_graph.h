@@ -81,6 +81,7 @@ namespace game {
             // Save texture to a file in ppm format
             void SaveTexture(char *filename);
 
+			std::vector<SceneNode*> GetQuadContaining(glm::vec3 position);
     }; // class SceneGraph
 
 } // namespace game

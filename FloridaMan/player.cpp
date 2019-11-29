@@ -1,5 +1,7 @@
 #include "player.h"
 #include "resource_manager.h"
+#include "game.h"
+#include <iostream>
 
 namespace game
 {
@@ -29,9 +31,52 @@ namespace game
 		skybox_ = false;
 		scale_ = glm::vec3(1.0, 1.0, 1.0);
 		Translate(glm::vec3(0.0, 0.0, 0));
+		m_ShurikenTimer = 0.0f;
+		m_BombTimer = 0.0f;
+		m_MineTimer = 0.0f;
+
+		std::cout << m_ShurikenTimer << " " << m_BombTimer << " " << m_MineTimer << "!" << std::endl;
 	}
 	void Player::Draw(Camera *cam)
 	{
 		SceneNode::Draw(cam);
+	}
+
+	void Player::Update(float deltaTime)
+	{
+		m_ShurikenTimer = glm::max(m_ShurikenTimer - deltaTime, 0.0f);
+		m_BombTimer = glm::max(m_BombTimer - deltaTime, 0.0f);
+		m_MineTimer = glm::max(m_MineTimer - deltaTime, 0.0f);
+	}
+
+	void Player::Fire(int entityType)
+	{
+		switch (entityType)
+		{
+		case(EntityType::ShurikenProj):
+			if (m_ShurikenTimer <= 0.0f)
+			{
+			std::cout << "Fire Shuriken!" << std::endl;
+			game_->AddNode(game_->CreateEntity(EntityType::ShurikenProj, position_, glm::vec3(1.0f, 0.25f, 1.0f)));
+			m_ShurikenTimer = MAX_SHURIKEN_TIMER;
+			}
+			break;
+		case(EntityType::BombProj):
+			if (m_BombTimer <= 0.0f)
+			{
+			std::cout << "Fire Bomb!!" << std::endl;
+			game_->AddNode(game_->CreateEntity(EntityType::BombProj, position_, glm::vec3(1.0)));
+			m_BombTimer = MAX_BOMB_TIMER;
+			}
+			break;
+		case(EntityType::MineProj):
+			if (m_MineTimer <= 0.0f)
+			{
+			std::cout << "Fire Mine!!!" << std::endl;
+			game_->AddNode(game_->CreateEntity(EntityType::MineProj, position_, glm::vec3(1.5)));
+			m_MineTimer = MAX_MINE_TIMER;
+			}
+			break;
+		}
 	}
 }

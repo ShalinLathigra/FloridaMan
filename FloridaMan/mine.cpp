@@ -30,10 +30,10 @@ namespace game
 	void Mine::Idle(float deltaTime)
 	{
 		SceneGraph *o = game_->GetGraph();
-		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
+		std::vector<SceneNode*> childz = o->GetQuadContaining(position_);
 
 		//std::cout << "No Target" << std::endl;
-		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
+		for (int i = 0; i < childz.size(); i++) {
 			//std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
 			if (childz[i]->GetName().find("Entity") != std::string::npos && target_set_ == false) {
 				checkCollision(childz[i]);

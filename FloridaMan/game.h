@@ -13,6 +13,7 @@
 #include "particle_node.h"
 #include "entity_structure.h"
 #include "camera.h"
+#include "player.h"
 
 #include "scene_node.h"
 #include "utilities.h"
@@ -50,6 +51,10 @@ namespace game {
 
 			void AddNode(SceneNode *scn);
 			Camera * GetCamera(void);
+
+
+			SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
+
         private:
             // GLFW window
             GLFWwindow* window_;
@@ -65,6 +70,9 @@ namespace game {
 
             // Skybox
             SceneNode *skybox_;
+
+			//Player
+			Player *player_;
 
             // Flag to turn animation on/off
             bool animating_;
@@ -84,7 +92,6 @@ namespace game {
 			
             // Create an instance of an object stored in the resource manager
 			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
-			SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
 			void CreateTowerField(void);
     }; // class Game
