@@ -72,7 +72,8 @@ public:
 
     SceneNode *RemoveChildAt(int index);
 
-    inline void SetType(int type) { type_ = type; }
+	inline void SetType(int type) { type_ = type; }
+	inline int GetType(void) { return type_; }
     void SetGame(Game *g);
 
     void SetUpdated(bool u);

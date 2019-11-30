@@ -40,6 +40,7 @@ private:
     Camera *parent_node_;
 
     float width_;
+	bool forward_set_;
     glm::vec3 forward_; //initial up
     glm::vec3 spawn_pos_;
     glm::vec3 joint_;
@@ -55,7 +56,6 @@ private:
     void distanceTravelled();
 
     float speed;
-    bool checkSphereCollision(SceneNode *someEnemy);
 };
 } // namespace game
 

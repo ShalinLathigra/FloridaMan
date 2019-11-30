@@ -77,6 +77,7 @@ Resource *ResourceManager::GetResource(const std::string name) const
 
 void ResourceManager::LoadMaterial(const std::string name, const char *prefix)
 {
+	std::cout << name <<" " << prefix << std::endl;
     // Load vertex program source code
     std::string filename = std::string(prefix) + std::string(VERTEX_PROGRAM_EXTENSION);
     std::string vp = LoadTextFile(filename.c_str());

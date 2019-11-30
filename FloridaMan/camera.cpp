@@ -178,7 +178,7 @@ void Camera::SetupViewMatrix(void)
     }
     else
     {
-        SetPosition(newPosition + current_forward * 2.0f + current_up * 1.0f);
+        SetPosition(newPosition + current_forward * 6.0f + current_up * 2.0f);
     }
 
     // Initialize the view matrix as an identity matrix

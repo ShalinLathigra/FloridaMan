@@ -13,6 +13,7 @@
 #include "resource.h"
 #include "shuriken.h"
 #include "utilities.h"
+#include "asteroid.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 

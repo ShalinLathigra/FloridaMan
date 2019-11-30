@@ -39,7 +39,8 @@ protected:
     BombState state_;
     glm::vec3 forward_;
     glm::vec3 up_;
-    glm::vec3 velocity_ = glm::vec3(0, 0, 0);
+	glm::vec3 velocity_;
+	float grav_;
 
     float idle_timer_;
     float max_idle_timer_;
