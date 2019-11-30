@@ -7,6 +7,7 @@ namespace game
 {
 	Bomb::Bomb(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material, texture, envmap) {
 		state_ = BombState::BombFall;
+		boom_radius_ = 75.0f;
 	}
 
 
@@ -42,16 +43,20 @@ namespace game
 	void Bomb::Boom(float deltaTime)
 	{
 		//Apply some health damage to enemies in a radius here
+		//Instantiate Death Effects
+		if (!set_toDestroy)
+		{
+			this->set_toDestroy = true;
 
-		this->set_toDestroy = true;
+			SceneGraph *o = game_->GetGraph();
+			std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
 
-		SceneGraph *o = game_->GetGraph();
-		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
-
-		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
-			if (childz[i]->GetName().find("Entity") != std::string::npos &&
-				CheckSphereCollision(childz[i], 10.0f)) {
-				((Entity*)childz[i])->TakeDamage(100);
+			for (int i = 0; i < childz.size(); i++) {
+				std::cout << childz[i]->GetName() << std::endl;
+				if (childz[i]->GetName().find("Entity") != std::string::npos &&
+					CheckSphereCollision(childz[i], boom_radius_)) {
+					((Entity*)childz[i])->TakeDamage(100);
+				}
 			}
 		}
 	}

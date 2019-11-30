@@ -1,25 +1,25 @@
-#ifndef STATIC_Entity_H_
-#define STATIC_Entity_H_
+#ifndef TurretNode_H_
+#define TurretNode_H_
 
 #include "entity.h"
 
 //Basic Static Entity Type
 namespace game
 {
-	class StaticEntity :
+	class TurretNode :
 		public Entity
 	{
 	public:
-		StaticEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
-		~StaticEntity();
+		TurretNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
+		~TurretNode();
 
 		// Update geometry configuration
 		void Update(float deltaTime);
-		void Idle(float deltaTime);
-		void Patrol(float deltaTime);
-		void Chase(float deltaTime);
-		void Attack(float deltaTime);
-		void Die(float deltaTime);
+		virtual void Idle(float deltaTime);
+		virtual void Patrol(float deltaTime);
+		virtual void Chase(float deltaTime);
+		virtual void Attack(float deltaTime);
+		virtual void Die(float deltaTime);
 
 		// Get/set attributes specific to asteroids
 		glm::quat GetPatrolAngM(void) const;
@@ -40,7 +40,10 @@ namespace game
 		float chase_radius_;
 		float chase_angle_;
 		float attack_angle_;
+
+		float chase_timer_;
+		float max_chase_timer_;
 	};
 }
 
-#endif // STATIC_Entity_H_
+#endif // TurretNode_H_

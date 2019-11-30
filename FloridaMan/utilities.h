@@ -12,6 +12,10 @@
 #include <stdexcept>
 
 // This namespace contains a number of useful functions for a variety of different purposes, including creating 3D models, and random number generation.
+namespace game
+{
+	enum EntityType { Turret, Ground, Air, MineProj, BombProj, ShurikenProj, Particle, TurretSpawn, GroundSpawn, AirSpawn, Default };
+}
 namespace utilities
 {
 	inline glm::vec3 RotateVecByQuat(glm::vec3 vec, glm::quat q) {
@@ -40,6 +44,11 @@ namespace utilities
 		return (((float)(rand() % 100) + 1.0f) / 100.0f);
 	}
 
+	inline glm::quat RandQuat(glm::vec3 axis)
+	{
+		return glm::angleAxis((((float)(rand() % 100) + 1.0f) / 100.0f)*glm::pi<float>()*2.0f, axis);
+	}
+	
 	inline float Clamp(float in, float low, float high)
 	{
 		return (in < low) ? low : (in > high) ? high : in;

@@ -53,6 +53,8 @@ namespace game
 
 		void checkIfHit();
 		void distanceTravelled();
+
+		float speed;
 		bool checkSphereCollision(SceneNode* someEnemy);
 	};
 }

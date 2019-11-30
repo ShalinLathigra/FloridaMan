@@ -6,12 +6,15 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "entity_structure.h"
+#include "particle_node.h"
 #include "air_entity.h"
 #include "mine.h"
 #include "bomb.h"
 #include "shuriken.h"
 #include "resource.h"
 #include "camera.h"
+#include "utilities.h"
 
 // Size of the texture that we will draw
 #define FRAME_BUFFER_WIDTH 1024
@@ -36,6 +39,8 @@ namespace game {
             GLuint texture_;
             GLuint depth_buffer_;
 
+
+			bool update_state;
         public:
             // Constructor and destructor
             SceneGraph(void);
@@ -48,11 +53,10 @@ namespace game {
             // Create a scene node from the specified resources
             SceneNode *CreateNode(int type, std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL, Resource *envmap = NULL);
             // Add an already-created node to the root of the tree
-            void AddNode(SceneNode *node);
+			void AddNode(SceneNode *node);
             // Find a scene node with a specific name
-            SceneNode *GetNode(std::string node_name) const;
+			SceneNode *GetNode(std::string node_name) const;
             
-
             // Draw the entire scene
             void Draw(Camera *camera);
 
@@ -71,7 +75,6 @@ namespace game {
             void DisplayTexture(GLuint program);
             // Save texture to a file in ppm format
             void SaveTexture(char *filename);
-
     }; // class SceneGraph
 
 } // namespace game

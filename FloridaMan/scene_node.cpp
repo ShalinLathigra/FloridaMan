@@ -59,10 +59,8 @@ namespace game {
 		blending_ = false;
 		m_isVisible = true;
 		skybox_ = false;
-	}
 
-	void SceneNode::SetGame(Game *game) {
-		game_ = game;
+		updated_ = false;
 	}
 
 	void SceneNode::setDestroyFlag(bool toggle) {
@@ -74,6 +72,14 @@ namespace game {
 		name_ = name;
 		m_isVisible = false;
 		m_pParentNode = nullptr;
+		m_childNodes = std::vector<SceneNode*>();
+	}
+	SceneNode::SceneNode()
+	{
+		name_ = std::string("Undefined Node");
+		m_isVisible = false;
+		m_pParentNode = nullptr;
+		m_childNodes = std::vector<SceneNode*>();
 	}
 
 	SceneNode *SceneNode::GetParent()
@@ -118,9 +124,11 @@ namespace game {
 		return set_toDestroy;
 	}
 
-	void SceneNode::RemoveChildAt(int index) {
+	SceneNode* SceneNode::RemoveChildAt(int index) {
 		if (m_childNodes[index]->m_childNodes.empty()) {
+			SceneNode *node = *(m_childNodes.begin() + index);
 			m_childNodes.erase(m_childNodes.begin() + index);
+			return node;
 		}
 	}
 
@@ -140,7 +148,7 @@ namespace game {
 	}
 
 	bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist) {
-		if (glm::length(someNode->GetPosition() - this->position_) <= dist)
+		if (glm::length(someNode->GetPosition() - position_) <= dist)
 			return true;
 		else
 			return false;
@@ -379,7 +387,7 @@ namespace game {
 
 	glm::mat4 SceneNode::GetParentTransform()
 	{
-		if (m_pParentNode)
+		if (m_pParentNode && m_pParentNode->GetName().find("Root") == std::string::npos)
 		{
 			glm::mat4 rotation = glm::mat4_cast(m_pParentNode->GetOrientation());
 			glm::mat4 translation = glm::translate(glm::mat4(1.0), m_pParentNode->GetPosition());
@@ -445,7 +453,7 @@ namespace game {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture_); // First texture we bind
 			// Define texture interpolation
-			glGenerateMipmap(GL_TEXTURE_2D);
+ 			glGenerateMipmap(GL_TEXTURE_2D);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
@@ -466,5 +474,22 @@ namespace game {
 		GLint timer_var = glGetUniformLocation(program, "timer");
 		double current_time = glfwGetTime();
 		glUniform1f(timer_var, (float)current_time);
+		// Type
+		GLint type_var = glGetUniformLocation(program, "type");
+		glUniform1i(type_var, type_);
 	}
+	void SceneNode::SetGame(Game* game)
+	{
+		game_ = game;
+	}
+
+	void SceneNode::SetUpdated(bool u)
+	{
+		updated_ = u;
+	}
+	bool SceneNode::GetUpdated(void)
+	{
+		return updated_;
+	}
+
 } // namespace game;

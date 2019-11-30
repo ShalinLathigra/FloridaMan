@@ -1,12 +1,12 @@
 #ifndef GROUND_Entity_H_
 #define GROUND_Entity_H_
 
-#include "static_entity.h"
+#include "turret_node.h"
 //Basic Ground Entity Type
 namespace game
 {
 	class GroundEntity :
-		public StaticEntity
+		public TurretNode
 	{
 	public:
 		GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);

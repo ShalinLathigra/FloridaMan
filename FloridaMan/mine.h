@@ -48,6 +48,8 @@ namespace game
 
 		float idle_timer_;
 		float max_idle_timer_;
+
+		float boom_radius_;
 	};
 }
 

@@ -8,19 +8,9 @@ namespace game
 {
 	Shuriken::Shuriken(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : SceneNode(name, geometry, material)
 	{
-		active_ = false;
-		width_ = .5f;
 		forward_ = glm::vec3(0.0f, 0.0f, 1.0f);	//initial forward
 
-		max_duration_timer_ = .25f;
-		max_cd_timer_ = .25f;
-
-		duration_timer_ = 0.0f;
-		cd_timer_ = 0.0f;
-
-		joint_ = glm::vec3(0.0f);
-		orbit_amount_ = glm::angleAxis(glm::pi<float>() / 2.0f, glm::vec3(-1.0f, 0.0f, 0.0f));
-		
+		speed = 250.0f;
 	}
 
 	Shuriken::~Shuriken()
@@ -46,7 +36,7 @@ namespace game
 	void Shuriken::Update(float deltaTime)
 	{
 		glm::vec3 fireDirection = glm::normalize(forward_);
-		this->position_ += fireDirection * 25.0f * deltaTime;
+		this->position_ += fireDirection * speed * deltaTime;
 		distanceTravelled();
 		checkIfHit();
 		//AdvanceTimers(deltaTime);
@@ -59,13 +49,13 @@ namespace game
 	void Shuriken::distanceTravelled() {
 		float t_distance= glm::length(spawn_pos_ - this->GetPosition());
 
-		if (t_distance > 50.0f) {
+		if (t_distance > 250.0f) {
 			set_toDestroy = true;
 		}
 	}
 
 	bool Shuriken::checkSphereCollision(SceneNode* someEnemy) {
-		if (glm::length(someEnemy->GetPosition() - this->position_) <= 1.0f) {
+		if (glm::length(someEnemy->GetPosition() - this->position_) <= 10.0f) {
 			return true;
 		}
 		return false;
@@ -75,9 +65,9 @@ namespace game
 		SceneGraph *o = game_->GetGraph();
 		std::vector<SceneNode*> childz = o->GetNode("Root Node")->GetChildren();
 
-		for (int i = 0; i < o->GetNode("Root Node")->GetChildren().size(); i++) {
+		for (int i = 0; i < childz.size(); i++) {
 			//std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
-			if (checkSphereCollision(childz[i]) && childz[i]->GetName().find("Entity") != std::string::npos) {
+			if (CheckSphereCollision(childz[i], 10.0f) && childz[i]->GetName().find("Entity") != std::string::npos) {
 				((Entity*)childz[i])->TakeDamage(100);
 			}
 		}

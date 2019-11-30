@@ -10,18 +10,16 @@
 
 #include "scene_graph.h"
 #include "resource_manager.h"
+#include "particle_node.h"
+#include "entity_structure.h"
 #include "camera.h"
-#include "asteroid.h"
-#include "mine.h"
-#include "bomb.h"
-#include "shuriken.h"
-#include "air_entity.h"
+#include "player.h"
+
+#include "scene_node.h"
+#include "utilities.h"
 
 
 namespace game {
-
-	enum EntityType { Static, Ground, Air, MineInstance, Bomb, ShurikenProj, Default=-1 };
-
     // Exception type for the game
     class GameException: public std::exception
     {
@@ -51,6 +49,12 @@ namespace game {
 			//Return the Scene Graph
 			SceneGraph* GetGraph();
 
+			void AddNode(SceneNode *scn);
+			Camera * GetCamera(void);
+
+
+			SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
+
         private:
             // GLFW window
             GLFWwindow* window_;
@@ -67,6 +71,9 @@ namespace game {
             // Skybox
             SceneNode *skybox_;
 
+			//Player
+			Player *player_;
+
             // Flag to turn animation on/off
             bool animating_;
 
@@ -82,17 +89,11 @@ namespace game {
             
 			void GetKeyStates(GLFWwindow* window);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
-
-            // Asteroid field
-            // Create instance of one asteroid
-            Asteroid *CreateAsteroidInstance(std::string entity_name, std::string object_name, std::string material_name);
-            // Create entire random asteroid field
-            void CreateAsteroidField(int num_asteroids = 1500);
-
+			
             // Create an instance of an object stored in the resource manager
 			SceneNode *CreateInstance(int type, std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""), std::string envmap_name = std::string(""));
-			void CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
+			void CreateTowerField(void);
     }; // class Game
 
 } // namespace game

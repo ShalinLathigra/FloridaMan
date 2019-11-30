@@ -1,20 +1,21 @@
 #include "ground_entity.h"
 #include "utilities.h"
 #include <iostream>
+#include "game.h"
 namespace game
 {
 
-	GroundEntity::GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : StaticEntity(name, geometry, material, texture, envmap)
+	GroundEntity::GroundEntity(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap) : TurretNode(name, geometry, material, texture, envmap)
 	{
-		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 512.0f, glm::vec3(0.0, 1.0, 0.0));
-		chase_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		patrol_angm_ = glm::angleAxis(glm::pi<float>() / 256.0f, glm::vec3(0.0, 1.0, 0.0));
+		chase_angm_ = glm::angleAxis(glm::pi<float>() / 128.0f, glm::vec3(0.0, 1.0, 0.0));
 		max_idle_timer_ = 3.0f;
 		idle_timer_ = max_idle_timer_;
 
-		chase_radius_ = 120.0f;
+		chase_radius_ = 200.0f;
 		chase_angle_ = 0.7f;
 
-		attack_radius_ = 30.0f;
+		attack_radius_ = 180.0f;
 		attack_angle_ = 0.99f;
 		max_num_attacks_ = 4;
 		num_attacks_ = max_num_attacks_;
@@ -25,9 +26,9 @@ namespace game
 		dec_ = 4.5f; // Deceleration Rate
 
 		vel_ = 0.0f;	// Rate of position change
-		max_vel_ = 15.0f;	// Rate of position change
+		max_vel_ = 60.0f;	// Rate of position change
 
-		speed_ = 6.0f;
+		speed_ = 30.0f;
 	}
 	GroundEntity::~GroundEntity()
 	{
@@ -40,7 +41,7 @@ namespace game
 		{
 		case(State::Idle):
 			//std::cout<< GetName() << " " << "Idle" << std::endl;
-			StaticEntity::Idle(deltaTime);
+			TurretNode::Idle(deltaTime);
 			break;
 		case(State::Patrol): 
 			//std::cout<< GetName() << " " << "Patrol" << std::endl;
@@ -56,7 +57,7 @@ namespace game
 			break;
 		case(State::Die):    
 			//std::cout<< GetName() << " " << "Die" << std::endl; 
-			StaticEntity::Die(deltaTime);
+			TurretNode::Die(deltaTime);
 			break;
 		}
 	}
@@ -113,7 +114,7 @@ namespace game
 		}
 
 
-		if (dist_to_target < attack_radius_ / 2.0f)
+		if (dist_to_target < attack_radius_ * 4.0f / 5.0f)
 		{
 			vel_ = glm::max(vel_ - dec_, 0.0f);
 			state_ = State::Attack;
@@ -153,6 +154,7 @@ namespace game
 				// Attack Here
 				// Need some method to specify target of attack, and to Instantiate Entity missiles.
 				//std::cout << "Attack! " << num_attacks_ << std::endl;
+
 				num_attacks_--;
 				if (num_attacks_ > 0)
 				{

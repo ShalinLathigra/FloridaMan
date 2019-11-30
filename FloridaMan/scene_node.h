@@ -16,13 +16,13 @@
 namespace game {
 
 	class Game;
-
     // Class that manages one object in a scene 
     class SceneNode {
 
         public:
             SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture = NULL, const Resource *envmap = NULL);
 			SceneNode(const std::string name);
+			SceneNode();
             // Destructor
             ~SceneNode();
             
@@ -69,13 +69,18 @@ namespace game {
 			std::vector<SceneNode*> GetChildren();
 			void AddChild(SceneNode *pChildNode);
 			SceneNode *FindChild(std::string nodeName);
-			void RemoveChildAt(int index);
-			virtual void SetGame(Game* g);
+
+			SceneNode* RemoveChildAt(int index);
+
+			inline void SetType(int type) { type_ = type; }
+			void SetGame(Game* g);
+
+			void SetUpdated(bool u);
+			bool GetUpdated(void);
 			void setDestroyFlag(bool toggle);
 
         protected:
             std::string name_; // Name of the scene node
-			Game* game_; //pointer to game instance because we don't have a game manager :(
             GLuint array_buffer_; // References to geometry: vertex and array buffers
             GLuint element_array_buffer_;
             GLenum mode_; // Type of geometry
@@ -93,9 +98,12 @@ namespace game {
 			SceneNode *m_pParentNode;
 			std::vector<SceneNode*> m_childNodes;
             // Set matrices that transform the node in a shader program
-            void SetupShader(GLuint program, Camera *camera);
+            virtual void SetupShader(GLuint program, Camera *camera);
 			glm::mat4 GetParentTransform();
 
+			int type_;
+			Game* game_;
+			bool updated_;
     }; // class SceneNode
 
 } // namespace game

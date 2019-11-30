@@ -8,43 +8,49 @@ project(${PROJ_NAME})
 set(HDRS
 	air_entity.h
 	asteroid.h 
+	bomb.h
 	entity.h 
+	entity_structure.h 
 	camera.h 
 	game.h 
 	ground_entity.h 
 	mine.h
 	model_loader.h 
+	particle_node.h  
 	player.h
 	resource.h 
 	resource_manager.h 
 	scene_graph.h 
 	scene_node.h
-	static_entity.h
-	utilities.h
-	bomb.h
 	shuriken.h
+	turret_node.h
+	utilities.h
 )
  
 set(SRCS
-	bomb.cpp
 	air_entity.cpp 
 	asteroid.cpp 
+	bomb.cpp
 	camera.cpp 
 	entity.cpp 
+	entity_structure.cpp 
 	game.cpp 
 	ground_entity.cpp 
 	main.cpp
 	player.cpp 
 	mine.cpp
+	particle_node.cpp
 	resource.cpp 
 	resource_manager.cpp 
 	scene_graph.cpp 
 	scene_node.cpp 
 	shuriken.cpp
-	static_entity.cpp
+	turret_node.cpp
 	utilties.cpp
-	shuriken.cpp
-	bomb.cpp
+
+	CMakeLists.txt
+)
+set(SRC_SHADERS
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 
@@ -53,15 +59,20 @@ set(SRCS
 	plastic_vp.glsl 
 	textured_material_fp.glsl 
 	textured_material_vp.glsl 
+	toon_material_fp.glsl 
+	toon_material_vp.glsl 
 	three-term_shiny_blue_fp.glsl 
 	three-term_shiny_blue_vp.glsl 
 	normal_map_vp.glsl 
 	normal_map_fp.glsl 
 	screen_space_vp.glsl 
 	screen_space_fp.glsl 
-	particle_vp.glsl 
-	particle_fp.glsl 
-	particle_gp.glsl 
+	particle_boom_vp.glsl 
+	particle_boom_fp.glsl 
+	particle_boom_gp.glsl 
+	particle_spawn_vp.glsl 
+	particle_spawn_fp.glsl 
+	particle_spawn_gp.glsl 
 	fire_vp.glsl 
 	fire_gp.glsl 
 	fire_fp.glsl 
@@ -69,14 +80,14 @@ set(SRCS
 	skybox_fp.glsl 
 	envmap_vp.glsl 
 	envmap_fp.glsl 
-	CMakeLists.txt
 )
 
 # Add path name to configuration file
 configure_file(path_config.h.in path_config.h)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} ${HDRS} ${SRCS})
+add_executable(${PROJ_NAME} ${HDRS} ${SRCS} ${SRC_SHADERS})
+source_group("Shaders" FILES ${SRC_SHADERS})
 
 # Require OpenGL library
 find_package(OpenGL REQUIRED)
