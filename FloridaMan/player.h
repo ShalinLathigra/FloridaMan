@@ -9,23 +9,24 @@
 
 namespace game
 {
-	class ResourceManager;
-	class Player : public SceneNode
-	{
-	public:
-		Player();
-		void PlayerInit(ResourceManager *resMan);
-		virtual void Draw(Camera *camera) override;
-		virtual void Update(float deltaTime) override;
+class ResourceManager;
+class Player : public SceneNode
+{
+public:
+    Player();
+    void PlayerInit(ResourceManager *resMan);
+    virtual void Draw(Camera *camera) override;
+    virtual void Update(float deltaTime) override;
 
-		void Fire(int entityType);
-	private:
-		ResourceManager *m_pResMan;
+    void Fire(int entityType);
 
-		float m_ShurikenTimer;
-		float m_BombTimer;
-		float m_MineTimer;
-	};
-}
+private:
+    ResourceManager *m_pResMan;
+
+    float m_ShurikenTimer;
+    float m_BombTimer;
+    float m_MineTimer;
+};
+} // namespace game
 
 #endif

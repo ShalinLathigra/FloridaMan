@@ -13,50 +13,50 @@
 #include "resource.h"
 #include "scene_node.h"
 
-#include <algorithm>    // std::max
+#include <algorithm> // std::max
 
 namespace game
 {
-	class Shuriken :
-		public SceneNode
-	{
-	public:
-		Shuriken(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
-		~Shuriken();
+class Shuriken : public SceneNode
+{
+public:
+    Shuriken(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap);
+    ~Shuriken();
 
-		void Update(float deltaTime);
+    void Update(float deltaTime);
 
-		void turnOff(void);
+    void turnOff(void);
 
-		glm::vec3 GetForward(void) const;
-		void SetForward(glm::vec3 forward_new);
-		void SetSpawnPos(glm::vec3);
+    glm::vec3 GetForward(void) const;
+    void SetForward(glm::vec3 forward_new);
+    void SetSpawnPos(glm::vec3);
 
-		void setParent(Camera *camera);
-	private:
-		bool active_;
+    void setParent(Camera *camera);
 
-		//Replace this with the player node to transform off of
-		Camera *parent_node_;
+private:
+    bool active_;
 
-		float width_;
-		glm::vec3 forward_;	//initial up
-		glm::vec3 spawn_pos_;
-		glm::vec3 joint_;
-		glm::quat orbit_amount_;
+    //Replace this with the player node to transform off of
+    Camera *parent_node_;
 
-		float max_duration_timer_;
-		float max_cd_timer_;
+    float width_;
+    glm::vec3 forward_; //initial up
+    glm::vec3 spawn_pos_;
+    glm::vec3 joint_;
+    glm::quat orbit_amount_;
 
-		float duration_timer_;
-		float cd_timer_;
+    float max_duration_timer_;
+    float max_cd_timer_;
 
-		void checkIfHit();
-		void distanceTravelled();
+    float duration_timer_;
+    float cd_timer_;
 
-		float speed;
-		bool checkSphereCollision(SceneNode* someEnemy);
-	};
-}
+    void checkIfHit();
+    void distanceTravelled();
+
+    float speed;
+    bool checkSphereCollision(SceneNode *someEnemy);
+};
+} // namespace game
 
 #endif // ASTEROID_H_
