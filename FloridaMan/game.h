@@ -56,6 +56,8 @@ public:
 
     SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
+	//A callback function for the keys that we don't need to get constant input from
+	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 private:
     // GLFW window
     GLFWwindow *window_;

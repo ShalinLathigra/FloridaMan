@@ -7,7 +7,6 @@
 #include <time.h>
 
 #include "scene_node.h"
-
 namespace game
 {
 SceneNode::SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap)

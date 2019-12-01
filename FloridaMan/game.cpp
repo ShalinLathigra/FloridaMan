@@ -109,6 +109,7 @@ namespace game
 	{
 		// Set event callbacks
 		glfwSetFramebufferSizeCallback(window_, ResizeCallback);
+		glfwSetKeyCallback(window_, KeyCallback);
 
 		// Set pointer to game object, so that callbacks can access it
 		glfwSetWindowUserPointer(window_, (void *)this);
@@ -199,19 +200,49 @@ namespace game
 		skybox_->SetPosition(glm::vec3(0, 50, 0));
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
+		camera_.SetSkyBox(skybox_);
 
 		camera_.InitPlayer(&resman_);
 		AddNode((SceneNode *)(camera_.GetPlayer()));
 		player_ = camera_.GetPlayer();
-		player_->Translate(glm::vec3(0, 1, -3));
+		player_->Translate(glm::vec3(30, 6, -3));
 		player_->SetGame(this);
+		player_->SetCamera(&camera_);
 
 		SceneNode *hat = CreateInstance(EntityType::Default, "Hat", "SphereMesh", "ToonMaterial");
 		hat->SetType(EntityType::Default);
 		hat->SetScale(player_->GetScale() * 0.9f);
 		hat->Translate(glm::vec3(0, 0.25, 0));
 		player_->AddChild(hat);
+		
+		//ADD CAMO TEXTURE FOR FLORIDA MAN
+		SceneNode *body = CreateInstance(EntityType::Default, "Body", "CubeMesh", "ToonMaterial");
+		body->SetScale(glm::vec3(1.5f, 2.0f, 1.0));
+		body->Translate(glm::vec3(0.0f, -1.5f, 0.0f));
+		player_->AddChild(body);
 
+		SceneNode *leftArm = CreateInstance(EntityType::Default, "LeftArm", "CubeMesh", "ToonMaterial");
+		leftArm->SetScale(glm::vec3(1.5f, 0.75f, 1.0f));
+		leftArm->Translate(glm::vec3(1.0f, 0.6f, 0.0));
+		body->AddChild(leftArm);
+
+		SceneNode *rightArm = CreateInstance(EntityType::Default, "RightArm", "CubeMesh", "ToonMaterial");
+		rightArm->SetScale(glm::vec3(1.5f, 0.75f, 1.0f));
+		rightArm->Translate(glm::vec3(-1.0f, 0.6f, 0.0));
+		body->AddChild(rightArm);
+
+
+		SceneNode *leftLeg = CreateInstance(EntityType::Default, "LeftLeg", "CubeMesh", "ToonMaterial");
+		leftLeg->SetScale(glm::vec3(0.5f, 1.5f, 1.0f));
+		leftLeg->Translate(glm::vec3(0.5f, -1.75f, 0.0));
+		body->AddChild(leftLeg);
+
+		SceneNode *rightLeg = CreateInstance(EntityType::Default, "RightLeg", "CubeMesh", "ToonMaterial");
+		rightLeg->SetScale(glm::vec3(0.5f, 1.5f, 1.0f));
+		rightLeg->Translate(glm::vec3(-0.5f, -1.75f, 0.0));
+		body->AddChild(rightLeg);
+
+		// TODO: CHAnge name of this pls;
 		Asteroid *prop1 = (Asteroid*)CreateInstance(EntityType::AsteroidInst, "Prop1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		Asteroid *prop2 = (Asteroid*)CreateInstance(EntityType::AsteroidInst, "Prop2", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		prop1->SetScale(glm::vec3(1.0, 0.1, 0.2));
@@ -289,7 +320,7 @@ namespace game
 
 		// View control
 		float rot_factor(glm::pi<float>() / 360);
-		float trans_factor = 0.5;
+		float trans_factor = 1.0;
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		{
 			game->camera_.Pitch(rot_factor);
@@ -316,43 +347,46 @@ namespace game
 		}
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			game->camera_.Translate(game->camera_.GetForward() * trans_factor);
-			game->skybox_->Translate(game->camera_.GetForward() * trans_factor);
+			game->player_->Accellerate(-0.1);
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			game->camera_.Translate(-game->camera_.GetForward() * trans_factor);
-			game->skybox_->Translate(-game->camera_.GetForward() * trans_factor);
+			game->player_->Accellerate(0.1);
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		{
 			game->camera_.Translate(-game->camera_.GetSide() * trans_factor);
-			game->skybox_->Translate(-game->camera_.GetSide() * trans_factor);
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		{
 			game->camera_.Translate(game->camera_.GetSide() * trans_factor);
-			game->skybox_->Translate(game->camera_.GetSide() * trans_factor);
 		}
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			game->camera_.Translate(game->camera_.GetUp() * trans_factor);
-			game->skybox_->Translate(game->camera_.GetUp() * trans_factor);
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		{
 			game->camera_.Translate(-game->camera_.GetUp() * trans_factor);
-			game->skybox_->Translate(-game->camera_.GetUp() * trans_factor);
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-		{
-			game->player_->Fire(EntityType::BombProj);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 		{
 			game->player_->Fire(EntityType::ShurikenProj);
+		}
+
+	}
+
+	void Game::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+
+		// Get user data with a pointer to the game class
+		void *ptr = glfwGetWindowUserPointer(window);
+		Game *game = (Game *)ptr;
+
+		// Quit game if 'q' is pressed
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		{
+			glfwSetWindowShouldClose(window, true);
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
@@ -363,6 +397,11 @@ namespace game
 		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 		{
 			game->camera_.TogglePOV();
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		{
+			game->player_->Fire(EntityType::BombProj);
 		}
 	}
 
