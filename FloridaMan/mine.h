@@ -38,22 +38,30 @@ public:
     MineState GetState(void);
     SceneNode *GetTarget(void);
     void SetState(MineState state);
-    void SetTarget(SceneNode *target);
+	void SetTarget(SceneNode *target);
+	void InitAltMat(ResourceManager* resman_);
+
+	inline float GetBoomRadius(void) { return boom_radius_; }
+	inline float GetChaseRadius(void) { return chase_radius_; }
+	virtual void Draw(Camera *camera) override;
 
 protected:
+	GLuint alt_mat_;
     MineState state_;
     SceneNode *target_;
     glm::vec3 forward_;
     glm::vec3 up_;
     float hp_;
     bool target_set_;
-    float accel_ = 4.0f;
+    float vel_;
+	float acc_;
     std::vector<SceneNode> enemies;
 
     float idle_timer_;
     float max_idle_timer_;
 
     float boom_radius_;
+	float chase_radius_;
 };
 } // namespace game
 

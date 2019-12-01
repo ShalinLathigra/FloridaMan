@@ -33,7 +33,6 @@ void EntityStructure::InitResources(int type, Resource *obj, Resource *mat, Reso
 
 void EntityStructure::Update(float deltaTime)
 {
-    //std::cout << GetName() << " " << m_EntityTimer  << ": " << m_EntityCount << "<=" << MAX_CHILDREN << std::endl;
     if (m_EntityCount < m_MaxEntityCount)
     {
         if (m_EntityTimer <= 0.0f)
@@ -58,7 +57,7 @@ SceneNode *EntityStructure::CreateEntity()
     if (m_type == EntityType::Turret)
     {
         //Spawn at position + 1/2 scale + 1/2 entity scale
-        scale = glm::vec3(10);
+        scale = glm::vec3(20);
         pos = GetPosition() + glm::vec3(0, GetScale().y + scale.y / 2.0f, 0);
         mid = std::string("_Turret_Entity_");
         scn = new TurretNode(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
@@ -86,7 +85,7 @@ SceneNode *EntityStructure::CreateEntity()
     scn->SetOrientation(GetOrientation());
     scn->SetGame(game_);
     scn->SetType(m_type);
-    scn->SetTarget(game_->GetCamera());
+    scn->SetTarget(game_->GetCamera()->GetPlayer());
 
     scn->SetDeathEffect(death_part_);
 

@@ -50,36 +50,45 @@ set(SRCS
 
 	CMakeLists.txt
 )
-set(SRC_SHADERS
+set(SRC_SHADERS 
+	envmap_vp.glsl 
+	envmap_fp.glsl 
+	force_material_vp.glsl 
+	force_material_fp.glsl
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 
 	metal_vp.glsl 
-	plastic_fp.glsl 
-	plastic_vp.glsl 
-	textured_material_fp.glsl 
-	textured_material_vp.glsl 
-	toon_material_fp.glsl 
-	toon_material_vp.glsl 
-	three-term_shiny_blue_fp.glsl 
-	three-term_shiny_blue_vp.glsl 
 	normal_map_vp.glsl 
 	normal_map_fp.glsl 
+	plastic_fp.glsl 
+	plastic_vp.glsl 
 	screen_space_vp.glsl 
 	screen_space_fp.glsl 
+	skybox_vp.glsl 
+	skybox_fp.glsl 
+	textured_material_fp.glsl 
+	textured_material_vp.glsl 
+	three-term_shiny_blue_fp.glsl 
+	three-term_shiny_blue_vp.glsl 
+	toon_material_fp.glsl 
+	toon_material_vp.glsl 
+	
+	fire_vp.glsl 
+	fire_gp.glsl 
+	fire_fp.glsl
+	particle_alien_vp.glsl 
+	particle_alien_fp.glsl 
+	particle_alien_gp.glsl 
 	particle_boom_vp.glsl 
 	particle_boom_fp.glsl 
 	particle_boom_gp.glsl 
 	particle_spawn_vp.glsl 
 	particle_spawn_fp.glsl 
 	particle_spawn_gp.glsl 
-	fire_vp.glsl 
-	fire_gp.glsl 
-	fire_fp.glsl 
-	skybox_vp.glsl 
-	skybox_fp.glsl 
-	envmap_vp.glsl 
-	envmap_fp.glsl 
+	particle_trail_vp.glsl 
+	particle_trail_fp.glsl 
+	particle_trail_gp.glsl 
 )
 
 # Add path name to configuration file

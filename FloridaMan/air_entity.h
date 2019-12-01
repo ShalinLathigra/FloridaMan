@@ -35,6 +35,10 @@ protected:
     float y_diff_;
     float y_speed_;
 
+	float hover_speed_;
+
+	glm::vec3 to_target_;
+
     //Need to handle acceleration, store velocity
 };
 } // namespace game

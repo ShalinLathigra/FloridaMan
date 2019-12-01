@@ -19,7 +19,7 @@ class Asteroid : public SceneNode
 {
 public:
     // Create asteroid from given resources
-    Asteroid(const std::string name, const Resource *geometry, const Resource *material);
+    Asteroid(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture = NULL, const Resource *envmap = NULL);
 
     // Destructor
     ~Asteroid();
@@ -29,7 +29,7 @@ public:
     void SetAngM(glm::quat angm);
 
     // Update geometry configuration
-    void Update(void);
+    void Update(float deltaTime);
 
 private:
     // Angular momentum of asteroid

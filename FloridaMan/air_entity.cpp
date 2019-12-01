@@ -1,4 +1,5 @@
 #include "air_entity.h"
+#include "game.h"
 #include "utilities.h"
 #include <iostream>
 namespace game
@@ -20,11 +21,20 @@ AirEntity::AirEntity(const std::string name, const Resource *geometry, const Res
     off_step_ = 1;
     desired_y_ = mid_y_ + y_offset_[off_index_];
 
+	ammo_ = 4 + (int)(utilities::RandPercent() * 6.0f);
+	max_num_attacks_ = 2;
+	num_attacks_ = max_num_attacks_;
+	max_attack_timer_ = 6.0f;
+	attack_timer_ = max_attack_timer_ / 3.0f;
+
+
+
     off_timer_ = 0.0f;
     max_off_timer_ = 2.5f;
 
     y_speed_ = 0.75f;
-    speed_ = 27.0f;
+	hover_speed_ = 27.0f;
+	to_target_ = glm::vec3(0);
 }
 AirEntity::~AirEntity()
 {
@@ -35,23 +45,18 @@ void AirEntity::Update(float deltaTime)
     switch (state_)
     {
         case (State::Idle):
-            //std::cout<< GetName() << " " << "Idle" << std::endl;
             TurretNode::Idle(deltaTime);
             break;
         case (State::Patrol):
-            //std::cout<< GetName() << " " << "Patrol" << std::endl;
             AirEntity::Patrol(deltaTime);
             break;
         case (State::Chase):
-            //std::cout<< GetName() << " " << "Chase" << std::endl;
             AirEntity::Chase(deltaTime);
             break;
         case (State::Attack):
-            //std::cout<< GetName() << " " << "Attack" << std::endl;
             AirEntity::Attack(deltaTime);
             break;
         case (State::Die):
-            //std::cout<< GetName() << " " << "Die" << std::endl;
             TurretNode::Die(deltaTime);
             break;
     }
@@ -80,18 +85,56 @@ void AirEntity::Chase(float deltaTime)
 
 void AirEntity::Attack(float deltaTime)
 {
-    glm::vec3 right = glm::normalize(glm::cross(GetForward(), GetUp()));
-    Translate(5.0f * right * deltaTime);
-    TurretNode::Chase(deltaTime);
 
-    AssessYOffset(deltaTime);
-    MaintainY(target_->GetPosition().y, deltaTime);
-    GroundEntity::Attack(deltaTime);
-    SetState();
+	if (ammo_ > 0)
+	{
+		glm::vec3 right = glm::normalize(glm::cross(GetForward(), GetUp()));
+		Translate(hover_speed_ * right * deltaTime);
+		TurretNode::Chase(deltaTime);
 
-    // should slow down movement gradually
-    // Check angle to player, if dot between dir to player and forward < attack_radius, turn a bit.
-    // translate to the right or left
+		AssessYOffset(deltaTime);
+		MaintainY(target_->GetPosition().y, deltaTime);
+
+
+		to_target_ = target_->GetPosition() - position_;
+		float dist_to_target = glm::length(to_target_);
+
+		to_target_ = glm::normalize(to_target_);
+
+		if (dist_to_target > attack_radius_)
+		{
+			state_ = State::Chase;
+		}
+		else
+		{
+			GroundEntity::Attack(deltaTime);
+		}
+		SetState();
+	}
+	else
+	{
+		if (attack_timer_ == 0.0f)
+		{
+			to_target_ = glm::normalize(target_->GetPosition() - position_);
+			attack_timer_ = max_attack_timer_;
+		}
+		else
+		{
+			attack_timer_ = glm::max(attack_timer_ - deltaTime, 0.0f);
+		}
+
+		Translate(hover_speed_ * 5.0f * to_target_ * deltaTime);
+		if (CheckCollision(target_))
+		{
+			if (target_->GetName().find("Player"))
+			{
+				((Player *)target_)->TakeDamage(25.0f);
+				TakeDamage(100.0f);
+			}
+			target_->SetType((target_->GetType() + 1) % 4);
+		}
+	}
+
 }
 
 void AirEntity::SetState()

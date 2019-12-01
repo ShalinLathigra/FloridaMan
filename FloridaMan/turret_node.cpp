@@ -1,5 +1,6 @@
 #include "turret_node.h"
 #include "utilities.h"
+#include "game.h"
 #include <iostream>
 namespace game
 {
@@ -18,6 +19,9 @@ TurretNode::TurretNode(const std::string name, const Resource *geometry, const R
 
     max_chase_timer_ = 10.0f;
     chase_timer_ = max_chase_timer_;
+
+	max_attack_timer_ =2.5f;
+	attack_timer_ = max_attack_timer_;
 }
 TurretNode::~TurretNode()
 {
@@ -28,28 +32,18 @@ void TurretNode::Update(float deltaTime)
     switch (state_)
     {
         case (State::Idle):
-            //std::cout<< "Idle" << std::endl;
-            //std::cout<< GetName() << " " << "Idle" << std::endl;
             TurretNode::Idle(deltaTime);
             break;
         case (State::Patrol):
-            //std::cout<< "Patrol" << std::endl;
-            //std::cout<< GetName() << " " << "Patrol" << std::endl;
             TurretNode::Patrol(deltaTime);
             break;
         case (State::Chase):
-            //std::cout<< "Chase" << std::endl;
-            //std::cout<< GetName() << " " << "Chase" << std::endl;
             TurretNode::Chase(deltaTime);
             break;
         case (State::Attack):
-            //std::cout<< "Attack" << std::endl;
-            //std::cout<< GetName() << " " << "Attack" << std::endl;
             TurretNode::Attack(deltaTime);
             break;
         case (State::Die):
-            //std::cout<< "Die" << std::endl;
-            //std::cout<< GetName() << " " << "Die" << std::endl;
             TurretNode::Die(deltaTime);
             break;
     }
@@ -86,7 +80,6 @@ void TurretNode::Patrol(float deltaTime)
         float dot = glm::dot(glm::normalize(to_target), glm::normalize(GetForward()));
         if (dot > chase_angle_)
         {
-            //std::cout << "PATROL: " << dot << " " << chase_angle_ << std::endl;
             state_ = State::Chase;
             chase_timer_ = max_chase_timer_;
         }
@@ -143,14 +136,21 @@ void TurretNode::Attack(float deltaTime)
     float dist_to_target = glm::length(to_target);
     float dot = glm::dot(glm::normalize(to_target), glm::normalize(GetForward()));
 
-    //Implement Attack Functionality Here!
+	if (attack_timer_ <= 0.0f)
+	{
+		TurretNode::InstantiateAttack();
+		attack_timer_ = max_attack_timer_;
+	}
+	else
+	{
+		attack_timer_ = glm::max(attack_timer_ - deltaTime, 0.0f);
+	}
 
     if (dot < attack_angle_)
     {
         state_ = State::Chase;
         chase_timer_ = max_chase_timer_;
     }
-
     if (dist_to_target > chase_radius_)
     {
         state_ = State::Patrol;
@@ -214,5 +214,19 @@ void TurretNode::SetChaseAngle(float chase_angle)
 void TurretNode::SetAttackAngle(float attack_angle)
 {
     attack_angle_ = attack_angle;
+}
+void TurretNode::InstantiateAttack(void)
+{
+	Shuriken *atk = (Shuriken*)game_->CreateEntity(EntityType::MissileProj, position_, glm::vec3(3, 3, 6));
+	atk->SetForward(glm::normalize(target_->GetPosition() - GetPosition()));
+	atk->SetType(EntityType::EnemyProj);
+	atk->SetOrientation(GetOrientation());
+
+	atk->SetSpawnPos(position_);
+
+	atk->SetBlending(true);
+	atk->RemoveChildAt(0);
+
+	game_->AddNode(atk);
 }
 } // namespace game

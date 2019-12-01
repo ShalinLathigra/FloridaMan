@@ -32,6 +32,8 @@ public:
     void SetChaseAngle(float chase_angle);
     void SetAttackAngle(float attack_angle);
 
+	void InstantiateAttack(void);
+
 protected:
     // Angular momentum of asteroid
     glm::quat patrol_angm_;

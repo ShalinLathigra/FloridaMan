@@ -10,6 +10,8 @@ Bomb::Bomb(const std::string name, const Resource *geometry, const Resource *mat
 {
     state_ = BombState::BombFall;
     boom_radius_ = 75.0f;
+	grav_ = 5.0f;
+	velocity_ = glm::vec3(0, 0, 0);
 }
 
 Bomb::~Bomb()
@@ -31,14 +33,8 @@ void Bomb::Update(float deltaTime)
 
 void Bomb::Fall(float deltaTime)
 {
-    //glm::vec3 towardsTarget = glm::normalize(target_->GetPosition() - this->GetPosition());
-    //this->position_ += towardsTarget * 4.0f*deltaTime;
-
-    //if (glm::length(target_->GetPosition() - this->GetPosition()) <= 1.5f)
-    //	state_ = BombState::BombBoom;
-
-    velocity_ += glm::vec3(0, -0.5f, 0);
-    this->position_ += velocity_ * deltaTime;
+    velocity_ -= glm::vec3(0, grav_, 0);
+    position_ += velocity_ * deltaTime;
 
     if (this->position_.y <= 0.5)
     {
@@ -47,18 +43,15 @@ void Bomb::Fall(float deltaTime)
 }
 void Bomb::Boom(float deltaTime)
 {
-    //Apply some health damage to enemies in a radius here
-    //Instantiate Death Effects
     if (!set_toDestroy)
     {
-        this->set_toDestroy = true;
+        set_toDestroy = true;
 
         SceneGraph *o = game_->GetGraph();
         std::vector<SceneNode *> childz = o->GetNode("Root Node")->GetChildren();
 
         for (int i = 0; i < childz.size(); i++)
         {
-            std::cout << childz[i]->GetName() << std::endl;
             if (childz[i]->GetName().find("Entity") != std::string::npos &&
                 CheckSphereCollision(childz[i], boom_radius_))
             {
