@@ -20,27 +20,24 @@ out float timestep;
 
 // Simulation parameters (constants)
 uniform vec3 up_vec = vec3(0.0, 1.0, 0.0);
-uniform vec3 object_color = vec3(0.8, 0.4, 0.01);
-float grav = 0.3; // Gravity
-float speed = 45.0; // Allows to control the speed of the explosion
+uniform vec3 object_color = vec3(0.8, 0.8, 0.8);
+float speed = 5.0; // Allows to control the speed of the explosion
 
 void main()
 {
 	float lifetime = duration;
 
     // Let time cycle every four seconds
-	float t = timer - start; // Our time parameter
+	float t = max((timer - start), 0); // Our time parameter
     
-    timestep = (duration - t) / duration;
-
     // Let's first work in model space (apply only world matrix)
     vec4 position = world_mat * vec4(vertex, 1.0);
     vec4 norm = normal_mat * vec4(normal, 1.0);
 
     // Move point along normal and down with t*t (acceleration under gravity)
-    position.x += (norm.x)*t*speed;
-    position.y += (norm.y)*t*speed;
-    position.z += (norm.z)*t*speed;
+    position.x += norm.x*color.g*t*speed;
+    position.y += norm.y*color.g*t*speed;
+    position.z += norm.z*color.g*t*speed;
     
     // Now apply view transformation
     gl_Position = view_mat * position;
@@ -48,12 +45,17 @@ void main()
     // Define outputs
     // Define color of vertex
 
-	vertex_color = (1-timestep) * vec3(1.0, 0.7, 0.01) + timestep * object_color;
+	float net = clamp(pow(norm.x*color.g, 2)*t*speed + pow(norm.y*color.g, 2)*t*speed + pow(norm.z*color.g, 2)*t*speed, 0, 1);
 
-    //vertex_color = color.rbg; // Color defined during the construction of the particles
+
+	vec3 color_ = vec3(color.r, color.g*10, color.b);
+	vertex_color = (net) * color_.rgb + (1-net)*color_.grr;
+
+    //vertex_color = color.rgb; // Color defined during the construction of the particles
     //vertex_color = object_color * (1-pow(circtime / lifetime, 2)); // Uniform color 
     //vertex_color = vec3(t, 0.0, 1-t);
     //vertex_color = vec3(1.0, 1-t, 0.0);
 
     // Forward time step to geometry shader
+    timestep = clamp(timer - start, 0, 1);
 }

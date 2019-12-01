@@ -36,8 +36,8 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 {
     // Create scene node with the specified resources
     SceneNode *scn;
-
-    //std::cout << node_name << std::endl;
+	SceneNode* child;
+	float r;
     switch (type)
     {
         case (EntityType::Turret):
@@ -56,7 +56,8 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
         case (EntityType::BombProj):
             scn = new Bomb(node_name, geometry, material, texture, envmap);
             break;
-        case (EntityType::ShurikenProj):
+		case (EntityType::ShurikenProj):
+		case (EntityType::MissileProj):
             scn = new Shuriken(node_name, geometry, material, texture, envmap);
             break;
         case (EntityType::Particle):
@@ -64,9 +65,15 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
             break;
         case (EntityType::TurretSpawn):
         case (EntityType::GroundSpawn):
-        case (EntityType::AirSpawn):
-            scn = new EntityStructure(node_name, geometry, material, texture, envmap);
-            break;
+		case (EntityType::AirSpawn):
+			scn = new EntityStructure(node_name, geometry, material, texture, envmap);
+			break;
+		case (EntityType::AlienSpawn):
+			scn = new Entity(node_name, geometry, material, texture, envmap);
+			break;
+		case (EntityType::AsteroidInst):
+			scn = new Asteroid(node_name, geometry, material, texture, envmap);
+			break;
         default:
             scn = new SceneNode(node_name, geometry, material, texture, envmap);
             break;

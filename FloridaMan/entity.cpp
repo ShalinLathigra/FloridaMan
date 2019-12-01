@@ -16,6 +16,9 @@ Entity::Entity(const std::string name, const Resource *geometry, const Resource 
     idle_timer_ = max_idle_timer_;
     max_hp_ = 50.0f;
     hp_ = max_hp_;
+
+	max_attack_timer_ = 1.0f;
+	attack_timer_ = max_attack_timer_;
 }
 
 Entity::~Entity()
@@ -30,7 +33,13 @@ void Entity::Update(float deltaTime)
         //case(State::Patrol): std::cout << "State: Patrol" << std::endl;  break;
         //case(State::Chase): std::cout << "State: Chase" << std::endl;  break;
         //case(State::Attack): std::cout << "State: Attack" << std::endl;  break;
-        //case(State::Die): std::cout << "State: Die" << std::endl;  break;
+	case(State::Die): 
+		Translate(glm::vec3(0, -12, 0)*deltaTime);
+		if (position_.y <= -scale_.y / 2.0f)
+		{
+			set_toDestroy = true;
+		}
+		break;
     }
 }
 void Entity::TakeDamage(float amount)
@@ -47,7 +56,6 @@ void Entity::TakeDamage(float amount)
         }
         state_ = State::Die;
     }
-    std::cout << GetName() << " OUCH!!!!" << hp_ << std::endl;
 }
 
 //Getters + Setters
@@ -55,7 +63,7 @@ State Entity::GetState(void)
 {
     return state_;
 }
-Camera *Entity::GetTarget(void)
+SceneNode *Entity::GetTarget(void)
 {
     return target_;
 }
@@ -71,7 +79,7 @@ void Entity::SetState(State state)
 {
     state_ = state;
 }
-void Entity::SetTarget(Camera *target)
+void Entity::SetTarget(SceneNode *target)
 {
     target_ = target;
 }

@@ -22,10 +22,14 @@ enum EntityType
     MineProj,
     BombProj,
     ShurikenProj,
+	MissileProj,
     Particle,
     TurretSpawn,
     GroundSpawn,
     AirSpawn,
+	AlienSpawn,
+	AsteroidInst,
+	EnemyProj,
     Default
 };
 }

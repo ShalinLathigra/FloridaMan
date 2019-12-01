@@ -44,43 +44,48 @@ void Shuriken::Update(float deltaTime)
     this->position_ += fireDirection * speed * deltaTime;
     distanceTravelled();
     checkIfHit();
-    //AdvanceTimers(deltaTime);
-    //glm::mat4 fullTransf = CalculateMatrix(parent_node_->GetCurrentViewMatrix());
-    //SetPosition(glm::vec3(-0.5f,-1.0f,0));
 }
 
 void Shuriken::distanceTravelled()
 {
     float t_distance = glm::length(spawn_pos_ - this->GetPosition());
 
-    if (t_distance > 250.0f)
-    {
-        set_toDestroy = true;
+	if (t_distance > 250.0f)
+	{
+		set_toDestroy = true;
+		while(m_childNodes.size() > 0)
+		{
+			m_childNodes.pop_back();
+		}
     }
 }
 
-bool Shuriken::checkSphereCollision(SceneNode *someEnemy)
-{
-    if (glm::length(someEnemy->GetPosition() - this->position_) <= 10.0f)
-    {
-        return true;
-    }
-    return false;
-}
 
 void Shuriken::checkIfHit()
 {
     SceneGraph *o = game_->GetGraph();
     std::vector<SceneNode *> childz = o->GetNode("Root Node")->GetChildren();
 
-    for (int i = 0; i < childz.size(); i++)
-    {
-        //std::cout << o->GetNode("Root Node")->GetChildren().size() << " " << i << " " << childz[i]->GetName() << std::endl;
-        if (CheckSphereCollision(childz[i], 10.0f) && childz[i]->GetName().find("Entity") != std::string::npos)
-        {
-            ((Entity *)childz[i])->TakeDamage(100);
-        }
-    }
+	//target_->SetType((target_->GetType() + 1) % 4);
+
+	if (type_ == EntityType::Default)
+	{
+		for (int i = 0; i < childz.size(); i++)
+		{
+			if (CheckSphereCollision(childz[i], glm::length(childz[i]->GetScale() + GetScale())) && childz[i]->GetName().find("Entity") != std::string::npos)
+			{
+				((Entity *)childz[i])->TakeDamage(100);
+			}
+		}
+	}
+	else
+	{
+		Player *target = (Player *)o->GetNode("Player");
+		if (CheckSphereCollision(target, 5.0f))
+		{
+			target->TakeDamage(10);
+		}
+	}
 }
 
 glm::vec3 Shuriken::GetForward(void) const

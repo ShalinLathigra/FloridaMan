@@ -7,7 +7,6 @@
 #include <time.h>
 
 #include "scene_node.h"
-
 namespace game
 {
 SceneNode::SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap)
@@ -114,7 +113,6 @@ void SceneNode::AddChild(SceneNode *pChildNode)
 
 SceneNode *SceneNode::FindChild(std::string nodeName)
 {
-    //std::cout << name_ << " " << nodeName << std::endl;
     if (name_.compare(nodeName) == 0)
     {
         return this;
@@ -161,6 +159,8 @@ glm::vec3 SceneNode::GetPosition(void) const
 
 bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist)
 {
+
+
     if (glm::length(someNode->GetPosition() - position_) <= dist)
         return true;
     else
@@ -349,6 +349,7 @@ void SceneNode::Draw(Camera *camera)
         }
         else
         {
+			glDisable(GL_BLEND);
             // Enable z-buffer
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);

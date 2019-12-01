@@ -7,6 +7,7 @@
 
 #include "camera.h"
 #include "player.h"
+#include "scene_node.h"
 
 namespace game
 {
@@ -24,9 +25,19 @@ glm::vec3 Camera::GetPosition(void) const
     return position_;
 }
 
+void Camera::move(float iAmSpeed)
+{
+	Translate(iAmSpeed * (orientation_ * forward_));
+}
+
 glm::quat Camera::GetOrientation(void) const
 {
     return orientation_;
+}
+
+void Camera::SetSkyBox(SceneNode *skybox)
+{
+	m_skybox = skybox;
 }
 
 void Camera::SetPosition(glm::vec3 position)
@@ -49,6 +60,7 @@ void Camera::SetOrientation(glm::quat orientation)
 void Camera::Translate(glm::vec3 trans)
 {
     position_ += trans;
+	m_skybox->Translate(trans);
     m_pPlayer->Translate(trans);
 }
 
@@ -80,20 +92,26 @@ glm::vec3 Camera::GetUp(void) const
     return current_up;
 }
 
-void Camera::Pitch(float angle)
+void Camera::Pitch(float angle, bool rotatePlayer)
 {
     glm::quat rotation = glm::angleAxis(angle, GetSide());
     orientation_ = rotation * orientation_;
     orientation_ = glm::normalize(orientation_);
-    m_pPlayer->SetOrientation(orientation_);
+	if (rotatePlayer)
+	{
+		m_pPlayer->SetOrientation(orientation_);
+	}
 }
 
-void Camera::Yaw(float angle)
+void Camera::Yaw(float angle, bool rotatePlayer)
 {
     glm::quat rotation = glm::angleAxis(angle, GetUp());
     orientation_ = rotation * orientation_;
     orientation_ = glm::normalize(orientation_);
-    m_pPlayer->SetOrientation(orientation_);
+	if (rotatePlayer)
+	{
+		m_pPlayer->SetOrientation(orientation_);
+	}
 }
 
 void Camera::Roll(float angle)
@@ -164,6 +182,11 @@ void Camera::SetupViewMatrix(void)
 {
     //view_matrix_ = glm::lookAt(position, look_at, up);
 
+	if (!m_isFirstPerson)
+	{
+		Yaw(-0.15f, false);
+		Pitch(-0.25f, false);
+	}
     // Get current vectors of coordinate system
     // [side, up, forward]
     // See slide in "Camera control" for details
@@ -178,7 +201,7 @@ void Camera::SetupViewMatrix(void)
     }
     else
     {
-        SetPosition(newPosition + current_forward * 2.0f + current_up * 1.0f);
+        SetPosition(newPosition + current_forward * 10.0f +/* current_up * 2.0f + */current_side * 2.0f);
     }
 
     // Initialize the view matrix as an identity matrix
@@ -204,6 +227,12 @@ void Camera::SetupViewMatrix(void)
 
     // Combine translation and view matrix in proper order
     view_matrix_ *= trans; //glm::mat4_cast(orientation_) * trans;
+
+	if (!m_isFirstPerson)
+	{
+		//reset the orientation to be equal to the players if necessary
+		SetOrientation(m_pPlayer->GetOrientation());
+	}
 }
 
 } // namespace game

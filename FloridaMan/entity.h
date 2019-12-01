@@ -27,11 +27,11 @@ public:
     virtual void TakeDamage(float amount);
 
     State GetState(void);
-    Camera *GetTarget(void);
+    SceneNode *GetTarget(void);
     glm::vec3 GetForward(void);
     glm::vec3 GetUp(void);
     void SetState(State state);
-    void SetTarget(Camera *target);
+    void SetTarget(SceneNode *target);
     void SetEndScale(glm::vec3 end_scale);
 
     bool IsAlive(void);
@@ -39,7 +39,7 @@ public:
 
 protected:
     State state_;
-    Camera *target_;
+    SceneNode *target_;
     glm::vec3 forward_;
     glm::vec3 up_;
     float hp_;
@@ -52,6 +52,9 @@ protected:
 
     ParticleNode death_particles_;
     bool death_part_;
+
+	float attack_timer_;
+	float max_attack_timer_;
 };
 } // namespace game
 #endif // Entity_H_

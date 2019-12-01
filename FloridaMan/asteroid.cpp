@@ -2,8 +2,8 @@
 
 namespace game
 {
-Asteroid::Asteroid(const std::string name, const Resource *geometry, const Resource *material)
-    : SceneNode(name, geometry, material)
+Asteroid::Asteroid(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture, const Resource *envmap)
+    : SceneNode(name, geometry, material, texture, envmap)
 {
 }
 
@@ -21,7 +21,7 @@ void Asteroid::SetAngM(glm::quat angm)
     angm_ = angm;
 }
 
-void Asteroid::Update(void)
+void Asteroid::Update(float deltaTime)
 {
     Rotate(angm_);
 }

@@ -32,9 +32,10 @@ public:
     void Start(void);
     float GetStart(void);
 
+	inline void SetDuration(float duration) { m_Duration = duration; }
 private:
     float start;
-    float duration;
+    float m_Duration;
     bool looping;
 }; // class Asteroid
 
