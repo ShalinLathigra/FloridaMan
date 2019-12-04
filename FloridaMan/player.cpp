@@ -39,11 +39,34 @@ namespace game
 		m_BombTimer = 0.0f;
 		m_MineTimer = 0.0f;
 		m_HP = 500.0f;
+		m_speed = 0.0;
 
 	}
 	void Player::Draw(Camera *cam)
 	{
 		SceneNode::Draw(cam);
+	}
+
+	void Player::Accellerate(float speed)
+	{
+		std::cout << "m_speed = " << m_speed << "\n";
+		std::cout << "speed is " << speed << "\n";
+		m_speed += speed;
+		if (m_speed > 0.0f)
+		{
+			m_speed = 0.0f;
+		}
+		else if (m_speed < -3.0f)
+		{
+			//std::cout <<"Printing speed < -1.5 <<"<< (m_speed < -1.5)<<" <<<\n";
+			m_speed = -3.0;
+		}
+		std::cout << "m_speed = " << m_speed << "\n";
+	}
+
+	void Player::SetCamera(Camera *cam)
+	{
+		m_pCamera = cam;
 	}
 
 	void Player::Update(float deltaTime)
@@ -52,6 +75,7 @@ namespace game
 		m_BombTimer = glm::max(m_BombTimer - deltaTime, 0.0f);
 		m_MineTimer = glm::max(m_MineTimer - deltaTime, 0.0f);
 
+		m_pCamera->move(m_speed);
 		for (std::vector<SceneNode*>::iterator iter = m_childNodes.begin(); iter != m_childNodes.end(); iter++)
 		{
 			(*iter)->Update(deltaTime);

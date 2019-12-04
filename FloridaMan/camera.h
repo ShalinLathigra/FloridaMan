@@ -6,10 +6,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+//#include "scene_node.h"
 
 namespace game
 {
 class Player;
+class SceneNode;
 class ResourceManager;
 // Abstraction of a camera
 class Camera
@@ -37,9 +39,13 @@ public:
     glm::vec3 GetUp(void) const;
 
     // Perform relative transformations of camera
-    void Pitch(float angle);
-    void Yaw(float angle);
+    void Pitch(float angle, bool rotatePlayer = true);
+    void Yaw(float angle,bool rotatePlayer = true);
     void Roll(float angle);
+
+	void move(float speed);
+
+	void SetSkyBox(SceneNode* skybox);
 
     // Set the view from camera parameters: initial position of camera,
     // point looking at, and up vector
@@ -57,6 +63,8 @@ public:
     void InitPlayer(ResourceManager *resMan);
 
 private:
+	// Skybox
+	SceneNode *m_skybox;
     bool m_isFirstPerson;
     glm::vec3 position_; // Position of camera
     glm::quat orientation_; // Orientation of camera
