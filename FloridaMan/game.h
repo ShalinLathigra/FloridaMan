@@ -65,6 +65,8 @@ private:
     // Scene graph containing all nodes to render
     SceneGraph scene_;
 
+	
+
     // Resources available to the game
     ResourceManager resman_;
 

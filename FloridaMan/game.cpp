@@ -101,6 +101,7 @@ namespace game
 		// Set up camera
 		// Set current view
 		camera_.SetView(camera_position_g, camera_look_at_g, camera_up_g);
+		camera_.SetGame(this);
 		// Set projection
 		camera_.SetProjection(camera_fov_g, camera_near_clip_distance_g, camera_far_clip_distance_g, width, height);
 	}
@@ -190,8 +191,9 @@ namespace game
 
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "GroundTexture");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-		wall->SetScale(glm::vec3(1000.0f));
+		wall->SetScale(glm::vec3(10000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
+		camera_.SetGround(wall);
 		scene_.AddNode(wall);
 
 		// Create skybox

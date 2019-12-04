@@ -27,6 +27,7 @@ Entity::~Entity()
 
 void Entity::Update(float deltaTime)
 {
+
     switch (state_)
     {
         //case(State::Idle): std::cout<<"State: Idle"<<std::endl; break;

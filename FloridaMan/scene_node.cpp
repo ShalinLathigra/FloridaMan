@@ -167,6 +167,15 @@ bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist)
         return false;
 }
 
+glm::vec3 SceneNode::GetWorldPosition()
+{
+	if (m_pParentNode)
+	{
+		return position_ + m_pParentNode->GetWorldPosition();
+	}
+	return position_;
+}
+
 bool SceneNode::CheckCollision(SceneNode *pNode)
 {
     //Set up the local variables to be used for calculating the collision

@@ -12,12 +12,13 @@ namespace game
 class ResourceManager;
 class Player : public SceneNode
 {
+	friend Camera;
 public:
     Player();
     void PlayerInit(ResourceManager *resMan);
     virtual void Draw(Camera *camera) override;
     virtual void Update(float deltaTime) override;
-
+	
     void Fire(int entityType);
 	void TakeDamage(float amount);
 	void SetCamera(Camera *cam);
