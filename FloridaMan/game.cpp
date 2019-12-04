@@ -161,13 +161,6 @@ namespace game
 		resman_.LoadResource(Material, "ForceMaterial", filename.c_str());
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/bolt_material");
 		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
-		resman_.LoadResource(Material, "BoltMaterial", filename.c_str()); 
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_boom");
 		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_BIG_BOOM");
@@ -212,7 +205,6 @@ namespace game
 		skybox_->SetSkybox(true);
 		scene_.AddNode(skybox_);
 		camera_.SetSkyBox(skybox_);
-
 
 		ParticleNode *part = (ParticleNode *)CreateInstance(EntityType::Particle, "boom_effect", "SpherePartMesh", "BigExplosionMaterial");
 		part->SetBlending(true);
