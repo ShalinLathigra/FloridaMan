@@ -30,6 +30,16 @@ glm::vec3 Camera::GetPosition(void) const
 void Camera::move(float iAmSpeed)
 {
 	Translate(iAmSpeed * (orientation_ * forward_));
+	
+	//std::cout << "pos.x = " << position_.x;
+	//std::cout << " pos.y = " << position_.y;
+	//std::cout << " pos.z = " << position_.z <<"\n";
+	glm::vec3 orientation = orientation_ * forward_;
+	std::cout << "ori.x = " << orientation.x;
+	std::cout << " ori.y = " << orientation.y;
+	std::cout << " ori.z = " << orientation.z << "\n";
+	//std::cout << " ori.w = " << orientation_.w << "\n";
+	
 }
 
 glm::quat Camera::GetOrientation(void) const
@@ -84,7 +94,56 @@ void Camera::Translate(glm::vec3 trans)
 		childNodes.insert(childNodes.end(), grandchildNodes.begin(), grandchildNodes.end());
 		if ((childNodes[i]->GetWorldPosition().y - (childNodes[i]->GetScale().y/2.0)) < 0.0 && trans.y < 0)
 		{
-			trans.y = 0;
+			//trans.y = 0;
+			
+			glm::vec3 t, v2, v1, v3,v4, v5, v6, v7, v8;
+			v1 = orientation_ * forward_;
+			v2 = v1;
+			v2.y = -v1.y;
+			/*
+			glm::normalize(v1);
+			glm::normalize(v2);
+			v3 = glm::vec3(v1.x, 0.0, 0.0);
+			v4 = glm::vec3(0.0, v1.y, 0.0);
+			v5 = glm::vec3(0.0, 0.0, v1.z);
+			v6 = glm::vec3(v2.x, 0.0, 0.0);
+			v7 = glm::vec3(0.0, v2.y, 0.0);
+			v8 = glm::vec3(0.0, 0.0, v2.z);
+			
+
+			//acos((v1 DOT v2)/(|v1|*|v2|))
+			float angle = acos(glm::dot(v3, v6) / (v3.length() * v6.length()));
+			Pitch(angle); // X axis
+			angle = acos(glm::dot(v4, v7) / (v4.length() * v7.length()));
+			Yaw(-angle); // Y axis
+			angle = acos(glm::dot(v5, v8) / (v5.length() * v8.length()));
+			Roll(-angle); // Z axis
+			//Yaw(glm::pi<float>()/2);
+			return;
+			*/
+
+			t = glm::cross(v1, v2);
+			//glm::normalize(t);
+			//glm::normalize(v1);
+			//glm::normalize(v2); 
+			glm::quat rot;
+			rot.x = t.x;
+			rot.y = t.y;
+			rot.z = t.z;
+			rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
+			//glm::normalize(rot);
+			Rotate(rot);
+			return;
+			//skip ahead a couple frames to avoid 'bouncing' more than once
+			for (int i = 0; i < 5; i++)
+			{
+				position_ += trans;
+				m_skybox->Translate(trans);
+				m_pPlayer->Translate(trans);
+			}
+			/*
+			return;
+			*/
 		}
 
 	}
