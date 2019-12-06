@@ -31,6 +31,7 @@ public:
 private:
 	SceneNode *m_pCollisionEntity;
 	float m_speed;
+	float m_maxSpeed;
 	Camera *m_pCamera;
 	ResourceManager *m_pResMan;
 	ParticleNode m_part;

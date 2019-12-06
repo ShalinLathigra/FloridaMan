@@ -370,11 +370,11 @@ namespace game
 		}
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			game->player_->Accelerate(-0.1);
+			game->player_->Accelerate(-1.0);
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			game->player_->Accelerate(0.1);
+			game->player_->Accelerate(1.0);
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		{

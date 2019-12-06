@@ -24,8 +24,8 @@ AirEntity::AirEntity(const std::string name, const Resource *geometry, const Res
 	ammo_ = 4 + (int)(utilities::RandPercent() * 6.0f);
 	max_num_attacks_ = 2;
 	num_attacks_ = max_num_attacks_;
-	max_attack_timer_ = 6.0f;
-	attack_timer_ = max_attack_timer_ / 3.0f;
+	max_attack_timer_ = 3.0f;
+	attack_timer_ = max_attack_timer_ / 6.0f;
 
 
 
@@ -33,7 +33,7 @@ AirEntity::AirEntity(const std::string name, const Resource *geometry, const Res
     max_off_timer_ = 2.5f;
 
     y_speed_ = 0.75f;
-	hover_speed_ = 27.0f;
+	hover_speed_ = 27.0f + utilities::RandPercent() * 54.0f;
 	to_target_ = glm::vec3(0);
 }
 AirEntity::~AirEntity()

@@ -30,6 +30,7 @@ public:
     glm::vec3 GetForward(void) const;
     void SetForward(glm::vec3 forward_new);
     void SetSpawnPos(glm::vec3);
+	void SetSpawnVel(float spawn_vel);
 
     void setParent(Camera *camera);
 
@@ -56,6 +57,7 @@ private:
     void distanceTravelled();
 
     float speed;
+	float spawn_vel_;
 };
 } // namespace game
 
