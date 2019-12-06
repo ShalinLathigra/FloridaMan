@@ -64,8 +64,6 @@ namespace game
 		SceneGraph *o = game_->GetGraph();
 		std::vector<SceneNode *> childz = o->GetNode("Root Node")->GetChildren();
 
-		//target_->SetType((target_->GetType() + 1) % 4);
-
 		if (type_ == EntityType::Default)
 		{
 			for (int i = 0; i < childz.size(); i++)

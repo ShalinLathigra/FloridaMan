@@ -23,7 +23,7 @@ public:
     void Fire(int entityType);
 	void TakeDamage(float amount);
 	void SetCamera(Camera *cam);
-
+  
 	void Accelerate(float speed);
 	void SetCollisionEntity(SceneNode *collisionEntity);
 	void SetPart(ParticleNode *part);

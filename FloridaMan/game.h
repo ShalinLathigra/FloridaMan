@@ -50,7 +50,6 @@ public:
     void MainLoop(void);
     //Return the Scene Graph
     SceneGraph *GetGraph();
-	
     void AddNode(SceneNode *scn);
 	Camera *GetCamera(void);
 	Player *GetPlayer(void);

@@ -253,6 +253,7 @@ namespace game
 		rightLeg->Translate(glm::vec3(-0.5f, -1.75f, 0.0));
 		body->AddChild(rightLeg);
 
+		// TODO: CHAnge name of this pls;
 		Asteroid *prop1 = (Asteroid*)CreateInstance(EntityType::AsteroidInst, "Prop1", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		Asteroid *prop2 = (Asteroid*)CreateInstance(EntityType::AsteroidInst, "Prop2", "CubeMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		prop1->SetScale(glm::vec3(1.0, 0.1, 0.2));
