@@ -8,6 +8,7 @@ namespace game
 	Player::Player()
 		: SceneNode("Player")
 	{
+		m_pCollisionEntity = nullptr;
 	}
 
 	void Player::PlayerInit(ResourceManager *resMan)
@@ -47,10 +48,18 @@ namespace game
 		SceneNode::Draw(cam);
 	}
 
+	void Player::SetCollisionEntity(SceneNode *collisionEntity)
+	{
+		m_pCollisionEntity = collisionEntity;
+	}
+
+	float Player::GetHP()
+	{
+		return m_HP;
+	}
+
 	void Player::Accellerate(float speed)
 	{
-		std::cout << "m_speed = " << m_speed << "\n";
-		std::cout << "speed is " << speed << "\n";
 		m_speed += speed;
 		if (m_speed > 0.0f)
 		{
@@ -61,7 +70,6 @@ namespace game
 			//std::cout <<"Printing speed < -1.5 <<"<< (m_speed < -1.5)<<" <<<\n";
 			m_speed = -3.0;
 		}
-		std::cout << "m_speed = " << m_speed << "\n";
 	}
 
 	void Player::SetCamera(Camera *cam)

@@ -8,6 +8,8 @@
 #include "camera.h"
 #include "player.h"
 #include "scene_node.h"
+#include "scene_graph.h"
+#include "game.h"
 
 namespace game
 {
@@ -57,11 +59,98 @@ void Camera::SetOrientation(glm::quat orientation)
     m_pPlayer->SetOrientation(orientation_);
 }
 
+void Camera::SetGame(Game *pGame)
+{
+	m_pGame = pGame;
+}
+
+void Camera::SetGround(SceneNode *pGround)
+{
+	m_pGroundPlane = pGround;
+}
+
 void Camera::Translate(glm::vec3 trans)
 {
+	if (m_pPlayer->GetPosition().y > 800 && trans.y > 0)
+	{
+		trans.y = 0;
+	}
+
+	//if (m_pPlayer->CheckCollision(m_pGroundPlane))
+	std::vector<SceneNode*> childNodes = m_pPlayer->GetChildren();
+	for (int i = 0; i < childNodes.size(); i++)
+	{
+		//std::vector<SceneNode*> grandchildNodes = childNodes[i]->GetChildren();
+		//childNodes.insert(childNodes.end(), grandchildNodes.begin(), grandchildNodes.end());
+		if ((childNodes[i]->GetWorldPosition().y - (childNodes[i]->GetScale().y/2.0)) < 0.0 && trans.y < 0)
+		{
+			//trans.y = 0;
+			
+			glm::vec3 t, v2, v1;
+			v1 = orientation_ * forward_;
+			v2 = v1;
+			v2.y = -v1.y;
+
+			t = glm::cross(v1, v2);
+			//Construct the rotation
+			glm::quat rot;
+			rot.x = t.x;
+			rot.y = t.y;
+			rot.z = t.z;
+			rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
+
+			Rotate(rot);
+			return;
+		}
+
+	}
+
+	if (m_pPlayer->m_pCollisionEntity)
+	{
+		/*
+		glm::vec3 collisionDirection = (m_pPlayer->m_pCollisionEntity->GetWorldPosition() - m_pPlayer->GetWorldPosition()) * -1.0f;
+		m_pPlayer->m_pCollisionEntity = nullptr;
+		glm::normalize(collisionDirection);
+		glm::vec3 t, v2, v1;
+		v1 = orientation_ * forward_;
+		glm::normalize(v1);
+		v2 = (collisionDirection + v1);
+		glm::normalize(v2);
+		t = glm::cross(v1, v2);
+		glm::quat rot;
+		rot.x = t.x;
+		rot.y = t.y;
+		rot.z = t.z;
+		rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
+
+		Rotate(rot);
+		*/
+		m_pPlayer->m_pCollisionEntity = nullptr;
+		glm::vec3 update = -glm::normalize(orientation_ * forward_);// *50.0f;
+		//m_pPlayer->m_speed = 0.0f;
+		for (int i = 0; i < 50; i++)
+		{
+			Translate(update);
+		}
+		//position_ += update;
+		//m_skybox->Translate(update);
+		//m_pPlayer->Translate(update);
+
+		//forward_ *= -1.0f;
+		//Pitch(glm::pi<float>());
+		//Yaw(-glm::pi<float>());
+		//position_ += glm::normalize(orientation_ * forward_) * 3.0f;
+		//m_skybox->SetPosition(position_);
+		//m_pPlayer->SetPosition(position_);
+		return;
+
+	}
+
+	//Note to self, add collision with ground here, and add check for collision with player in each different node types update function, if collision, set the colliding node in the player to be that node: ground, entity, entitystructure, air, turret
     position_ += trans;
 	m_skybox->Translate(trans);
     m_pPlayer->Translate(trans);
+	//std::cout << "Player's Y position: " << m_pPlayer->GetPosition().y << "\n";
 }
 
 void Camera::Rotate(glm::quat rot)

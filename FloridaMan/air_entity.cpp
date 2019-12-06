@@ -42,6 +42,10 @@ AirEntity::~AirEntity()
 
 void AirEntity::Update(float deltaTime)
 {
+	if (game_->GetPlayer()->CheckCollision(this))
+	{
+		game_->GetPlayer()->SetCollisionEntity(this);
+	}
     switch (state_)
     {
         case (State::Idle):

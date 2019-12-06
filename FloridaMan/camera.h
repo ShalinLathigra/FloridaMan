@@ -10,6 +10,7 @@
 
 namespace game
 {
+class Game;
 class Player;
 class SceneNode;
 class ResourceManager;
@@ -44,6 +45,7 @@ public:
     void Roll(float angle);
 
 	void move(float speed);
+	void SetGame(Game *pGame);
 
 	void SetSkyBox(SceneNode* skybox);
 
@@ -61,9 +63,11 @@ public:
     glm::mat4 GetCurrentViewMatrix(void);
     void TogglePOV();
     void InitPlayer(ResourceManager *resMan);
-
+	void SetGround(SceneNode *pGround);
 private:
+	Game *m_pGame;
 	// Skybox
+	SceneNode *m_pGroundPlane;
 	SceneNode *m_skybox;
     bool m_isFirstPerson;
     glm::vec3 position_; // Position of camera

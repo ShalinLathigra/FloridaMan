@@ -63,6 +63,7 @@ public:
     GLsizei GetSize(void) const;
     GLuint GetMaterial(void) const;
 
+	glm::vec3 GetWorldPosition();
     bool checkIfDestroy();
     SceneNode *GetParent();
     void SetParent(SceneNode *pParent);
