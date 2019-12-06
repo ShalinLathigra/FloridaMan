@@ -12,22 +12,22 @@ GroundEntity::GroundEntity(const std::string name, const Resource *geometry, con
     max_idle_timer_ = 3.0f;
     idle_timer_ = max_idle_timer_;
 
-    chase_radius_ = 200.0f;
+    chase_radius_ = 350.0f;
     chase_angle_ = 0.7f;
 
-    attack_radius_ = 180.0f;
-    attack_angle_ = 0.99f;
+    attack_radius_ = 280.0f;
+    attack_angle_ = 0.9f;
     max_num_attacks_ = 4;
     num_attacks_ = max_num_attacks_;
     max_attack_timer_ = 4.0f;
-	attack_timer_ = max_attack_timer_ / 2.0f;
+	attack_timer_ = 1.0f;
 	ammo_ = 100;
 
     acc_ = 2.5f; // Acceleration Rate
     dec_ = 4.5f; // Deceleration Rate
 
     vel_ = 0.0f; // Rate of position change
-    max_vel_ = 20.0f + utilities::RandPercent() * 60.0f; // Rate of position change
+    max_vel_ = 50.0f + utilities::RandPercent() * 90.0f; // Rate of position change
 
 }
 GroundEntity::~GroundEntity()
@@ -150,7 +150,7 @@ void GroundEntity::Attack(float deltaTime)
 			ammo_--;
             if (num_attacks_ > 0)
             {
-				attack_timer_ = max_attack_timer_ / (float)max_num_attacks_;
+				attack_timer_ = max_attack_timer_ / ((float)max_num_attacks_ * 2.0f);
             }
             else
             {

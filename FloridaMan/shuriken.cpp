@@ -11,6 +11,7 @@ namespace game
 	{
 		forward_ = glm::vec3(0.0f, 0.0f, 1.0f); //initial forward
 		speed = 250.0f;
+		spawn_vel_ = 0.0f;
 	}
 
 	Shuriken::~Shuriken()
@@ -26,6 +27,10 @@ namespace game
 	{
 		spawn_pos_ = spawn_pos_new;
 	}
+	void Shuriken::SetSpawnVel(float spawn_vel)
+	{
+		spawn_vel_ = spawn_vel;
+	}
 	void Shuriken::SetForward(glm::vec3 forward_new)
 	{
 		forward_ = forward_new;
@@ -39,7 +44,7 @@ namespace game
 	void Shuriken::Update(float deltaTime)
 	{
 		glm::vec3 fireDirection = glm::normalize(forward_);
-		this->position_ += fireDirection * speed * deltaTime;
+		this->position_ += fireDirection * (spawn_vel_ + speed) * deltaTime;
 		distanceTravelled();
 		checkIfHit();
 	}

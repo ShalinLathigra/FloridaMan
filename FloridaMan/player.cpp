@@ -41,7 +41,8 @@ namespace game
 		m_MineTimer = 0.0f;
 		m_HP = 500.0f;
 		m_speed = 0.0;
-
+		m_maxSpeed = 100.0;
+		       
 	}
 	void Player::Draw(Camera *cam)
 	{
@@ -58,19 +59,19 @@ namespace game
 	}
 	void Player::Accelerate(float speed)
 	{
-		std::cout << "m_speed = " << m_speed << "\n";
-		std::cout << "speed is " << speed << "\n";
+		//std::cout << "m_speed = " << m_speed << "\n";
+		//std::cout << "speed is " << speed << "\n";
 		m_speed += speed;
 		if (m_speed > 0.0f)
 		{
 			m_speed = 0.0f;
 		}
-		else if (m_speed < -3.0f)
+		else if (m_speed < -m_maxSpeed)
 		{
 			//std::cout <<"Printing speed < -1.5 <<"<< (m_speed < -1.5)<<" <<<\n";
-			m_speed = -3.0;
+			m_speed = -m_maxSpeed;
 		}
-		std::cout << "m_speed = " << m_speed << "\n";
+		//std::cout << "m_speed = " << m_speed << "\n";
 	}
 	void Player::SetPart(ParticleNode *part)
 	{
@@ -86,7 +87,7 @@ namespace game
 		m_BombTimer = glm::max(m_BombTimer - deltaTime, 0.0f);
 		m_MineTimer = glm::max(m_MineTimer - deltaTime, 0.0f);
 
-		m_pCamera->move(m_speed);
+		m_pCamera->move(m_speed * deltaTime);
 		for (std::vector<SceneNode*>::iterator iter = m_childNodes.begin(); iter != m_childNodes.end(); iter++)
 		{
 			(*iter)->Update(deltaTime);
@@ -108,6 +109,7 @@ namespace game
 				atk->SetOrientation(GetOrientation());
 				((Shuriken*)atk)->SetForward(utilities::RotateVecByQuat(glm::vec3(0, 0, -1), GetOrientation()));
 				((Shuriken*)atk)->SetSpawnPos(start_pos + offset);
+				((Shuriken*)atk)->SetSpawnVel(-m_speed);
 				game_->AddNode(atk);
 				m_ShurikenTimer = MAX_SHURIKEN_TIMER;
 			}
