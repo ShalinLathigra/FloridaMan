@@ -417,7 +417,6 @@ namespace game
 		{
 			game->player_->Fire(EntityType::MineProj);
 		}
-
 		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 		{
 			game->camera_.TogglePOV();
@@ -566,8 +565,6 @@ namespace game
 			p->SetBlending(true);
 			scn->AddChild(p);
 		}
-
-
 		return scn;
 	}
 

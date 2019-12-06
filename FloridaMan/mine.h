@@ -45,7 +45,6 @@ public:
 	inline float GetBoomRadius(void) { return boom_radius_; }
 	inline float GetChaseRadius(void) { return chase_radius_; }
 	virtual void Draw(Camera *camera) override;
-
 	void SetDeathPart(ParticleNode part);
 
 protected:

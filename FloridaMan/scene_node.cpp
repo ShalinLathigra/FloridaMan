@@ -247,6 +247,8 @@ bool SceneNode::CheckCollision(SceneNode *pNode)
     //If Collision detected is ever true, it means that there is a separating axis.
 
     //If there is a separating axis, we want to search the child nodes, otherwise there has been a collision and we dont need to check child nodes, unless we need to know which node specifically was hit
+    if (collisionDetected)
+    {
         for (size_t i = 0; i < m_childNodes.size(); i++)
         {
             if (m_childNodes[i]->CheckCollision(pNode))
@@ -254,6 +256,7 @@ bool SceneNode::CheckCollision(SceneNode *pNode)
                 return true;
             }
         }
+    }
     return !collisionDetected;
 }
 

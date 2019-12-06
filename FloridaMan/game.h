@@ -68,7 +68,6 @@ private:
     SceneGraph scene_;
 
 	int alienCounter = 0;
-
     // Resources available to the game
     ResourceManager resman_;
 

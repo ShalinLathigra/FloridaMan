@@ -71,7 +71,7 @@ set(SRC_SHADERS
 	three-term_shiny_blue_vp.glsl 
 	toon_material_fp.glsl 
 	toon_material_vp.glsl 
-	)
+)
 set(SRC_PARTICLES
 	bolt_material_vp.glsl 
 	bolt_material_fp.glsl
