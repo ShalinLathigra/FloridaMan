@@ -47,7 +47,6 @@ namespace game
 	{
 		SceneNode::Draw(cam);
 	}
-
 	void Player::SetCollisionEntity(SceneNode *collisionEntity)
 	{
 		m_pCollisionEntity = collisionEntity;
@@ -57,9 +56,10 @@ namespace game
 	{
 		return m_HP;
 	}
-
-	void Player::Accellerate(float speed)
+	void Player::Accelerate(float speed)
 	{
+		std::cout << "m_speed = " << m_speed << "\n";
+		std::cout << "speed is " << speed << "\n";
 		m_speed += speed;
 		if (m_speed > 0.0f)
 		{
@@ -70,13 +70,16 @@ namespace game
 			//std::cout <<"Printing speed < -1.5 <<"<< (m_speed < -1.5)<<" <<<\n";
 			m_speed = -3.0;
 		}
+		std::cout << "m_speed = " << m_speed << "\n";
 	}
-
+	void Player::SetPart(ParticleNode *part)
+	{
+		m_part = *part;
+	}
 	void Player::SetCamera(Camera *cam)
 	{
 		m_pCamera = cam;
 	}
-
 	void Player::Update(float deltaTime)
 	{
 		m_ShurikenTimer = glm::max(m_ShurikenTimer - deltaTime, 0.0f);
@@ -104,7 +107,7 @@ namespace game
 				atk->SetType(EntityType::Default);
 				atk->SetOrientation(GetOrientation());
 				((Shuriken*)atk)->SetForward(utilities::RotateVecByQuat(glm::vec3(0, 0, -1), GetOrientation()));
-				((Shuriken*)atk)->SetSpawnPos(start_pos);
+				((Shuriken*)atk)->SetSpawnPos(start_pos + offset);
 				game_->AddNode(atk);
 				m_ShurikenTimer = MAX_SHURIKEN_TIMER;
 			}
@@ -114,6 +117,8 @@ namespace game
 			{
 				atk = game_->CreateEntity(EntityType::BombProj, position_ + offset, glm::vec3(5.0));
 				atk->SetType(EntityType::Default);
+				atk->SetOrientation(glm::normalize(glm::angleAxis(utilities::RandPercent()*glm::pi<float>()*2.0f, glm::vec3(1, 1, -1))));
+				((Bomb*)atk)->SetDeathPart(m_part);
 				game_->AddNode(atk);
 				m_BombTimer = MAX_BOMB_TIMER;
 			}
@@ -125,6 +130,7 @@ namespace game
 				((Mine*)atk)->InitAltMat(m_pResMan);
 				atk->SetGame(game_);
 				atk->SetType(EntityType::Default);
+				((Mine*)atk)->SetDeathPart(m_part);
 				game_->AddNode(atk);
 				m_MineTimer = MAX_MINE_TIMER;
 			}

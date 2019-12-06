@@ -50,17 +50,14 @@ public:
     void MainLoop(void);
     //Return the Scene Graph
     SceneGraph *GetGraph();
-
-	Player *GetPlayer();
-
     void AddNode(SceneNode *scn);
-    Camera *GetCamera(void);
+	Camera *GetCamera(void);
+	Player *GetPlayer(void);
 
     SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
 	//A callback function for the keys that we don't need to get constant input from
 	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
 	void AlienFreed();
 private:
     // GLFW window
@@ -70,7 +67,6 @@ private:
     SceneGraph scene_;
 
 	int alienCounter = 0;
-
     // Resources available to the game
     ResourceManager resman_;
 

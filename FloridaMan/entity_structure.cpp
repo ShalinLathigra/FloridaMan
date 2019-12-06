@@ -63,7 +63,7 @@ SceneNode *EntityStructure::CreateEntity()
         //Spawn at position + 1/2 scale + 1/2 entity scale
         scale = glm::vec3(20);
         pos = GetPosition() + glm::vec3(0, GetScale().y + scale.y / 2.0f, 0);
-        mid = std::string("_Turret_Entity_");
+        mid = std::string("_tor_Turret_Entity_");
         scn = new TurretNode(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
     }
     else if (m_type == EntityType::Ground)
@@ -71,7 +71,7 @@ SceneNode *EntityStructure::CreateEntity()
         //Spawn at position + 1/2 scale + 1/2 entity scale
         scale = glm::vec3(15, 5, 25);
         pos = GetPosition() - GetScale().y / 2.0f + scale.y;
-        mid = std::string("_Ground_Entity_");
+        mid = std::string("_tor_Ground_Entity_");
         scn = new GroundEntity(name_ + mid + std::to_string(m_count), m_geom, m_mat, m_tex, m_env);
     }
     else if (m_type == EntityType::Air)

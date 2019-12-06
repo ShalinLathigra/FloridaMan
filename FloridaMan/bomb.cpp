@@ -58,6 +58,10 @@ void Bomb::Boom(float deltaTime)
                 ((Entity *)childz[i])->TakeDamage(100);
             }
         }
+		game_->AddNode(&death_part_);
+		death_part_.SetScale(glm::vec3(1));
+		death_part_.SetPosition(GetPosition());
+		death_part_.Start();
     }
 }
 
@@ -68,6 +72,10 @@ BombState Bomb::GetState(void)
 }
 void Bomb::SetState(BombState state)
 {
-    state_ = state;
+	state_ = state;
+}
+void Bomb::SetDeathPart(ParticleNode part)
+{
+	death_part_ = part;
 }
 } // namespace game

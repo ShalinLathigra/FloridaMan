@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "resource.h"
+#include "particle_node.h"
 #include "scene_node.h"
 
 namespace game
@@ -44,6 +45,7 @@ public:
 	inline float GetBoomRadius(void) { return boom_radius_; }
 	inline float GetChaseRadius(void) { return chase_radius_; }
 	virtual void Draw(Camera *camera) override;
+	void SetDeathPart(ParticleNode part);
 
 protected:
 	GLuint alt_mat_;
@@ -59,9 +61,9 @@ protected:
 
     float idle_timer_;
     float max_idle_timer_;
-
     float boom_radius_;
 	float chase_radius_;
+	ParticleNode death_part_;
 };
 } // namespace game
 

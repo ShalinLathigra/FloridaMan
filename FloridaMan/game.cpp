@@ -86,12 +86,10 @@ namespace game
 	{
 		return &scene_;
 	}
-
 	Player *Game::GetPlayer()
 	{
 		return player_;
 	}
-
 	void Game::InitView(void)
 	{
 		// Set up z-buffer
@@ -161,12 +159,15 @@ namespace game
 		// Load material to be applied to torus
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/toon_material");
 		resman_.LoadResource(Material, "ToonMaterial", filename.c_str());
-		// Load material to be applied to torus
+
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/force_material");
 		resman_.LoadResource(Material, "ForceMaterial", filename.c_str());
-
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/bolt_material");
+		resman_.LoadResource(Material, "BoltMaterial", filename.c_str());
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_boom");
 		resman_.LoadResource(Material, "ExplosionMaterial", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_BIG_BOOM");
+		resman_.LoadResource(Material, "BigExplosionMaterial", filename.c_str());
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_spawn");
 		resman_.LoadResource(Material, "SpawnMaterial", filename.c_str());
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/particle_alien");
@@ -196,7 +197,7 @@ namespace game
 
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "GroundTexture");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-		wall->SetScale(glm::vec3(1000.0f, 1000.0f, 1000.0f));
+		wall->SetScale(glm::vec3(1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 		camera_.SetGround(wall);
 		scene_.AddNode(wall);
@@ -215,6 +216,9 @@ namespace game
 		player_->Translate(glm::vec3(30, 6, -3));
 		player_->SetGame(this);
 		player_->SetCamera(&camera_);
+		ParticleNode *part = (ParticleNode *)CreateInstance(EntityType::Particle, "boom_effect", "SpherePartMesh", "BigExplosionMaterial");
+		part->SetBlending(true);
+		player_->SetPart(part);
 
 		SceneNode *hat = CreateInstance(EntityType::Default, "Hat", "SphereMesh", "ToonMaterial");
 		hat->SetType(EntityType::Default);
@@ -263,7 +267,9 @@ namespace game
 
 		Asteroid *saucer = (Asteroid*)CreateInstance(EntityType::AsteroidInst, "FlyingTorus", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		saucer->SetScale(glm::vec3(500));
-		saucer->SetPosition(glm::vec3(0, 1000, 0)); saucer->SetAngM(glm::angleAxis(glm::pi<float>() / 64.0f, glm::normalize(glm::vec3(1, -1, 1))));
+		saucer->SetPosition(glm::vec3(0, 1000, 0)); 
+		saucer->SetOrientation(glm::angleAxis(glm::pi<float>() / 3.0f, glm::vec3(1, 0, 0)));
+		saucer->SetAngM(glm::angleAxis(glm::pi<float>() / 64.0f, glm::normalize(glm::vec3(0.2, 0.1, 1.0))));
 		AddNode(saucer);
 
 		CreateTowerField();
@@ -300,7 +306,6 @@ namespace game
 
 				// Update other events like input handling
 				glfwPollEvents();
-
 				if (alienCounter <= 0)
 				{
 					std::cout << "Florida Man freed all the aliens! You Win!!\n";
@@ -365,11 +370,11 @@ namespace game
 		}
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			game->player_->Accellerate(-0.1);
+			game->player_->Accelerate(-0.1);
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			game->player_->Accellerate(0.1);
+			game->player_->Accelerate(0.1);
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		{
@@ -387,12 +392,6 @@ namespace game
 		{
 			game->camera_.Translate(-game->camera_.GetUp() * trans_factor);
 		}
-
-		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-		{
-			game->player_->Fire(EntityType::ShurikenProj);
-		}
-
 	}
 
 	void Game::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -406,20 +405,22 @@ namespace game
 		{
 			glfwSetWindowShouldClose(window, true);
 		}
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		{
+			game->player_->Fire(EntityType::BombProj);
+		}
 
+		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+		{
+			game->player_->Fire(EntityType::ShurikenProj);
+		}
 		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
 		{
 			game->player_->Fire(EntityType::MineProj);
 		}
-
 		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 		{
 			game->camera_.TogglePOV();
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-		{
-			game->player_->Fire(EntityType::BombProj);
 		}
 	}
 
@@ -505,7 +506,7 @@ namespace game
 			break;
 		case (BombProj):
 			entity_name = std::string("Bomb") + std::to_string(count_++);
-			object_name = std::string("SphereMesh");
+			object_name = std::string("CylinderMesh");
 			material_name = std::string("ToonMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
@@ -522,8 +523,8 @@ namespace game
 			break;
 		case (MissileProj):
 			entity_name = std::string("Shuriken") + std::to_string(count_++);
-			object_name = std::string("SphereMesh");
-			material_name = std::string("ToonMaterial");
+			object_name = std::string("TorusMesh");
+			material_name = std::string("BoltMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
 			isEnemy = false;
@@ -565,8 +566,6 @@ namespace game
 			p->SetBlending(true);
 			scn->AddChild(p);
 		}
-
-
 		return scn;
 	}
 
@@ -590,7 +589,6 @@ namespace game
 	{
 		alienCounter -= 1;
 	}
-
 	void Game::CreateTowerField(void)
 	{
 		float range = 750;
@@ -669,6 +667,7 @@ namespace game
 						}
 					}
 					ParticleNode *part = (ParticleNode *)CreateInstance(EntityType::Particle, "boom_effect", "SpherePartMesh", "ExplosionMaterial");
+					part->SetBlending(true);
 					((EntityStructure *)scn)->InitResources(type, geom, mat, tex, envmap, *part);
 				}
 				else

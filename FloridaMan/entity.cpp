@@ -44,7 +44,6 @@ void Entity::Update(float deltaTime)
 			set_toDestroy = true;
 			game_->AlienFreed();
 		}
-		
 		break;
     }
 }

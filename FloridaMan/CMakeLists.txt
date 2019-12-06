@@ -53,8 +53,6 @@ set(SRCS
 set(SRC_SHADERS 
 	envmap_vp.glsl 
 	envmap_fp.glsl 
-	force_material_vp.glsl 
-	force_material_fp.glsl
 	material_fp.glsl 
 	material_vp.glsl 
 	metal_fp.glsl 
@@ -73,16 +71,24 @@ set(SRC_SHADERS
 	three-term_shiny_blue_vp.glsl 
 	toon_material_fp.glsl 
 	toon_material_vp.glsl 
-	
+)
+set(SRC_PARTICLES
+	bolt_material_vp.glsl 
+	bolt_material_fp.glsl
 	fire_vp.glsl 
 	fire_gp.glsl 
 	fire_fp.glsl
+	force_material_vp.glsl 
+	force_material_fp.glsl
 	particle_alien_vp.glsl 
 	particle_alien_fp.glsl 
 	particle_alien_gp.glsl 
 	particle_boom_vp.glsl 
 	particle_boom_fp.glsl 
 	particle_boom_gp.glsl 
+	particle_BIG_BOOM_vp.glsl 
+	particle_BIG_BOOM_fp.glsl 
+	particle_BIG_BOOM_gp.glsl 
 	particle_spawn_vp.glsl 
 	particle_spawn_fp.glsl 
 	particle_spawn_gp.glsl 
@@ -95,8 +101,9 @@ set(SRC_SHADERS
 configure_file(path_config.h.in path_config.h)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} ${HDRS} ${SRCS} ${SRC_SHADERS})
+add_executable(${PROJ_NAME} ${HDRS} ${SRCS} ${SRC_SHADERS} ${SRC_PARTICLES})
 source_group("Shaders" FILES ${SRC_SHADERS})
+source_group("Particles" FILES ${SRC_PARTICLES})
 
 # Require OpenGL library
 find_package(OpenGL REQUIRED)

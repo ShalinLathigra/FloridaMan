@@ -79,6 +79,10 @@ namespace game
 				((Entity *)childz[i])->TakeDamage(100);
 			}
 		}
+		game_->AddNode(&death_part_);
+		death_part_.SetScale(glm::vec3(1));
+		death_part_.SetPosition(GetPosition());
+		death_part_.Start();
 	}
 
 	//Getters + Setters
@@ -150,10 +154,10 @@ namespace game
 		{
 			glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
 		}
-
-
-
 		SetScale(temp);
-
+	}
+	void Mine::SetDeathPart(ParticleNode part)
+	{
+		death_part_ = part;
 	}
 } // namespace game

@@ -89,7 +89,6 @@ void AirEntity::Chase(float deltaTime)
 
 void AirEntity::Attack(float deltaTime)
 {
-
 	if (ammo_ > 0)
 	{
 		glm::vec3 right = glm::normalize(glm::cross(GetForward(), GetUp()));

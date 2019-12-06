@@ -12,6 +12,7 @@
 
 #include "resource.h"
 #include "scene_node.h"
+#include "particle_node.h"
 
 namespace game
 {
@@ -33,10 +34,12 @@ public:
     void Boom(float deltaTime);
 
     BombState GetState(void);
-    void SetState(BombState state);
+	void SetState(BombState state);
+	void SetDeathPart(ParticleNode part);
 
 protected:
     BombState state_;
+	ParticleNode death_part_;
     glm::vec3 forward_;
     glm::vec3 up_;
 	glm::vec3 velocity_;
