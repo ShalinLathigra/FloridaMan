@@ -8,6 +8,7 @@ namespace game
 	Player::Player()
 		: SceneNode("Player")
 	{
+		m_pCollisionEntity = nullptr;
 	}
 
 	void Player::PlayerInit(ResourceManager *resMan)
@@ -45,6 +46,16 @@ namespace game
 	void Player::Draw(Camera *cam)
 	{
 		SceneNode::Draw(cam);
+	}
+
+	void Player::SetCollisionEntity(SceneNode *collisionEntity)
+	{
+		m_pCollisionEntity = collisionEntity;
+	}
+
+	float Player::GetHP()
+	{
+		return m_HP;
 	}
 
 	void Player::Accellerate(float speed)

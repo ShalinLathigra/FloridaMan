@@ -23,7 +23,10 @@ public:
 	void TakeDamage(float amount);
 	void SetCamera(Camera *cam);
 	void Accellerate(float speed);
+	void SetCollisionEntity(SceneNode *collisionEntity);
+	float GetHP();
 private:
+	SceneNode *m_pCollisionEntity;
 	float m_speed;
 	Camera *m_pCamera;
     ResourceManager *m_pResMan;

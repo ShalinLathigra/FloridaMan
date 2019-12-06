@@ -87,6 +87,11 @@ namespace game
 		return &scene_;
 	}
 
+	Player *Game::GetPlayer()
+	{
+		return player_;
+	}
+
 	void Game::InitView(void)
 	{
 		// Set up z-buffer
@@ -191,7 +196,7 @@ namespace game
 
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "GroundTexture");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-		wall->SetScale(glm::vec3(10000.0f));
+		wall->SetScale(glm::vec3(1000.0f, 1000.0f, 1000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 		camera_.SetGround(wall);
 		scene_.AddNode(wall);
@@ -295,6 +300,17 @@ namespace game
 
 				// Update other events like input handling
 				glfwPollEvents();
+
+				if (alienCounter <= 0)
+				{
+					std::cout << "Florida Man freed all the aliens! You Win!!\n";
+						break;
+				}
+				if (player_->GetHP() <= 0)
+				{
+					std::cout << "Florida Man was killed in the raid! You lost!\n";
+					break;
+				}
 			}
 		}
 	}
@@ -570,6 +586,11 @@ namespace game
 		return &camera_;
 	}
 
+	void Game::AlienFreed()
+	{
+		alienCounter -= 1;
+	}
+
 	void Game::CreateTowerField(void)
 	{
 		float range = 750;
@@ -591,6 +612,7 @@ namespace game
 				if (type >= 3)
 				{
 					entity_name = "AlienEntity_" + suffix;
+					alienCounter += 1;
 				}
 
 				scn = CreateInstance(TurretSpawn + type, entity_name, "CylinderMesh", "ToonMaterial");

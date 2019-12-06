@@ -27,7 +27,10 @@ Entity::~Entity()
 
 void Entity::Update(float deltaTime)
 {
-
+	if (game_->GetPlayer()->CheckCollision(this))
+	{
+		game_->GetPlayer()->SetCollisionEntity(this);
+	}
     switch (state_)
     {
         //case(State::Idle): std::cout<<"State: Idle"<<std::endl; break;
@@ -39,6 +42,7 @@ void Entity::Update(float deltaTime)
 		if (position_.y <= -scale_.y / 2.0f)
 		{
 			set_toDestroy = true;
+			game_->AlienFreed();
 		}
 		
 		break;
