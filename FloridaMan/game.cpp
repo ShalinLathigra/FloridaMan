@@ -143,8 +143,15 @@ namespace game
 
 		resman_.CreateWall("PlaneMesh");
 
+		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/ground.obj");
+		resman_.LoadResource(Mesh, "GroundMesh", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/air.obj");
+		resman_.LoadResource(Mesh, "AirMesh", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/turret.obj");
+		resman_.LoadResource(Mesh, "TurretMesh", filename.c_str());
+
 		// Load material to be applied to torus
-		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
 		resman_.LoadResource(Material, "EnvMapMaterial", filename.c_str());
 
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
@@ -484,7 +491,7 @@ namespace game
 			break;
 		case (Ground):
 			entity_name = std::string("GroundEntity") + std::to_string(count_++);
-			object_name = std::string("SphereMesh");
+			object_name = std::string("GroundMesh");
 			material_name = std::string("ToonMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
@@ -625,13 +632,13 @@ namespace game
 					switch (type)
 					{
 					case (Turret):
-						object_name = std::string("TorusMesh");
+						object_name = std::string("TurretMesh");
 						break;
 					case (Ground):
-						object_name = std::string("TorusMesh");
+						object_name = std::string("GroundMesh");
 						break;
 					case (Air):
-						object_name = std::string("SphereMesh");
+						object_name = std::string("AirMesh");
 					}
 
 					material_name = std::string("ToonMaterial");
