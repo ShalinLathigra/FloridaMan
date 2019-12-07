@@ -41,7 +41,7 @@ void Entity::Update(float deltaTime)
 		Translate(glm::vec3(0, -12, 0)*deltaTime);
 		if (position_.y <= -scale_.y / 2.0f)
 		{
-			set_toDestroy = true;
+			setDestroyFlag(true);
 			game_->AlienFreed();
 		}
 		break;

@@ -143,8 +143,19 @@ namespace game
 
 		resman_.CreateWall("PlaneMesh");
 
+		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/ground.obj");
+		resman_.LoadResource(Mesh, "GroundMesh", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/air.obj");
+		resman_.LoadResource(Mesh, "AirMesh", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/turret.obj");
+		resman_.LoadResource(Mesh, "TurretMesh", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/alien.obj");
+		resman_.LoadResource(Mesh, "AlienMesh", filename.c_str());
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/alienSPAWN.obj");
+		resman_.LoadResource(Mesh, "AlienSpawnMesh", filename.c_str());
+
 		// Load material to be applied to torus
-		std::string filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/envmap");
 		resman_.LoadResource(Material, "EnvMapMaterial", filename.c_str());
 
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
@@ -484,7 +495,7 @@ namespace game
 			break;
 		case (Ground):
 			entity_name = std::string("GroundEntity") + std::to_string(count_++);
-			object_name = std::string("SphereMesh");
+			object_name = std::string("GroundMesh");
 			material_name = std::string("ToonMaterial");
 			texture_name = std::string("");
 			envmap_name = std::string("");
@@ -607,13 +618,15 @@ namespace game
 				scale = glm::vec3(14, 20, 14) + glm::vec3(14, 20, 14) * utilities::RandPercent();
 
 				std::string entity_name = "Tower: " + suffix;
+				std::string base_name = "CylinderMesh";
 				if (type >= 3)
 				{
 					entity_name = "AlienEntity_" + suffix;
+					base_name = "AlienSpawnMesh";
 					alienCounter += 1;
 				}
 
-				scn = CreateInstance(TurretSpawn + type, entity_name, "CylinderMesh", "ToonMaterial");
+				scn = CreateInstance(TurretSpawn + type, entity_name, base_name, "ToonMaterial");
 				scn->SetOrientation(utilities::RandQuat(glm::vec3(0, 1, 0)));
 				scn->SetScale(scale);
 				scn->SetPosition(glm::vec3(x * dim, scale.y / 2.0f, z * dim));
@@ -625,13 +638,13 @@ namespace game
 					switch (type)
 					{
 					case (Turret):
-						object_name = std::string("TorusMesh");
+						object_name = std::string("TurretMesh");
 						break;
 					case (Ground):
-						object_name = std::string("TorusMesh");
+						object_name = std::string("GroundMesh");
 						break;
 					case (Air):
-						object_name = std::string("SphereMesh");
+						object_name = std::string("AirMesh");
 					}
 
 					material_name = std::string("ToonMaterial");
@@ -677,6 +690,16 @@ namespace game
 					part->SetBlending(true);
 					part->SetDuration(12.0f);
 					((Entity*)scn)->SetDeathEffect(*part);
+				}
+
+
+				if (type >= 3)
+				{
+					SceneNode * child = CreateInstance(EntityType::Default, object_name + std::string("_alien"), "AlienMesh", "ToonMaterial");
+					child->SetScale(glm::vec3(30) * glm::length(scale) / glm::length(glm::vec3(28, 40, 28)));
+					child->SetOrientation(scn->GetOrientation());
+					child->SetType(EntityType::Air);
+					scn->AddChild(child);
 				}
 
 				AddNode(scn);
