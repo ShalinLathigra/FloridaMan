@@ -73,6 +73,10 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
 void SceneNode::setDestroyFlag(bool toggle)
 {
     set_toDestroy = toggle;
+	for (int i = 0; i < m_childNodes.size(); i++)
+	{
+		m_childNodes.erase(m_childNodes.begin());
+	}
 }
 
 SceneNode::SceneNode(const std::string name)
