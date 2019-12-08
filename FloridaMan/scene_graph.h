@@ -62,11 +62,8 @@ public:
     // Draw the entire scene
     void Draw(Camera *camera);
 
-    // Update entire scene
+    // Update entire scene + Remove Nodes if necessary
     void Update(float deltaTime);
-
-    //Check for nodes to be removed from hierarchy
-    void RemoveNodes();
 
     // Drawing from/to a texture
     // Setup the texture
