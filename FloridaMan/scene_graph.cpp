@@ -36,8 +36,8 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
 {
     // Create scene node with the specified resources
     SceneNode *scn;
-	SceneNode* child;
-	float r;
+    SceneNode *child;
+    float r;
     switch (type)
     {
         case (EntityType::Turret):
@@ -56,8 +56,8 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
         case (EntityType::BombProj):
             scn = new Bomb(node_name, geometry, material, texture, envmap);
             break;
-		case (EntityType::ShurikenProj):
-		case (EntityType::MissileProj):
+        case (EntityType::ShurikenProj):
+        case (EntityType::MissileProj):
             scn = new Shuriken(node_name, geometry, material, texture, envmap);
             break;
         case (EntityType::Particle):
@@ -65,15 +65,15 @@ SceneNode *SceneGraph::CreateNode(int type, std::string node_name, Resource *geo
             break;
         case (EntityType::TurretSpawn):
         case (EntityType::GroundSpawn):
-		case (EntityType::AirSpawn):
-			scn = new EntityStructure(node_name, geometry, material, texture, envmap);
-			break;
-		case (EntityType::AlienSpawn):
-			scn = new Entity(node_name, geometry, material, texture, envmap);
-			break;
-		case (EntityType::AsteroidInst):
-			scn = new Asteroid(node_name, geometry, material, texture, envmap);
-			break;
+        case (EntityType::AirSpawn):
+            scn = new EntityStructure(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::AlienSpawn):
+            scn = new Entity(node_name, geometry, material, texture, envmap);
+            break;
+        case (EntityType::AsteroidInst):
+            scn = new Asteroid(node_name, geometry, material, texture, envmap);
+            break;
         default:
             scn = new SceneNode(node_name, geometry, material, texture, envmap);
             break;
@@ -110,7 +110,6 @@ void SceneGraph::Update(float deltaTime)
 
 void SceneGraph::RemoveNodes()
 {
-    //m_pRootNode->Update(deltaTime);
     int del_count = 0;
     std::vector<SceneNode *> nodes = m_pRootNode->GetChildren();
     for (int i = 0; i < nodes.size(); i++)
@@ -228,7 +227,6 @@ void SceneGraph::DrawToTexture(Camera *camera)
 void SceneGraph::DisplayTexture(GLuint program)
 {
     // Configure output to the screen
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
 
     // Set up quad geometry

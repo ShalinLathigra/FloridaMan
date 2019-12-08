@@ -77,7 +77,7 @@ Resource *ResourceManager::GetResource(const std::string name) const
 
 void ResourceManager::LoadMaterial(const std::string name, const char *prefix)
 {
-	std::cout << name <<" " << prefix << std::endl;
+    std::cout << name << " " << prefix << std::endl;
     // Load vertex program source code
     std::string filename = std::string(prefix) + std::string(VERTEX_PROGRAM_EXTENSION);
     std::string vp = LoadTextFile(filename.c_str());
@@ -299,10 +299,6 @@ void ResourceManager::CreateTorus(std::string object_name, float loop_radius, fl
     }
 
     // Create OpenGL buffers and copy data
-    //GLuint vao;
-    //glGenVertexArrays(1, &vao);
-    //glBindVertexArray(vao);
-
     GLuint vbo, ebo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -406,10 +402,6 @@ void ResourceManager::CreateSphere(std::string object_name, float radius, int nu
     }
 
     // Create OpenGL buffers and copy data
-    //GLuint vao;
-    //glGenVertexArrays(1, &vao);
-    //glBindVertexArray(vao);
-
     GLuint vbo, ebo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);

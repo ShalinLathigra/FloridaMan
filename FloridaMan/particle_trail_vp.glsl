@@ -51,11 +51,6 @@ void main()
 	vec3 color_ = vec3(color.r, color.g*10, color.b);
 	vertex_color = (net) * color_.rgb + (1-net)*color_.grr;
 
-    //vertex_color = color.rgb; // Color defined during the construction of the particles
-    //vertex_color = object_color * (1-pow(circtime / lifetime, 2)); // Uniform color 
-    //vertex_color = vec3(t, 0.0, 1-t);
-    //vertex_color = vec3(1.0, 1-t, 0.0);
-
     // Forward time step to geometry shader
     timestep = clamp(timer - start, 0, 1);
 }

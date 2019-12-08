@@ -42,7 +42,6 @@ void main()
     V = camera_pos - position_interp; // Now we need the camera position as we are working in world coordinates
     V = normalize(V);
 
-    //H = 0.5*(V + L); // Halfway vector
     H = (V + L); // Halfway vector (will be normalized anyway)
     H = normalize(H);
 
@@ -56,9 +55,6 @@ void main()
     // Reflection vector
     vec3 Lr = 2.0 * dot(N, V) * N - V;
 
-    // When using GLSL's reflect, we input the vector from eye to point
-    //vec3 Valt = position_interp - camera_pos;
-    //vec3 Lr = reflect(Valt, N);
 
     // Query environment map
     vec4 il = texture(env_map, Lr);

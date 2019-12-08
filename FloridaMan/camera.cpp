@@ -6,10 +6,10 @@
 #include <iostream>
 
 #include "camera.h"
-#include "player.h"
-#include "scene_node.h"
-#include "scene_graph.h"
 #include "game.h"
+#include "player.h"
+#include "scene_graph.h"
+#include "scene_node.h"
 
 namespace game
 {
@@ -29,7 +29,7 @@ glm::vec3 Camera::GetPosition(void) const
 
 void Camera::move(float iAmSpeed)
 {
-	Translate(iAmSpeed * (orientation_ * forward_));
+    Translate(iAmSpeed * (orientation_ * forward_));
 }
 
 glm::quat Camera::GetOrientation(void) const
@@ -39,12 +39,11 @@ glm::quat Camera::GetOrientation(void) const
 
 void Camera::SetSkyBox(SceneNode *skybox)
 {
-	m_skybox = skybox;
+    m_skybox = skybox;
 }
 
 void Camera::SetPosition(glm::vec3 position)
 {
-    //m_pPlayer->SetPosition(position);
     position_ = position;
 }
 
@@ -61,149 +60,147 @@ void Camera::SetOrientation(glm::quat orientation)
 
 void Camera::SetGame(Game *pGame)
 {
-	m_pGame = pGame;
+    m_pGame = pGame;
 }
 
 void Camera::SetGround(SceneNode *pGround)
 {
-	m_pGroundPlane = pGround;
+    m_pGroundPlane = pGround;
 }
 
 void Camera::Translate(glm::vec3 trans)
 {
-	if (m_pPlayer->GetPosition().y > 700 && trans.y > 0)
-	{
-		trans.y = 0;
-		std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
-	}
+    if (m_pPlayer->GetPosition().y > 700 && trans.y > 0)
+    {
+        trans.y = 0;
+        std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
+    }
 
-	if (m_pPlayer->GetPosition().x > 1250 && trans.x > 0)
-	{
-		trans.x = 0;
-		std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
-	}
-	if (m_pPlayer->GetPosition().x < -1250 && trans.x < 0)
-	{
-		trans.x = 0;
-		std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
-	}
-	if (m_pPlayer->GetPosition().z > 1250 && trans.z > 0)
-	{
-		trans.z = 0;
-		std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
-	}
-	if (m_pPlayer->GetPosition().z < -1250 && trans.z < 0)
-	{
-		trans.z = 0;
-		std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
-	}
+    if (m_pPlayer->GetPosition().x > 1250 && trans.x > 0)
+    {
+        trans.x = 0;
+        std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
+    }
+    if (m_pPlayer->GetPosition().x < -1250 && trans.x < 0)
+    {
+        trans.x = 0;
+        std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
+    }
+    if (m_pPlayer->GetPosition().z > 1250 && trans.z > 0)
+    {
+        trans.z = 0;
+        std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
+    }
+    if (m_pPlayer->GetPosition().z < -1250 && trans.z < 0)
+    {
+        trans.z = 0;
+        std::cout << "You're leaving the raid area!! You can't abandon the aliens!\n";
+    }
 
-	std::vector<SceneNode*> childNodes = m_pPlayer->GetChildren();
-	for (int i = 0; i < childNodes.size(); i++)
-	{
-		std::vector<SceneNode*> grandchildNodes = childNodes[i]->GetChildren();
-		childNodes.insert(childNodes.end(), grandchildNodes.begin(), grandchildNodes.end());
-		if ((childNodes[i]->GetWorldPosition().y - (childNodes[i]->GetScale().y/2.0)) < 0.0 && trans.y < 0)
-		{
-			glm::vec3 t, v2, v1;
-			v1 = orientation_ * forward_;
-			v2 = v1;
-			v2.y = -v1.y;
+    std::vector<SceneNode *> childNodes = m_pPlayer->GetChildren();
+    for (int i = 0; i < childNodes.size(); i++)
+    {
+        std::vector<SceneNode *> grandchildNodes = childNodes[i]->GetChildren();
+        childNodes.insert(childNodes.end(), grandchildNodes.begin(), grandchildNodes.end());
+        if ((childNodes[i]->GetWorldPosition().y - (childNodes[i]->GetScale().y / 2.0)) < 0.0 && trans.y < 0)
+        {
+            glm::vec3 t, v2, v1;
+            v1 = orientation_ * forward_;
+            v2 = v1;
+            v2.y = -v1.y;
 
-			t = glm::cross(v1, v2);
+            t = glm::cross(v1, v2);
 
-			//Construct the rotation
-			glm::quat rot;
-			rot.x = t.x;
-			rot.y = t.y;
-			rot.z = t.z;
-			rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
+            //Construct the rotation
+            glm::quat rot;
+            rot.x = t.x;
+            rot.y = t.y;
+            rot.z = t.z;
+            rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
 
-			//Slow down and damage the player after a collision
-			m_pPlayer->Accelerate(m_pPlayer->m_speed * -0.05);
-			m_pPlayer->m_HP -= 5;
-			Rotate(rot);
-			return;
-		}
+            //Slow down and damage the player after a collision
+            m_pPlayer->Accelerate(m_pPlayer->m_speed * -0.05);
+            m_pPlayer->m_HP -= 5;
+            Rotate(rot);
+            return;
+        }
+    }
 
-	}
+    if (m_pPlayer->m_pCollisionEntity && !m_pPlayer->m_Ramming)
+    {
+        glm::vec3 collisionDirection = CalculateCollisionNormal(m_pPlayer->m_pCollisionEntity, m_pPlayer->m_pNodeHit) * -1.0f;
+        m_pPlayer->m_pCollisionEntity = nullptr;
+        glm::normalize(collisionDirection);
+        glm::vec3 t, v2, v1;
+        v1 = orientation_ * forward_;
+        glm::normalize(v1);
+        v2 = (collisionDirection + v1);
+        glm::normalize(v2);
+        t = glm::cross(v1, v2);
+        glm::quat rot;
+        rot.x = t.x;
+        rot.y = t.y;
+        rot.z = t.z;
+        rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
 
-	if (m_pPlayer->m_pCollisionEntity &&!m_pPlayer->m_Ramming)
-	{
-		
-		glm::vec3 collisionDirection = CalculateCollisionNormal(m_pPlayer->m_pCollisionEntity, m_pPlayer->m_pNodeHit) * -1.0f;
-		m_pPlayer->m_pCollisionEntity = nullptr;
-		glm::normalize(collisionDirection);
-		glm::vec3 t, v2, v1;
-		v1 = orientation_ * forward_;
-		glm::normalize(v1);
-		v2 = (collisionDirection + v1);
-		glm::normalize(v2);
-		t = glm::cross(v1, v2);
-		glm::quat rot;
-		rot.x = t.x;
-		rot.y = t.y;
-		rot.z = t.z;
-		rot.w = sqrt((v1.length() ^ 2) * (v2.length() ^ 2)) + glm::dot(v1, v2);
+        Rotate(rot);
 
-		Rotate(rot);
-		
-		//Slow down and damage the player after a collision
-		m_pPlayer->Accelerate(m_pPlayer->m_speed * -0.05);
-		m_pPlayer->m_HP -= 15;
-		//Add an offset so that the player isn't partially inside the block
-		position_ -= glm::normalize(orientation_ * forward_) * 3.0f;
-		m_skybox->SetPosition(position_);
-		m_pPlayer->SetPosition(position_);
-		return;
+        //Slow down and damage the player after a collision
+        m_pPlayer->Accelerate(m_pPlayer->m_speed * -0.05);
+        m_pPlayer->m_HP -= 2;
+		std::cout << m_pPlayer->m_HP << "\n";
+        //Add an offset so that the player isn't partially inside the block
+        position_ -= glm::normalize(orientation_ * forward_) * 3.0f;
+        m_skybox->SetPosition(position_);
+        m_pPlayer->SetPosition(position_);
+        return;
+    }
+    else if (m_pPlayer->m_pCollisionEntity)
+    {
+        Entity *entity = dynamic_cast<Entity *>(m_pPlayer->m_pCollisionEntity);
+        if (entity)
+        {
+            entity->SetState(State::Die);
+        }
+    }
 
-	}
-	else if (m_pPlayer->m_pCollisionEntity)
-	{
-		Entity *entity = dynamic_cast<Entity*>(m_pPlayer->m_pCollisionEntity);
-		if (entity)
-		{
-			entity->SetState(State::Die);
-		}
-	}
-
-	 position_ += trans;
-	m_skybox->Translate(trans);
+    position_ += trans;
+    m_skybox->Translate(trans);
     m_pPlayer->Translate(trans);
 }
 
 glm::vec3 Camera::CalculateCollisionNormal(SceneNode *pNode, SceneNode *pNodeHit)
 {
-	glm::vec3 normal;
-	glm::vec3 nodePos = pNode->GetWorldPosition();
-	glm::vec3 playerPos = pNodeHit->GetWorldPosition();
-	glm::vec3 dist = playerPos - nodePos;
-	if (abs(dist.x) + pNode->GetScale().x  + pNodeHit->GetScale().x < abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y && abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x < abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z)
-	{
-		normal = glm::vec3(1, 0, 0);
-		if (dist.x > 0)
-		{
-			normal.x = -1;
-		}
-	}
-	else if (abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y < abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x && abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y < abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z)
-	{
-		normal = glm::vec3(0, 1, 0);
-		if (dist.y > 0)
-		{
-			normal.y = -1;
-		}
-	}
-	else if (abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z < abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x && abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z < abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y)
-	{
-		normal = glm::vec3(0, 0, 1);
-		if (dist.z > 0)
-		{
-			normal.z = -1;
-		}
-	}
-	normal = utilities::RotateVecByQuat(normal, pNode->GetWorldOrientation());
-	return normal;
+    glm::vec3 normal;
+    glm::vec3 nodePos = pNode->GetWorldPosition();
+    glm::vec3 playerPos = pNodeHit->GetWorldPosition();
+    glm::vec3 dist = playerPos - nodePos;
+    if (abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x < abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y && abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x < abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z)
+    {
+        normal = glm::vec3(1, 0, 0);
+        if (dist.x > 0)
+        {
+            normal.x = -1;
+        }
+    }
+    else if (abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y < abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x && abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y < abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z)
+    {
+        normal = glm::vec3(0, 1, 0);
+        if (dist.y > 0)
+        {
+            normal.y = -1;
+        }
+    }
+    else if (abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z < abs(dist.x) + pNode->GetScale().x + pNodeHit->GetScale().x && abs(dist.z) + pNode->GetScale().z + pNodeHit->GetScale().z < abs(dist.y) + pNode->GetScale().y + pNodeHit->GetScale().y)
+    {
+        normal = glm::vec3(0, 0, 1);
+        if (dist.z > 0)
+        {
+            normal.z = -1;
+        }
+    }
+    normal = utilities::RotateVecByQuat(normal, pNode->GetWorldOrientation());
+    return normal;
 }
 
 void Camera::Rotate(glm::quat rot)
@@ -239,10 +236,10 @@ void Camera::Pitch(float angle, bool rotatePlayer)
     glm::quat rotation = glm::angleAxis(angle, GetSide());
     orientation_ = rotation * orientation_;
     orientation_ = glm::normalize(orientation_);
-	if (rotatePlayer)
-	{
-		m_pPlayer->SetOrientation(orientation_);
-	}
+    if (rotatePlayer)
+    {
+        m_pPlayer->SetOrientation(orientation_);
+    }
 }
 
 void Camera::Yaw(float angle, bool rotatePlayer)
@@ -250,10 +247,10 @@ void Camera::Yaw(float angle, bool rotatePlayer)
     glm::quat rotation = glm::angleAxis(angle, GetUp());
     orientation_ = rotation * orientation_;
     orientation_ = glm::normalize(orientation_);
-	if (rotatePlayer)
-	{
-		m_pPlayer->SetOrientation(orientation_);
-	}
+    if (rotatePlayer)
+    {
+        m_pPlayer->SetOrientation(orientation_);
+    }
 }
 
 void Camera::Roll(float angle)
@@ -322,13 +319,12 @@ Player *Camera::GetPlayer()
 
 void Camera::SetupViewMatrix(void)
 {
-    //view_matrix_ = glm::lookAt(position, look_at, up);
 
-	if (!m_isFirstPerson)
-	{
-		Yaw(-0.15f, false);
-		Pitch(-0.25f, false);
-	}
+    if (!m_isFirstPerson)
+    {
+        Yaw(-0.15f, false);
+        Pitch(-0.25f, false);
+    }
     // Get current vectors of coordinate system
     // [side, up, forward]
     // See slide in "Camera control" for details
@@ -343,7 +339,7 @@ void Camera::SetupViewMatrix(void)
     }
     else
     {
-        SetPosition(newPosition + current_forward * 10.0f +/* current_up * 2.0f + */current_side * 2.0f);
+        SetPosition(newPosition + current_forward * 10.0f + current_side * 2.0f);
     }
 
     // Initialize the view matrix as an identity matrix
@@ -368,13 +364,13 @@ void Camera::SetupViewMatrix(void)
     glm::mat4 trans = glm::translate(glm::mat4(1.0), -position_);
 
     // Combine translation and view matrix in proper order
-    view_matrix_ *= trans; //glm::mat4_cast(orientation_) * trans;
+    view_matrix_ *= trans;
 
-	if (!m_isFirstPerson)
-	{
-		//reset the orientation to be equal to the players if necessary
-		SetOrientation(m_pPlayer->GetOrientation());
-	}
+    if (!m_isFirstPerson)
+    {
+        //reset the orientation to be equal to the players if necessary
+        SetOrientation(m_pPlayer->GetOrientation());
+    }
 }
 
 } // namespace game

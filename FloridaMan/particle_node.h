@@ -32,7 +32,8 @@ public:
     void Start(void);
     float GetStart(void);
 
-	inline void SetDuration(float duration) { m_Duration = duration; }
+    inline void SetDuration(float duration) { m_Duration = duration; }
+
 private:
     float start;
     float m_Duration;

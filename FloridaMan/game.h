@@ -51,17 +51,18 @@ public:
     //Return the Scene Graph
     SceneGraph *GetGraph();
     void AddNode(SceneNode *scn);
-	Camera *GetCamera(void);
-	Player *GetPlayer(void);
-	void AddPoints(int points);
-	void AirshipKilled();
-	void CybertruckKilled();
-	void TurretKilled();
+    Camera *GetCamera(void);
+    Player *GetPlayer(void);
+    void AddPoints(int points);
+    void AirshipKilled();
+    void CybertruckKilled();
+    void TurretKilled();
     SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
-	//A callback function for the keys that we don't need to get constant input from
-	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-	void AlienFreed();
+    //A callback function for the keys that we don't need to get constant input from
+    static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    void AlienFreed();
+
 private:
     // GLFW window
     GLFWwindow *window_;
@@ -69,7 +70,7 @@ private:
     // Scene graph containing all nodes to render
     SceneGraph scene_;
 
-	int alienCounter = 0;
+    int alienCounter = 0;
     // Resources available to the game
     ResourceManager resman_;
 
@@ -92,10 +93,10 @@ private:
     void InitView(void);
     void InitEventHandlers(void);
 
-	int turretsKilled;
-	int trucksKilled;
-	int airshipsKilled;
-	int m_points;
+    int turretsKilled;
+    int trucksKilled;
+    int airshipsKilled;
+    int m_points;
 
     void GetKeyStates(GLFWwindow *window);
     static void ResizeCallback(GLFWwindow *window, int width, int height);

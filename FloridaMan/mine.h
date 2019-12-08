@@ -7,12 +7,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #define GLM_FORCE_RADIANS
-#include <algorithm> // std::max
+#include <algorithm>
 #include <glm/gtc/quaternion.hpp>
 #include <vector>
 
-#include "resource.h"
 #include "particle_node.h"
+#include "resource.h"
 #include "scene_node.h"
 
 namespace game
@@ -39,16 +39,16 @@ public:
     MineState GetState(void);
     SceneNode *GetTarget(void);
     void SetState(MineState state);
-	void SetTarget(SceneNode *target);
-	void InitAltMat(ResourceManager* resman_);
+    void SetTarget(SceneNode *target);
+    void InitAltMat(ResourceManager *resman_);
 
-	inline float GetBoomRadius(void) { return boom_radius_; }
-	inline float GetChaseRadius(void) { return chase_radius_; }
-	virtual void Draw(Camera *camera) override;
-	void SetDeathPart(ParticleNode part);
+    inline float GetBoomRadius(void) { return boom_radius_; }
+    inline float GetChaseRadius(void) { return chase_radius_; }
+    virtual void Draw(Camera *camera) override;
+    void SetDeathPart(ParticleNode part);
 
 protected:
-	GLuint alt_mat_;
+    GLuint alt_mat_;
     MineState state_;
     SceneNode *target_;
     glm::vec3 forward_;
@@ -56,14 +56,14 @@ protected:
     float hp_;
     bool target_set_;
     float vel_;
-	float acc_;
+    float acc_;
     std::vector<SceneNode> enemies;
 
     float idle_timer_;
     float max_idle_timer_;
     float boom_radius_;
-	float chase_radius_;
-	ParticleNode death_part_;
+    float chase_radius_;
+    ParticleNode death_part_;
 };
 } // namespace game
 

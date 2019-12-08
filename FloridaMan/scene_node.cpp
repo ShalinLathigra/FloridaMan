@@ -73,10 +73,10 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
 void SceneNode::setDestroyFlag(bool toggle)
 {
     set_toDestroy = toggle;
-	for (int i = 0; i < m_childNodes.size(); i++)
-	{
-		m_childNodes.erase(m_childNodes.begin());
-	}
+    for (int i = 0; i < m_childNodes.size(); i++)
+    {
+        m_childNodes.erase(m_childNodes.begin());
+    }
 }
 
 SceneNode::SceneNode(const std::string name)
@@ -163,8 +163,6 @@ glm::vec3 SceneNode::GetPosition(void) const
 
 bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist)
 {
-
-
     if (glm::length(someNode->GetPosition() - position_) <= dist)
         return true;
     else
@@ -173,11 +171,11 @@ bool SceneNode::CheckSphereCollision(SceneNode *someNode, float dist)
 
 glm::vec3 SceneNode::GetWorldPosition()
 {
-	if (m_pParentNode)
-	{
-		return position_ + m_pParentNode->GetWorldPosition();
-	}
-	return position_;
+    if (m_pParentNode)
+    {
+        return position_ + m_pParentNode->GetWorldPosition();
+    }
+    return position_;
 }
 
 bool SceneNode::CheckCollision(SceneNode *pNode, SceneNode **collidingPart)
@@ -251,17 +249,17 @@ bool SceneNode::CheckCollision(SceneNode *pNode, SceneNode **collidingPart)
     //If Collision detected is ever true, it means that there is a separating axis.
 
     //If there is a separating axis, we want to search the child nodes, otherwise there has been a collision and we dont need to check child nodes, unless we need to know which node specifically was hit
-        for (size_t i = 0; i < m_childNodes.size(); i++)
+    for (size_t i = 0; i < m_childNodes.size(); i++)
+    {
+        if (m_childNodes[i]->CheckCollision(pNode, collidingPart))
         {
-            if (m_childNodes[i]->CheckCollision(pNode, collidingPart))
-            {
-                return true;
-            }
+            return true;
         }
-		if (!collisionDetected && collidingPart)
-		{
-			*collidingPart = this;
-		}
+    }
+    if (!collisionDetected && collidingPart)
+    {
+        *collidingPart = this;
+    }
     return !collisionDetected;
 }
 
@@ -290,12 +288,13 @@ void SceneNode::SetOrientation(glm::quat orientation)
     orientation_ = orientation;
 }
 
-glm::quat SceneNode::GetWorldOrientation() {
-	if (m_pParentNode)
-	{
-		return glm::normalize(orientation_ * m_pParentNode->GetWorldOrientation());
-	}
-	return orientation_;
+glm::quat SceneNode::GetWorldOrientation()
+{
+    if (m_pParentNode)
+    {
+        return glm::normalize(orientation_ * m_pParentNode->GetWorldOrientation());
+    }
+    return orientation_;
 }
 
 void SceneNode::SetScale(glm::vec3 scale)
@@ -365,13 +364,12 @@ void SceneNode::Draw(Camera *camera)
 
             // Enable blending
             glEnable(GL_BLEND);
-            //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Simpler form
             glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
         }
         else
         {
-			glDisable(GL_BLEND);
+            glDisable(GL_BLEND);
             // Enable z-buffer
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);
@@ -414,7 +412,7 @@ glm::mat4 SceneNode::GetParentTransform()
     {
         glm::mat4 rotation = glm::mat4_cast(m_pParentNode->GetOrientation());
         glm::mat4 translation = glm::translate(glm::mat4(1.0), m_pParentNode->GetPosition());
-        return m_pParentNode->GetParentTransform() * translation * rotation; // * m_pParentNode->GetParentTransform();
+        return m_pParentNode->GetParentTransform() * translation * rotation;
     }
     return glm::mat4(1.0);
 }
@@ -480,19 +478,6 @@ void SceneNode::SetupShader(GLuint program, Camera *camera)
         glGenerateMipmap(GL_TEXTURE_2D);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
-
-    // Environment map
-    if (envmap_)
-    {
-        //GLint tex = glGetUniformLocation(program, "env_map");
-        //glUniform1i(tex, 1); // Assign the first texture to the map
-        //glActiveTexture(GL_TEXTURE1);
-        //glBindTexture(GL_TEXTURE_CUBE_MAP, envmap_); // First texture we bind
-        //// Define texture interpolation
-        //glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-        //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-        //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
     // Timer

@@ -33,11 +33,11 @@ void EntityStructure::InitResources(int type, Resource *obj, Resource *mat, Reso
 
 void EntityStructure::Update(float deltaTime)
 {
-	SceneNode *nodeHit;
-	if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
-	{
-		game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
-	}
+    SceneNode *nodeHit;
+    if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
+    {
+        game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
+    }
     if (m_EntityCount < m_MaxEntityCount)
     {
         if (m_EntityTimer <= 0.0f)

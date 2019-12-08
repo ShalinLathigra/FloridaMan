@@ -32,11 +32,9 @@ void main()
     float Id = max(dot(N, L), 0.0);
     
     // Compute specular term Is for Blinn-Phong shading
-    // V = (eye_position - position_interp);
     V = - position_interp; // Eye position is (0, 0, 0) in view coordinates
     V = normalize(V);
 
-    //H = 0.5*(V + L); // Halfway vector
     H = (V + L); // Halfway vector (will be normalized anyway)
     H = normalize(H);
 
@@ -57,12 +55,4 @@ void main()
 	{
 	gl_FragColor = gl_FragColor.rbga;
 	}
-    // For debug, we can display the different values
-    //gl_FragColor = ambient_albedo;
-    //gl_FragColor = diffuse_albedo;
-    //gl_FragColor = specular_albedo;
-    //gl_FragColor = albedo_interp;
-    //gl_FragColor = vec4(N.xyz, 1.0);
-    //gl_FragColor = vec4(L.xyz, 1.0);
-    //gl_FragColor = vec4(V.xyz, 1.0);
 }
