@@ -105,22 +105,20 @@ void SceneGraph::Draw(Camera *camera)
 
 void SceneGraph::Update(float deltaTime)
 {
-    m_pRootNode->Update(deltaTime);
-}
+    //m_pRootNode->Update(deltaTime);
 
-void SceneGraph::RemoveNodes()
-{
-    int del_count = 0;
-    std::vector<SceneNode *> nodes = m_pRootNode->GetChildren();
-    for (int i = 0; i < nodes.size(); i++)
-    {
-        if (nodes.at(i)->checkIfDestroy() == true)
-        {
-            m_pRootNode->RemoveChildAt(del_count);
-            del_count--;
-        }
-        del_count++;
-    }
+	int del_count = 0;
+	std::vector<SceneNode *> nodes = m_pRootNode->GetChildren();
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		nodes.at(i)->Update(deltaTime);
+		if (nodes.at(i)->checkIfDestroy() == true)
+		{
+			m_pRootNode->RemoveChildAt(del_count);
+			del_count--;
+		}
+		del_count++;
+	}
 }
 
 void SceneGraph::SetupDrawToTexture(void)

@@ -236,7 +236,7 @@ void Game::SetupScene(void)
     part->SetBlending(true);
     player_->SetPart(part);
 
-    SceneNode *hat = CreateInstance(EntityType::Default, "Hat", "SphereMesh", "ToonMaterial");
+    SceneNode *hat = CreateInstance(EntityType::Default, "Hat", "SphereMesh", "TexturedMaterial", "CamoTexture");
     hat->SetType(EntityType::Default);
     hat->SetScale(player_->GetScale() * 0.9f);
     hat->Translate(glm::vec3(0, 0.25, 0));
@@ -310,10 +310,6 @@ void Game::MainLoop(void)
                 scene_.Update(deltaTime);
                 last_time = current_time;
             }
-
-            //Check for any nodes/entities to be removed
-            scene_.RemoveNodes();
-
             // Draw the scene
             scene_.Draw(&camera_);
 
