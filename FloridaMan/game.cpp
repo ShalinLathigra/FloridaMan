@@ -44,6 +44,10 @@ namespace game
 		// Set variables
 		animating_ = true;
 		count_ = 0;
+		trucksKilled = 0;
+		turretsKilled = 0;
+		airshipsKilled = 0;
+		m_points = 0;
 	}
 
 	void Game::InitWindow(void)
@@ -196,6 +200,9 @@ namespace game
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/alien.png");
 		resman_.LoadResource(Texture, "AlienTexture", filename.c_str());
 
+		filename = std::string(MATERIAL_DIRECTORY) + std::string("/camo.png");
+		resman_.LoadResource(Texture, "CamoTexture", filename.c_str());
+
 		// Load material to be applied to skybox
 		filename = std::string(MATERIAL_DIRECTORY) + std::string("/skybox");
 		resman_.LoadResource(Material, "SkyboxMaterial", filename.c_str());
@@ -208,7 +215,7 @@ namespace game
 
 		SceneNode *wall = CreateInstance(EntityType::Default, "PlaneInstance", "PlaneMesh", "TexturedMaterial", "GroundTexture");
 		wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-		wall->SetScale(glm::vec3(1000.0f));
+		wall->SetScale(glm::vec3(4000.0f));
 		wall->SetOrientation(glm::angleAxis(glm::pi<float>() * 0.5f, glm::vec3(1, 0, 0)));
 		camera_.SetGround(wall);
 		scene_.AddNode(wall);
@@ -237,29 +244,28 @@ namespace game
 		hat->Translate(glm::vec3(0, 0.25, 0));
 		player_->AddChild(hat);
 		
-		//ADD CAMO TEXTURE FOR FLORIDA MAN
-		SceneNode *body = CreateInstance(EntityType::Default, "Body", "CubeMesh", "ToonMaterial");
+		SceneNode *body = CreateInstance(EntityType::Default, "Body", "CubeMesh", "TexturedMaterial", "CamoTexture");
 		body->SetScale(glm::vec3(1.5f, 2.0f, 1.0));
 		body->Translate(glm::vec3(0.0f, -1.5f, 0.0f));
 		player_->AddChild(body);
 
-		SceneNode *leftArm = CreateInstance(EntityType::Default, "LeftArm", "CubeMesh", "ToonMaterial");
+		SceneNode *leftArm = CreateInstance(EntityType::Default, "LeftArm", "CubeMesh", "TexturedMaterial", "CamoTexture");
 		leftArm->SetScale(glm::vec3(1.5f, 0.75f, 1.0f));
 		leftArm->Translate(glm::vec3(1.0f, 0.6f, 0.0));
 		body->AddChild(leftArm);
 
-		SceneNode *rightArm = CreateInstance(EntityType::Default, "RightArm", "CubeMesh", "ToonMaterial");
+		SceneNode *rightArm = CreateInstance(EntityType::Default, "RightArm", "CubeMesh", "TexturedMaterial", "CamoTexture");
 		rightArm->SetScale(glm::vec3(1.5f, 0.75f, 1.0f));
 		rightArm->Translate(glm::vec3(-1.0f, 0.6f, 0.0));
 		body->AddChild(rightArm);
 
 
-		SceneNode *leftLeg = CreateInstance(EntityType::Default, "LeftLeg", "CubeMesh", "ToonMaterial");
+		SceneNode *leftLeg = CreateInstance(EntityType::Default, "LeftLeg", "CubeMesh", "TexturedMaterial", "CamoTexture");
 		leftLeg->SetScale(glm::vec3(0.5f, 1.5f, 1.0f));
 		leftLeg->Translate(glm::vec3(0.5f, -1.75f, 0.0));
 		body->AddChild(leftLeg);
 
-		SceneNode *rightLeg = CreateInstance(EntityType::Default, "RightLeg", "CubeMesh", "ToonMaterial");
+		SceneNode *rightLeg = CreateInstance(EntityType::Default, "RightLeg", "CubeMesh", "TexturedMaterial", "CamoTexture");
 		rightLeg->SetScale(glm::vec3(0.5f, 1.5f, 1.0f));
 		rightLeg->Translate(glm::vec3(-0.5f, -1.75f, 0.0));
 		body->AddChild(rightLeg);
@@ -279,8 +285,12 @@ namespace game
 		Asteroid *saucer = (Asteroid*)CreateInstance(EntityType::AsteroidInst, "FlyingTorus", "TorusMesh", "EnvMapMaterial", "", "LakeCubeMap");
 		saucer->SetScale(glm::vec3(500));
 		saucer->SetPosition(glm::vec3(0, 1000, 0)); 
-		saucer->SetOrientation(glm::angleAxis(glm::pi<float>() / 3.0f, glm::vec3(1, 0, 0)));
-		saucer->SetAngM(glm::angleAxis(glm::pi<float>() / 64.0f, glm::normalize(glm::vec3(0.2, 0.1, 1.0))));
+		saucer->SetOrientation(glm::angleAxis(glm::pi<float>()/2.0f, glm::vec3(1, 0, 0)));
+		saucer->SetAngM(glm::angleAxis(glm::pi<float>() / 64.0f, glm::normalize(glm::vec3(0.1, 0.05, 1.0))));
+
+		SceneNode *ufoCenter = CreateInstance(EntityType::Default, "UFOCenter", "SphereMesh", "EnvMapMaterial", "", "LakeCubeMap");
+		ufoCenter->SetScale(glm::vec3(500, 500, 250));
+		saucer->AddChild(ufoCenter);
 		AddNode(saucer);
 
 		CreateTowerField();
@@ -320,11 +330,21 @@ namespace game
 				if (alienCounter <= 0)
 				{
 					std::cout << "Florida Man freed all the aliens! You Win!!\n";
+					std::cout << "POINTS: " << m_points << "\n";
+					std::cout << "You killed:\n";
+					std::cout << trucksKilled << " Cybertrucks.\n";
+					std::cout << turretsKilled << " Anti-air turrets.\n";
+					std::cout << airshipsKilled << " UFOs.\n";
 						break;
 				}
 				if (player_->GetHP() <= 0)
 				{
 					std::cout << "Florida Man was killed in the raid! You lost!\n";
+					std::cout << "POINTS: " << m_points << "\n";
+					std::cout << "You killed:\n";
+					std::cout << trucksKilled << " Cybertrucks.\n";
+					std::cout << turretsKilled << " Anti-air turrets.\n";
+					std::cout << airshipsKilled << " UFOs.\n";
 					break;
 				}
 			}
@@ -381,11 +401,11 @@ namespace game
 		}
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			game->player_->Accelerate(-1.0);
+			game->player_->Accelerate(-5.0);
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			game->player_->Accelerate(1.0);
+			game->player_->Accelerate(5.0);
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		{
@@ -421,6 +441,11 @@ namespace game
 			game->player_->Fire(EntityType::BombProj);
 		}
 
+		if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+		{
+			game->player_->Ram();
+		}
+
 		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 		{
 			game->player_->Fire(EntityType::ShurikenProj);
@@ -433,6 +458,24 @@ namespace game
 		{
 			game->camera_.TogglePOV();
 		}
+	}
+
+	void Game::TurretKilled()
+	{
+		m_points += 10;
+		turretsKilled += 1;
+	}
+
+	void Game::AirshipKilled()
+	{
+		m_points += 50;
+		airshipsKilled += 1;
+	}
+
+	void Game::CybertruckKilled()
+	{
+		trucksKilled += 1;
+		m_points += 25;
 	}
 
 	Game::~Game()
@@ -460,7 +503,7 @@ namespace game
 			tex = resman_.GetResource(texture_name);
 			if (!tex)
 			{
-				throw(GameException(std::string("Could not find Texture \"") + material_name + std::string("\"")));
+				throw(GameException(std::string("Could not find Texture \"") + texture_name + std::string("\"")));
 			}
 		}
 

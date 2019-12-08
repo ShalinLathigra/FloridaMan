@@ -25,13 +25,17 @@ public:
 	void SetCamera(Camera *cam);
   
 	void Accelerate(float speed);
-	void SetCollisionEntity(SceneNode *collisionEntity);
+	void SetCollisionEntity(SceneNode *collisionEntity, SceneNode *nodeHit);
 	void SetPart(ParticleNode *part);
 	float GetHP();
+	void Ram();
 private:
 	SceneNode *m_pCollisionEntity;
+	SceneNode *m_pNodeHit;
 	float m_speed;
 	float m_maxSpeed;
+	float m_tempSpeed;
+	bool m_Ramming;
 	Camera *m_pCamera;
 	ResourceManager *m_pResMan;
 	ParticleNode m_part;
@@ -39,6 +43,8 @@ private:
     float m_ShurikenTimer;
     float m_BombTimer;
     float m_MineTimer;
+	float m_RamTimer;
+	float m_RamCooldown;
 	float m_HP;
 };
 } // namespace game

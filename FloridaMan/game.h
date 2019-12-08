@@ -53,7 +53,10 @@ public:
     void AddNode(SceneNode *scn);
 	Camera *GetCamera(void);
 	Player *GetPlayer(void);
-
+	void AddPoints(int points);
+	void AirshipKilled();
+	void CybertruckKilled();
+	void TurretKilled();
     SceneNode *CreateEntity(int type, glm::vec3 pos, glm::vec3 scale);
 
 	//A callback function for the keys that we don't need to get constant input from
@@ -89,8 +92,10 @@ private:
     void InitView(void);
     void InitEventHandlers(void);
 
-    // Methods to handle events
-    //static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	int turretsKilled;
+	int trucksKilled;
+	int airshipsKilled;
+	int m_points;
 
     void GetKeyStates(GLFWwindow *window);
     static void ResizeCallback(GLFWwindow *window, int width, int height);

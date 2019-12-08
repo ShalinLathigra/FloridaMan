@@ -34,33 +34,34 @@ namespace game
 		m_isVisible = true;
 		blending_ = false;
 		skybox_ = false;
+		m_Ramming = false;
 		scale_ = glm::vec3(1.0, 1.0, 1.0);
 		Translate(glm::vec3(0.0, 0.0, 0));
 		m_ShurikenTimer = 0.0f;
 		m_BombTimer = 0.0f;
 		m_MineTimer = 0.0f;
-		m_HP = 500.0f;
+		m_HP = 200.0f;
 		m_speed = 0.0;
-		m_maxSpeed = 100.0;
+		m_maxSpeed = 300.0;
 		       
 	}
 	void Player::Draw(Camera *cam)
 	{
 		SceneNode::Draw(cam);
 	}
-	void Player::SetCollisionEntity(SceneNode *collisionEntity)
+	void Player::SetCollisionEntity(SceneNode *collisionEntity, SceneNode *nodeHit)
 	{
 		m_pCollisionEntity = collisionEntity;
+		m_pNodeHit = nodeHit;
 	}
 
 	float Player::GetHP()
 	{
 		return m_HP;
 	}
+
 	void Player::Accelerate(float speed)
 	{
-		//std::cout << "m_speed = " << m_speed << "\n";
-		//std::cout << "speed is " << speed << "\n";
 		m_speed += speed;
 		if (m_speed > 0.0f)
 		{
@@ -68,25 +69,49 @@ namespace game
 		}
 		else if (m_speed < -m_maxSpeed)
 		{
-			//std::cout <<"Printing speed < -1.5 <<"<< (m_speed < -1.5)<<" <<<\n";
 			m_speed = -m_maxSpeed;
 		}
-		//std::cout << "m_speed = " << m_speed << "\n";
 	}
+
 	void Player::SetPart(ParticleNode *part)
 	{
 		m_part = *part;
 	}
+
 	void Player::SetCamera(Camera *cam)
 	{
 		m_pCamera = cam;
 	}
+
+	void Player::Ram()
+	{
+		if (m_RamCooldown <= 0)
+		{
+			m_Ramming = true;
+			m_RamTimer = 1.5f;
+			m_tempSpeed = m_speed;
+			m_speed = -600.0f;
+		}
+	}
+
 	void Player::Update(float deltaTime)
 	{
 		m_ShurikenTimer = glm::max(m_ShurikenTimer - deltaTime, 0.0f);
 		m_BombTimer = glm::max(m_BombTimer - deltaTime, 0.0f);
 		m_MineTimer = glm::max(m_MineTimer - deltaTime, 0.0f);
-
+		m_RamCooldown = glm::max(m_RamCooldown - deltaTime, 0.0f);
+		m_RamTimer = glm::max(m_RamTimer - deltaTime, 0.0f);
+		if (m_Ramming && m_RamTimer <= 0)
+		{
+			m_Ramming = false;
+			m_speed = m_tempSpeed;
+			m_RamCooldown = 10.0f;
+		}
+		else if (m_Ramming)
+		{
+			m_speed = -600;
+		}
+		
 		m_pCamera->move(m_speed * deltaTime);
 		for (std::vector<SceneNode*>::iterator iter = m_childNodes.begin(); iter != m_childNodes.end(); iter++)
 		{

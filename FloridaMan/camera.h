@@ -65,6 +65,7 @@ public:
     void InitPlayer(ResourceManager *resMan);
 	void SetGround(SceneNode *pGround);
 private:
+	glm::vec3 CalculateCollisionNormal(SceneNode* pNode, SceneNode *pNodeHit);
 	Game *m_pGame;
 	// Skybox
 	SceneNode *m_pGroundPlane;

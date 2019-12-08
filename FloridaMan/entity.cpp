@@ -27,16 +27,13 @@ Entity::~Entity()
 
 void Entity::Update(float deltaTime)
 {
-	if (game_->GetPlayer()->CheckCollision(this))
+	SceneNode *nodeHit;
+	if (game_->GetPlayer()->CheckCollision(this,  &nodeHit))
 	{
-		game_->GetPlayer()->SetCollisionEntity(this);
+		game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
 	}
     switch (state_)
     {
-        //case(State::Idle): std::cout<<"State: Idle"<<std::endl; break;
-        //case(State::Patrol): std::cout << "State: Patrol" << std::endl;  break;
-        //case(State::Chase): std::cout << "State: Chase" << std::endl;  break;
-        //case(State::Attack): std::cout << "State: Attack" << std::endl;  break;
 	case(State::Die): 
 		Translate(glm::vec3(0, -12, 0)*deltaTime);
 		if (position_.y <= -scale_.y / 2.0f)
