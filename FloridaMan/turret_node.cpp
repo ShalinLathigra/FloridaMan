@@ -28,9 +28,10 @@ namespace game
 	}
 	void TurretNode::Update(float deltaTime)
 	{
-		if (game_->GetPlayer()->CheckCollision(this))
+		SceneNode *nodeHit;
+		if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
 		{
-			game_->GetPlayer()->SetCollisionEntity(this);
+			game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
 		}
 
 		switch (state_)
@@ -170,9 +171,24 @@ namespace game
 		scale_.y = glm::max(scale_.y, 0.0f);
 		scale_.z = glm::max(scale_.z, 0.0f);
 
-		if (scale_.x < 0 || scale_.y < 0 || scale_.z < 0)
+		if (scale_.x <= 0 || scale_.y <= 0 || scale_.z <= 0)
 		{
 			set_toDestroy = true;
+			AirEntity *air = dynamic_cast<AirEntity*>(this);
+			GroundEntity *ground = dynamic_cast<GroundEntity*>(this);
+
+			if (air)
+			{
+				game_->AirshipKilled();
+			}
+			else if (ground)
+			{
+				game_->CybertruckKilled();
+			}
+			else
+			{
+				game_->TurretKilled();
+			}
 		}
 	}
 

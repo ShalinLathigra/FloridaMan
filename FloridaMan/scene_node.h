@@ -53,7 +53,7 @@ public:
 
     // Update the node
     virtual void Update(float deltaTime);
-    bool CheckCollision(SceneNode *pNode);
+    bool CheckCollision(SceneNode *pNode, SceneNode **collidingPart = nullptr);
     bool CheckSphereCollision(SceneNode *pNode, float dist);
 
     // OpenGL variables
@@ -64,7 +64,8 @@ public:
     GLuint GetMaterial(void) const;
 
 	glm::vec3 GetWorldPosition();
-    bool checkIfDestroy();
+	glm::quat GetWorldOrientation();
+	bool checkIfDestroy();
     SceneNode *GetParent();
     void SetParent(SceneNode *pParent);
     std::vector<SceneNode *> GetChildren();

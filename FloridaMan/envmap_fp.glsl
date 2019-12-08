@@ -12,7 +12,7 @@ float phong_exponent = 128.0;
 float Ia = 0.1; 
 // Albedo of the material
 vec3 ambient_albedo = vec3(0.0, 0.0, 1.0);
-vec3 diffuse_albedo = vec3(0.0, 0.0, 0.5);
+vec3 diffuse_albedo = vec3(0.5, 0.5, 0.5);
 vec3 specular_albedo = vec3(0.8, 0.5, 0.9);
 
 // Uniforms

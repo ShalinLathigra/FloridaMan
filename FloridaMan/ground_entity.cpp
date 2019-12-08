@@ -36,9 +36,10 @@ GroundEntity::~GroundEntity()
 
 void GroundEntity::Update(float deltaTime)
 {
-	if (game_->GetPlayer()->CheckCollision(this))
+	SceneNode *nodeHit;
+	if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
 	{
-		game_->GetPlayer()->SetCollisionEntity(this);
+		game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
 	}
     switch (state_)
     {

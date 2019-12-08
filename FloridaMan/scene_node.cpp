@@ -180,7 +180,7 @@ glm::vec3 SceneNode::GetWorldPosition()
 	return position_;
 }
 
-bool SceneNode::CheckCollision(SceneNode *pNode)
+bool SceneNode::CheckCollision(SceneNode *pNode, SceneNode **collidingPart)
 {
     //Set up the local variables to be used for calculating the collision
     glm::vec3 c1Pos = GetWorldPosition();
@@ -253,11 +253,15 @@ bool SceneNode::CheckCollision(SceneNode *pNode)
     //If there is a separating axis, we want to search the child nodes, otherwise there has been a collision and we dont need to check child nodes, unless we need to know which node specifically was hit
         for (size_t i = 0; i < m_childNodes.size(); i++)
         {
-            if (m_childNodes[i]->CheckCollision(pNode))
+            if (m_childNodes[i]->CheckCollision(pNode, collidingPart))
             {
                 return true;
             }
         }
+		if (!collisionDetected && collidingPart)
+		{
+			*collidingPart = this;
+		}
     return !collisionDetected;
 }
 
@@ -284,6 +288,14 @@ void SceneNode::SetPosition(glm::vec3 position)
 void SceneNode::SetOrientation(glm::quat orientation)
 {
     orientation_ = orientation;
+}
+
+glm::quat SceneNode::GetWorldOrientation() {
+	if (m_pParentNode)
+	{
+		return glm::normalize(orientation_ * m_pParentNode->GetWorldOrientation());
+	}
+	return orientation_;
 }
 
 void SceneNode::SetScale(glm::vec3 scale)
