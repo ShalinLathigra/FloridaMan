@@ -20,15 +20,14 @@ GroundEntity::GroundEntity(const std::string name, const Resource *geometry, con
     max_num_attacks_ = 4;
     num_attacks_ = max_num_attacks_;
     max_attack_timer_ = 4.0f;
-	attack_timer_ = 1.0f;
-	ammo_ = 100;
+    attack_timer_ = 1.0f;
+    ammo_ = 100;
 
     acc_ = 2.5f; // Acceleration Rate
     dec_ = 4.5f; // Deceleration Rate
 
     vel_ = 0.0f; // Rate of position change
     max_vel_ = 50.0f + utilities::RandPercent() * 90.0f; // Rate of position change
-
 }
 GroundEntity::~GroundEntity()
 {
@@ -36,11 +35,11 @@ GroundEntity::~GroundEntity()
 
 void GroundEntity::Update(float deltaTime)
 {
-	SceneNode *nodeHit;
-	if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
-	{
-		game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
-	}
+    SceneNode *nodeHit;
+    if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
+    {
+        game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
+    }
     switch (state_)
     {
         case (State::Idle):
@@ -146,22 +145,22 @@ void GroundEntity::Attack(float deltaTime)
     {
         if (attack_timer_ <= 0.0f)
         {
-			InstantiateAttack();
+            InstantiateAttack();
             num_attacks_--;
-			ammo_--;
+            ammo_--;
             if (num_attacks_ > 0)
             {
-				attack_timer_ = max_attack_timer_ / ((float)max_num_attacks_ * 2.0f);
+                attack_timer_ = max_attack_timer_ / ((float)max_num_attacks_ * 2.0f);
             }
             else
             {
-				attack_timer_ = max_attack_timer_;
+                attack_timer_ = max_attack_timer_;
                 num_attacks_ = max_num_attacks_;
             }
         }
         else
         {
-			attack_timer_ = glm::max(attack_timer_ - deltaTime, 0.0f);
+            attack_timer_ = glm::max(attack_timer_ - deltaTime, 0.0f);
         }
     }
 }

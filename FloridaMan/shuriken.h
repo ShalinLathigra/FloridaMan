@@ -13,7 +13,7 @@
 #include "resource.h"
 #include "scene_node.h"
 
-#include <algorithm> // std::max
+#include <algorithm>
 
 namespace game
 {
@@ -30,7 +30,7 @@ public:
     glm::vec3 GetForward(void) const;
     void SetForward(glm::vec3 forward_new);
     void SetSpawnPos(glm::vec3);
-	void SetSpawnVel(float spawn_vel);
+    void SetSpawnVel(float spawn_vel);
 
     void setParent(Camera *camera);
 
@@ -41,7 +41,7 @@ private:
     Camera *parent_node_;
 
     float width_;
-	bool forward_set_;
+    bool forward_set_;
     glm::vec3 forward_; //initial up
     glm::vec3 spawn_pos_;
     glm::vec3 joint_;
@@ -57,7 +57,7 @@ private:
     void distanceTravelled();
 
     float speed;
-	float spawn_vel_;
+    float spawn_vel_;
 };
 } // namespace game
 

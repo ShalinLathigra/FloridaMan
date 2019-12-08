@@ -26,14 +26,14 @@ protected:
     float attack_angle_;
     int num_attacks_;
     int max_num_attacks_;
-	int ammo_;
+    int ammo_;
 
     float acc_; // Acceleration Rate
     float dec_; // Deceleration Rate
 
     float vel_; // Rate of position change
     float max_vel_; // Rate of position change
-	
+
     //Need to handle acceleration, store velocity
 };
 } // namespace game

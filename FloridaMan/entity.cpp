@@ -17,8 +17,8 @@ Entity::Entity(const std::string name, const Resource *geometry, const Resource 
     max_hp_ = 50.0f;
     hp_ = max_hp_;
 
-	max_attack_timer_ = 1.0f;
-	attack_timer_ = max_attack_timer_;
+    max_attack_timer_ = 1.0f;
+    attack_timer_ = max_attack_timer_;
 }
 
 Entity::~Entity()
@@ -27,21 +27,21 @@ Entity::~Entity()
 
 void Entity::Update(float deltaTime)
 {
-	SceneNode *nodeHit;
-	if (game_->GetPlayer()->CheckCollision(this,  &nodeHit))
-	{
-		game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
-	}
+    SceneNode *nodeHit;
+    if (game_->GetPlayer()->CheckCollision(this, &nodeHit))
+    {
+        game_->GetPlayer()->SetCollisionEntity(this, nodeHit);
+    }
     switch (state_)
     {
-	case(State::Die): 
-		Translate(glm::vec3(0, -12, 0)*deltaTime);
-		if (position_.y <= -scale_.y / 2.0f)
-		{
-			setDestroyFlag(true);
-			game_->AlienFreed();
-		}
-		break;
+        case (State::Die):
+            Translate(glm::vec3(0, -12, 0) * deltaTime);
+            if (position_.y <= -scale_.y / 2.0f)
+            {
+                setDestroyFlag(true);
+                game_->AlienFreed();
+            }
+            break;
     }
 }
 void Entity::TakeDamage(float amount)

@@ -37,12 +37,10 @@ void main()
     float lambertian = max(dot(N, L), 0.0);
 
     // Get view direction
-    //V = TBN_mat * (eye_position - vertex_position);
     V = TBN_mat * (- vertex_position); // We already applied the view matrix, so the camera is at the origin
     V = normalize(V);
     
     // Blinn-Phong specular component
-    //H = 0.5*(V + L);
     H = (V + L);
     H = normalize(H);
     

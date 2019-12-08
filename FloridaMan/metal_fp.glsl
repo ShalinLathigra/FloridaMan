@@ -18,11 +18,6 @@ vec3 diffuse_color = vec3(0.0, 0.0, 0.0);
 vec3 specular_color = vec3(0.2, 0.2, 0.95);
 vec3 ambient_color = specular_color*0.3;
 
-// Copper
-//vec3 diffuse_color = vec3(0.0, 0.0, 0.0);
-//vec3 specular_color = vec3(0.95, 0.64, 0.54);
-//vec3 ambient_color = specular_color*0.3;
-
 float roughness = 0.5;
 float light_intensity = 1.0*pi;
 
@@ -46,7 +41,6 @@ void main()
     V = - position_interp; // Eye position is (0, 0, 0) in view coordinates
     V = normalize(V);
 
-    //H = 0.5*(V + L); // Halfway vector
     H = (V + L); // Halfway vector
     H = normalize(H);
 

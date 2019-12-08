@@ -10,8 +10,8 @@ Bomb::Bomb(const std::string name, const Resource *geometry, const Resource *mat
 {
     state_ = BombState::BombFall;
     boom_radius_ = 75.0f;
-	grav_ = 5.0f;
-	velocity_ = glm::vec3(0, 0, 0);
+    grav_ = 5.0f;
+    velocity_ = glm::vec3(0, 0, 0);
 }
 
 Bomb::~Bomb()
@@ -58,10 +58,10 @@ void Bomb::Boom(float deltaTime)
                 ((Entity *)childz[i])->TakeDamage(100);
             }
         }
-		game_->AddNode(&death_part_);
-		death_part_.SetScale(glm::vec3(1));
-		death_part_.SetPosition(GetPosition());
-		death_part_.Start();
+        game_->AddNode(&death_part_);
+        death_part_.SetScale(glm::vec3(1));
+        death_part_.SetPosition(GetPosition());
+        death_part_.Start();
     }
 }
 
@@ -72,10 +72,10 @@ BombState Bomb::GetState(void)
 }
 void Bomb::SetState(BombState state)
 {
-	state_ = state;
+    state_ = state;
 }
 void Bomb::SetDeathPart(ParticleNode part)
 {
-	death_part_ = part;
+    death_part_ = part;
 }
 } // namespace game

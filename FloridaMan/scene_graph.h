@@ -5,6 +5,7 @@
 #include <vector>
 #define GLEW_STATIC
 #include "air_entity.h"
+#include "asteroid.h"
 #include "bomb.h"
 #include "camera.h"
 #include "entity_structure.h"
@@ -13,7 +14,6 @@
 #include "resource.h"
 #include "shuriken.h"
 #include "utilities.h"
-#include "asteroid.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 

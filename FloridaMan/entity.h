@@ -53,8 +53,8 @@ protected:
     ParticleNode death_particles_;
     bool death_part_;
 
-	float attack_timer_;
-	float max_attack_timer_;
+    float attack_timer_;
+    float max_attack_timer_;
 };
 } // namespace game
 #endif // Entity_H_

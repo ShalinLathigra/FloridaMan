@@ -63,9 +63,9 @@ public:
     GLsizei GetSize(void) const;
     GLuint GetMaterial(void) const;
 
-	glm::vec3 GetWorldPosition();
-	glm::quat GetWorldOrientation();
-	bool checkIfDestroy();
+    glm::vec3 GetWorldPosition();
+    glm::quat GetWorldOrientation();
+    bool checkIfDestroy();
     SceneNode *GetParent();
     void SetParent(SceneNode *pParent);
     std::vector<SceneNode *> GetChildren();
@@ -74,8 +74,8 @@ public:
 
     SceneNode *RemoveChildAt(int index);
 
-	inline void SetType(int type) { type_ = type; }
-	inline int GetType(void) { return type_; }
+    inline void SetType(int type) { type_ = type; }
+    inline int GetType(void) { return type_; }
     void SetGame(Game *g);
 
     void SetUpdated(bool u);

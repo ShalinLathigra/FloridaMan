@@ -44,7 +44,6 @@ void main()
     
     // Forward time step to geometry shader
     particle_step = t / duration;
-	//particle_step = mod(min(particle_step, 2), 2);
 
     // Let's first work in model space (apply only world matrix)
     vec4 position = world_mat * vec4(vertex, 1.0);
@@ -52,9 +51,7 @@ void main()
 
     // Move point along normal and down with t*t (acceleration under gravity)
 	vec3 temp = vec3(position.x, 0.5, position.z);
-    //position.x += norm.x*t*speed + up_acc*speed*up_vec.x*t*t;
     position.y = 0.5;
-    //position.z += norm.z*t*speed + up_acc*speed*up_vec.z*t*t;
 	
 	//Want X to increase, then decrease based on time
 	//Want Z to increase, then decrease based on time
@@ -78,6 +75,5 @@ void main()
     gl_Position = view_mat * position;
     // Define amount of blending depending on the cyclic time
     float alpha = 0.5 * particle_step;
-    //particle_color = vec4(1.0, 1.0 - (t / duration), 1.0, alpha);
 	particle_color = vec4(val, val, val,1);
 }

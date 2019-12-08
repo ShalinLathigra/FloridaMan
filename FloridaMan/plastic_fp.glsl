@@ -36,11 +36,9 @@ void main()
     L = (light_pos - position_interp);
     L = normalize(L);
 
-    // V = (eye_position - position_interp);
     V = - position_interp; // Eye position is (0, 0, 0) in view coordinates
     V = normalize(V);
 
-    //H = 0.5*(V + L); // Halfway vector
     H = (V + L); // Halfway vector
     H = normalize(H);
 

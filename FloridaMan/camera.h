@@ -41,13 +41,13 @@ public:
 
     // Perform relative transformations of camera
     void Pitch(float angle, bool rotatePlayer = true);
-    void Yaw(float angle,bool rotatePlayer = true);
+    void Yaw(float angle, bool rotatePlayer = true);
     void Roll(float angle);
 
-	void move(float speed);
-	void SetGame(Game *pGame);
+    void move(float speed);
+    void SetGame(Game *pGame);
 
-	void SetSkyBox(SceneNode* skybox);
+    void SetSkyBox(SceneNode *skybox);
 
     // Set the view from camera parameters: initial position of camera,
     // point looking at, and up vector
@@ -63,13 +63,14 @@ public:
     glm::mat4 GetCurrentViewMatrix(void);
     void TogglePOV();
     void InitPlayer(ResourceManager *resMan);
-	void SetGround(SceneNode *pGround);
+    void SetGround(SceneNode *pGround);
+
 private:
-	glm::vec3 CalculateCollisionNormal(SceneNode* pNode, SceneNode *pNodeHit);
-	Game *m_pGame;
-	// Skybox
-	SceneNode *m_pGroundPlane;
-	SceneNode *m_skybox;
+    glm::vec3 CalculateCollisionNormal(SceneNode *pNode, SceneNode *pNodeHit);
+    Game *m_pGame;
+    // Skybox
+    SceneNode *m_pGroundPlane;
+    SceneNode *m_skybox;
     bool m_isFirstPerson;
     glm::vec3 position_; // Position of camera
     glm::quat orientation_; // Orientation of camera

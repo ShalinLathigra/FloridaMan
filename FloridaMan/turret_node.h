@@ -32,7 +32,7 @@ public:
     void SetChaseAngle(float chase_angle);
     void SetAttackAngle(float attack_angle);
 
-	void InstantiateAttack(void);
+    void InstantiateAttack(void);
 
 protected:
     // Angular momentum of asteroid

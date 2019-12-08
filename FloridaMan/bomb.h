@@ -7,12 +7,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #define GLM_FORCE_RADIANS
-#include <algorithm> // std::max
+#include <algorithm>
 #include <glm/gtc/quaternion.hpp>
 
+#include "particle_node.h"
 #include "resource.h"
 #include "scene_node.h"
-#include "particle_node.h"
 
 namespace game
 {
@@ -34,16 +34,16 @@ public:
     void Boom(float deltaTime);
 
     BombState GetState(void);
-	void SetState(BombState state);
-	void SetDeathPart(ParticleNode part);
+    void SetState(BombState state);
+    void SetDeathPart(ParticleNode part);
 
 protected:
     BombState state_;
-	ParticleNode death_part_;
+    ParticleNode death_part_;
     glm::vec3 forward_;
     glm::vec3 up_;
-	glm::vec3 velocity_;
-	float grav_;
+    glm::vec3 velocity_;
+    float grav_;
 
     float idle_timer_;
     float max_idle_timer_;
